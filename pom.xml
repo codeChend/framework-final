@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.startdt.platform</groupId>
+	<artifactId>framework-final-project</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<modules>
+		<module>modules-user</module>
+		<module>examples</module>
+	</modules>
+	<description>framework-final is a Basic Framework based on Springboot. </description>
+	<url> http://git.startdt.net/businessplatform/framework-final.git </url>
+	<inceptionYear>2019</inceptionYear>
+	<developers>
+		<developer>
+			<id>00173</id>
+			<name>zhengfengshi</name>
+			<email>zhengfengshi@stardt.com</email>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>00117</id>
+			<name>chendong</name>
+			<email>chendong@stardt.com</email>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
+	</developers>
+
+
+</project>
