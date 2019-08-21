@@ -2,23 +2,22 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-   <!-- <parent>
-        <artifactId>framework-final</artifactId>
-        <groupId>com.startdt.platform</groupId>
-        <version>0.0.1-SNAPSHOT</version>
-    </parent>-->
+   <parent>
+       <groupId>com.startdt.platform</groupId>
+       <artifactId>parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+   </parent>
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.startdt.platform</groupId>
-    <artifactId>user-starter</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <artifactId>starter-user</artifactId>
+    <version>${revision}</version>
 
-    <parent>
+    <!--<parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starters</artifactId>
         <version>1.5.4.RELEASE</version>
-    </parent>
+    </parent>-->
     <!--<artifactId>framework-final</artifactId>-->
-    <name>startdt::frameworkfinal::modules::user</name>
+    <name>framework-final starter user </name>
 
     <properties>
         <java.version>1.8</java.version>
