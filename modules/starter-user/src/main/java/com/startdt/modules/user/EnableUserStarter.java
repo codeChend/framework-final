@@ -14,6 +14,7 @@ import java.lang.annotation.Target;
 //@Import(ContentImportSelector.class)
 //@Import(SimpleContentConfiguration.class)
 //@Import(CoreContentConfiguration.class)
+//@Import(UserStarterConfiguration.class)
 @Import(UserStarterConfiguration.class)
 public @interface EnableUserStarter {
 
