@@ -9,7 +9,7 @@
     </parent>-->
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.startdt.platform</groupId>
-    <artifactId>modules-user-starter</artifactId>
+    <artifactId>user-starter</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
     <parent>
