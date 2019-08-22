@@ -1,9 +1,9 @@
-package com.startdt.modules.user.service;
+package com.startdt.modules.role.service;
 
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class UserServiceImpl {
+public class RoleServiceImpl {
 
 
     static {

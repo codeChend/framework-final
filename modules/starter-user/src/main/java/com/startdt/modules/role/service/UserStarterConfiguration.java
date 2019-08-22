@@ -1,4 +1,4 @@
-package com.startdt.modules.user.service;
+package com.startdt.modules.role.service;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

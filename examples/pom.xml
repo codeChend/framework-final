@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.startdt.platform</groupId>
-        <artifactId>parent</artifactId>
+        <artifactId>framework-final-project</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
     <groupId>com.startdt.platform</groupId>

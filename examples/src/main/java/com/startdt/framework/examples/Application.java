@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 //@ComponentScan(basePackages = "com.nosuchfield")
 //演示开启自定义注解的能力
-//@EnableUserStarter()
+//@EnableRoleStarter()
 public class Application  {
 
 //    @Resource

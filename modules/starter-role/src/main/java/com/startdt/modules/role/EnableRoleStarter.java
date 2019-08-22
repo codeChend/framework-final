@@ -1,6 +1,6 @@
-package com.startdt.modules.user;
+package com.startdt.modules.role;
 
-import com.startdt.modules.user.service.UserStarterConfiguration;
+import com.startdt.modules.role.service.RoleStarterConfiguration;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.ElementType;
@@ -15,8 +15,8 @@ import java.lang.annotation.Target;
 //@Import(SimpleContentConfiguration.class)
 //@Import(CoreContentConfiguration.class)
 //@Import(UserStarterConfiguration.class)
-@Import(UserStarterConfiguration.class)
-public @interface EnableUserStarter {
+@Import(RoleStarterConfiguration.class)
+public @interface EnableRoleStarter {
 
 //    String policy() default "core";
 
