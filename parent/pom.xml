@@ -6,10 +6,11 @@
     <artifactId>parent</artifactId>
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
-    <version>${revision}</version>
+    <version>1.0.0-SNAPSHOT</version>
     <description>startdt framework Dependencies</description>
     <url>http://git.startdt.net/businessplatform/framework-final.git</url>
     <inceptionYear>2019</inceptionYear>
+    <name>FrameworkFinal::Parent</name>
     <developers>
         <developer>
             <id>00173</id>
@@ -61,6 +62,8 @@
         <spring-boot-starter-dubbo.version>1.0.0</spring-boot-starter-dubbo.version>
         <trace.version>0.0.2-SNAPSHOT</trace.version>
         <spring-boot.version>1.5.4.RELEASE</spring-boot.version>
+        <lombok.version>1.16.12</lombok.version>
+
 
     </properties>
 
@@ -73,7 +76,23 @@
                 <artifactId>spring-boot-starter-web</artifactId>
                 <version>${spring-boot.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+                <optional>true</optional>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <version>${spring-boot.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.startdt.platform</groupId>
+                <artifactId>starter-user</artifactId>
+                <version>${revision}</version>
+            </dependency>
         </dependencies>
 
     </dependencyManagement>
@@ -89,7 +108,10 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
+            <version>${spring-boot.version}</version>
+
         </dependency>
+
     </dependencies>
     <build>
         <plugins>

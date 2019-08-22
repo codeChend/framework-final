@@ -6,7 +6,7 @@
     <groupId>com.startdt.platform</groupId>
     <artifactId>modules</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <name>framework :: Module</name>
+    <name>FrameworkFinal::Modules</name>
     <packaging>pom</packaging>
 
     <modules>
