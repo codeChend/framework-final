@@ -25,6 +25,9 @@ public class BizResultConstant {
 
     public static final BizResultConstant SYSTEM_NOT_SUPPORT = new BizResultConstant(1000, "系统错误");
 
+    public static final BizResultConstant PARAM_ERROR = new BizResultConstant(3000, "参数错误!");
+
+
     public static final BizResultConstant ID_BLANK = new BizResultConstant(3001, "缺少id!");
     public static final BizResultConstant DB_MODIFY_ERROR = new BizResultConstant(3002, "数据库操作失败");
     public static final BizResultConstant PASSWORD_ERROR = new BizResultConstant(3003, "密码不正确");
@@ -32,6 +35,9 @@ public class BizResultConstant {
     public static final BizResultConstant USER_NEW_OLD_ACCORD = new BizResultConstant(3005, "新密码与旧密码不能相同");
     public static final BizResultConstant NO_USER = new BizResultConstant(3006, "该用户不存在");
     public static final BizResultConstant USER_DISABLED = new BizResultConstant(3007, "用户被禁用！");
+
+    public static final BizResultConstant TOKEN_VERIFY = new BizResultConstant(3008, "Token验签失败!");
+    public static final BizResultConstant ERROR_USER_SESSION_EXPIRED = new BizResultConstant(3009, "请重新登录");
 
 
 }
