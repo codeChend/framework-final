@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.startdt.modules.role.dal.mapper.GrantPermissionInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.startdt.modules.role.dal.pojo.domain.GrantPermissionInfo">
+        <id column="id" property="id" />
+        <result column="principal_part" property="principalPart" />
+        <result column="principal_part_type" property="principalPartType" />
+        <result column="resources" property="resources" />
+        <result column="resources_typy" property="resourcesTypy" />
+        <result column="note" property="note" />
+        <result column="status" property="status" />
+        <result column="gmt_create" property="gmtCreate" />
+        <result column="gmt_modified" property="gmtModified" />
+    </resultMap>
+
+</mapper>
