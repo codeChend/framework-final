@@ -39,6 +39,7 @@ public class BizResultConstant {
     public static final BizResultConstant TOKEN_VERIFY = new BizResultConstant(3008, "Token验签失败!");
     public static final BizResultConstant ERROR_USER_SESSION_EXPIRED = new BizResultConstant(3009, "请重新登录");
 
+    public static final BizResultConstant USER_NAME_EXIST = new BizResultConstant(3010, "该用户名已存在");
 
 }
 

@@ -25,9 +25,9 @@ public class RolePermissionDTO implements Serializable {
     private List<String> permissions;
 
     /**
-     * 版本
+     * code码
      */
-    private String version;
+    private String code;
 
     /**
      * 描述
@@ -73,12 +73,12 @@ public class RolePermissionDTO implements Serializable {
         this.permissions = permissions;
     }
 
-    public String getVersion() {
-        return version;
+    public String getCode() {
+        return code;
     }
 
-    public void setVersion(String version) {
-        this.version = version;
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getNote() {

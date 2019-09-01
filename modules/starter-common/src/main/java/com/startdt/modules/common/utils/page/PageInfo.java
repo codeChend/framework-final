@@ -1,25 +1,24 @@
-package com.startdt.modules.common.pojo;
+package com.startdt.modules.common.utils.page;
 
-import java.util.List;
+import java.io.Serializable;
 
 /**
- * 由Mybatis Generator增强版生成，不要手动修改
- * @see <a href="https://github.com/pocketdigi/mybatis-generator">https://github.com/pocketdigi/mybatis-generator</a>
- * @author Exception
+ * @Author: weilong
+ * @Description:
+ * @Date: Create in 2019/8/30 下午3:11
+ * @Modified By:
  */
-public final class Page<T> {
+public class PageInfo implements Serializable{
     private Integer currentPage;
-
     private Integer totalPage;
-
     private Integer pageSize;
-
     private Long totalCount;
 
-    private List<T> dataList;
+    public PageInfo() {
+    }
 
     public Integer getCurrentPage() {
-        return currentPage;
+        return this.currentPage;
     }
 
     public void setCurrentPage(Integer currentPage) {
@@ -27,7 +26,7 @@ public final class Page<T> {
     }
 
     public Integer getTotalPage() {
-        return totalPage;
+        return this.totalPage;
     }
 
     public void setTotalPage(Integer totalPage) {
@@ -35,7 +34,7 @@ public final class Page<T> {
     }
 
     public Integer getPageSize() {
-        return pageSize;
+        return this.pageSize;
     }
 
     public void setPageSize(Integer pageSize) {
@@ -43,18 +42,15 @@ public final class Page<T> {
     }
 
     public Long getTotalCount() {
-        return totalCount;
+        return this.totalCount;
     }
 
     public void setTotalCount(Long totalCount) {
         this.totalCount = totalCount;
     }
 
-    public List<T> getDataList() {
-        return dataList;
-    }
-
-    public void setDataList(List<T> dataList) {
-        this.dataList = dataList;
+    @Override
+    public String toString() {
+        return "PageInfo{currentPage=" + this.currentPage + ", totalPage=" + this.totalPage + ", pageSize=" + this.pageSize + ", totalCount=" + this.totalCount + '}';
     }
 }

@@ -34,9 +34,9 @@ public class RolePermissionInfo extends Model<RolePermissionInfo> {
     private String permission;
 
     /**
-     * 版本
+     * code码
      */
-    private String version;
+    private String code;
 
     /**
      * 描述
@@ -79,13 +79,11 @@ public class RolePermissionInfo extends Model<RolePermissionInfo> {
     public void setPermission(String permission) {
         this.permission = permission;
     }
-    public String getVersion() {
-        return version;
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
-    public void setVersion(String version) {
-        this.version = version;
-    }
     public String getNote() {
         return note;
     }
@@ -126,7 +124,7 @@ public class RolePermissionInfo extends Model<RolePermissionInfo> {
         "id=" + id +
         ", roleName=" + roleName +
         ", permission=" + permission +
-        ", version=" + version +
+        ", code=" + code +
         ", note=" + note +
         ", status=" + status +
         ", gmtCreate=" + gmtCreate +

@@ -43,6 +43,7 @@ public class BackLoginInterceptor extends HandlerInterceptorAdapter {
         String requestURI = request.getRequestURI();
 
         String method = request.getMethod();
+
         if(HttpMethod.OPTIONS.matches(method)){
             return super.preHandle(request,response,handler);
         }
@@ -84,8 +85,6 @@ public class BackLoginInterceptor extends HandlerInterceptorAdapter {
             }
             //存储用户账号信息
             CurrentUser.set(userInfo);
-
-            //TODO 添加权限校验
 
             return super.preHandle(request,response,handler);
         }else{
