@@ -85,4 +85,6 @@ public interface ITbUserInfoService extends IService<TbUserInfo> {
      * @param loginName 登录用户名
      */
     void checkUserName(String loginName);
+
+
 }

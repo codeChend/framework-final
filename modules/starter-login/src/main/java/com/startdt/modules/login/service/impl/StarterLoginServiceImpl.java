@@ -1,7 +1,7 @@
 package com.startdt.modules.login.service.impl;
 
 import com.startdt.modules.login.pojo.UserLoginVO;
-import com.startdt.modules.role.service.StarterLoginService;
+import com.startdt.modules.login.service.StarterLoginService;
 import org.springframework.context.annotation.Configuration;
 
 /**

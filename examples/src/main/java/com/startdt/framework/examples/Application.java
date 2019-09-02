@@ -1,15 +1,16 @@
 package com.startdt.framework.examples;
 
+import com.startdt.modules.user.EnableUserStarter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
  * @author hourui 2017/10/10 16:48
  */
 @SpringBootApplication
-//@ComponentScan(basePackages = "com.nosuchfield")
 //演示开启自定义注解的能力
-//@EnableRoleStarter()
+@EnableUserStarter()
 public class Application  {
 
 //    @Resource

@@ -1,6 +1,5 @@
 package com.startdt.modules.role.controller;
 
-import com.startdt.modules.common.utils.encode.PasswordEncode;
 import com.startdt.modules.common.utils.result.Result;
 import com.startdt.modules.role.dal.pojo.domain.RolePermissionInfo;
 import com.startdt.modules.role.dal.pojo.dto.RolePermissionDTO;
@@ -30,8 +29,6 @@ public class RolePermissionController {
     @Autowired
     private IRolePermissionInfoService rolePermissionInfoService;
 
-    @Autowired
-    private PasswordEncode passwordEncode;
 
     @PostMapping("/addRolePermission")
     @ApiOperation(value = "添加用户")

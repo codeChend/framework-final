@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@Import(UserStarterConfiguration.class)
+@Import({UserStarterConfiguration.class})
 public @interface EnableUserStarter {
 
 

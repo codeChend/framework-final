@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -16,7 +17,7 @@ import java.io.Serializable;
  * @since 2019-08-27
  */
 @TableName("tb_user_info")
-public class TbUserInfo extends Model<TbUserInfo> {
+public class TbUserInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -66,17 +67,17 @@ public class TbUserInfo extends Model<TbUserInfo> {
     /**
      * 最近登录时间
      */
-    private LocalDateTime loginTime;
+    private Date loginTime;
 
     /**
      * 创建时间
      */
-    private LocalDateTime gmtCreate;
+    private Date gmtCreate;
 
     /**
      * 更新时间
      */
-    private LocalDateTime gmtModified;
+    private Date gmtModified;
 
     public Integer getId() {
         return id;
@@ -141,31 +142,25 @@ public class TbUserInfo extends Model<TbUserInfo> {
     public void setStatus(Integer status) {
         this.status = status;
     }
-    public LocalDateTime getLoginTime() {
-        return loginTime;
-    }
 
-    public void setLoginTime(LocalDateTime loginTime) {
+    public void setLoginTime(Date loginTime) {
         this.loginTime = loginTime;
     }
-    public LocalDateTime getGmtCreate() {
+
+    public Date getGmtCreate() {
         return gmtCreate;
     }
 
-    public void setGmtCreate(LocalDateTime gmtCreate) {
+    public void setGmtCreate(Date gmtCreate) {
         this.gmtCreate = gmtCreate;
     }
-    public LocalDateTime getGmtModified() {
+
+    public Date getGmtModified() {
         return gmtModified;
     }
 
-    public void setGmtModified(LocalDateTime gmtModified) {
+    public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    @Override
-    protected Serializable pkVal() {
-        return this.id;
     }
 
     @Override

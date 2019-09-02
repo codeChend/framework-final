@@ -3,7 +3,6 @@ package com.startdt.modules.user.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.startdt.modules.common.utils.BeanConverter;
-import com.startdt.modules.common.utils.encode.PasswordEncode;
 import com.startdt.modules.common.utils.exception.UserException;
 import com.startdt.modules.common.utils.page.PageInfo;
 import com.startdt.modules.common.utils.page.PageResult;
@@ -14,6 +13,7 @@ import com.startdt.modules.user.dal.pojo.request.ModifyUserReq;
 import com.startdt.modules.user.dal.pojo.request.UpdatePwdReq;
 import com.startdt.modules.user.dal.pojo.vo.UserDetailVO;
 import com.startdt.modules.user.service.ITbUserInfoService;
+import com.startdt.modules.user.service.encode.PasswordEncode;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -74,9 +74,9 @@ public class UserInfoController {
         return Result.ofSuccess(result.isSuccess()?1:0);
     }
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/get")
     @ApiOperation(value = "获取用户详情")
-    public Result<UserDetailVO> getDetail(@PathParam("id") Integer id) {
+    public Result<UserDetailVO> getDetail(@RequestParam("id") Integer id) {
         Result<TbUserInfo> userInfoResult = userInfoService.getUserById(id);
         if(!userInfoResult.isSuccess()) {
             return Result.ofErrorT(userInfoResult.getCode(),userInfoResult.getMessage());
@@ -108,7 +108,6 @@ public class UserInfoController {
                                               @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize) {
         QueryWrapper<TbUserInfo> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("status", 1);
-        int totalNum = userInfoService.count(queryWrapper);
         Page<TbUserInfo> page = new Page<>(pageNum,pageSize);
         Page<TbUserInfo> pageResult = (Page<TbUserInfo>) userInfoService.page(page,queryWrapper);
         PageInfo pageInfo = new PageInfo();
@@ -120,4 +119,11 @@ public class UserInfoController {
         return Result.ofSuccess(pageResult1);
     }
 
+    @GetMapping("/getById")
+    @ApiOperation(value = "获取用户详情")
+    public Result<TbUserInfo> get(@RequestParam("id") Integer id) {
+        TbUserInfo userInfoResult = userInfoService.getUserInfo(id);
+
+        return Result.ofSuccess(userInfoResult);
+    }
 }

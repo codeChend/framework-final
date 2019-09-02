@@ -3,6 +3,8 @@ package com.startdt.modules.common.utils;
 import com.startdt.modules.common.pojo.ModulesDO;
 import com.startdt.modules.common.pojo.ModulesTree;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -18,7 +20,7 @@ public class ModulesCache {
 
     private static final Map<String,ModulesDO> map = new ConcurrentHashMap<>();
 
-    private static final Set<ModulesTree> treeSet = new ConcurrentSkipListSet<>();
+    private static final Map<String,ModulesTree> treeMap = new ConcurrentHashMap<>();
 
     public static ModulesDO getModulesCacheByCode(String code){
         return map.get(code);
@@ -28,11 +30,11 @@ public class ModulesCache {
         map.put(modulesDO.getCode(),modulesDO);
     }
 
-    public static void addModulesTree(ModulesTree modulesTree){
-        treeSet.add(modulesTree);
+    public static void addModulesTree(String code,ModulesTree modulesTree){
+        treeMap.put(code,modulesTree);
     }
 
-    public static Set<ModulesTree> getModulesTree(){
-        return treeSet;
+    public static ModulesTree getModulesTree(String code){
+        return treeMap.get(code);
     }
 }

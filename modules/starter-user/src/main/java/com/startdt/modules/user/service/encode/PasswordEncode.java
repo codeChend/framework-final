@@ -1,4 +1,4 @@
-package com.startdt.modules.common.utils.encode;
+package com.startdt.modules.user.service.encode;
 
 import org.springframework.stereotype.Component;
 

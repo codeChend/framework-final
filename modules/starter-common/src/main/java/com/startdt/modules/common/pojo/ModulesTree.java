@@ -1,5 +1,6 @@
 package com.startdt.modules.common.pojo;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -8,7 +9,7 @@ import java.util.List;
  * @Date: Create in 2019/8/30 下午5:24
  * @Modified By:
  */
-public class ModulesTree {
+public class ModulesTree implements Serializable{
     private String code;
 
     private String name;

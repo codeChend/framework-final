@@ -2,12 +2,12 @@ package com.startdt.modules.user.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.startdt.modules.common.utils.encode.PasswordEncode;
 import com.startdt.modules.common.utils.result.BizResultConstant;
 import com.startdt.modules.common.utils.result.Result;
 import com.startdt.modules.user.dal.mapper.TbUserInfoMapper;
 import com.startdt.modules.user.dal.pojo.domain.TbUserInfo;
 import com.startdt.modules.user.service.ITbUserInfoService;
+import com.startdt.modules.user.service.encode.PasswordEncode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
@@ -68,8 +68,10 @@ public class TbUserInfoServiceImpl extends ServiceImpl<TbUserInfoMapper, TbUserI
 
     @Override
     public Result<TbUserInfo> getUserById(Integer userId) {
+        System.out.println("userId:"+userId);
         TbUserInfo tbUserInfo = this.getById(userId);
-        return null;
+        System.out.println("tbUserInfo:"+tbUserInfo);
+        return Result.ofSuccess(tbUserInfo);
     }
 
     @Override

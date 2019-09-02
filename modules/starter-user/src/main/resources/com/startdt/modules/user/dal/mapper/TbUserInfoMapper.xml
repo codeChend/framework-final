@@ -18,4 +18,15 @@
         <result column="gmt_modified" property="gmtModified" />
     </resultMap>
 
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_name,password,nick_name,phone
+    </sql>
+
+    <select id="getUserInfo" resultMap="BaseResultMap">
+        select id, user_name,password,nick_name,phone
+        from tb_user_info
+        where id = #{id}
+    </select>
+
 </mapper>
