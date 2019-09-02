@@ -32,5 +32,5 @@ build/
 */.xml
 ### VS Code ###
 .vscode/
-.idea
 .idea/workspace.xml
+.DS_Store

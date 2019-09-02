@@ -119,11 +119,5 @@ public class UserInfoController {
         return Result.ofSuccess(pageResult1);
     }
 
-    @GetMapping("/getById")
-    @ApiOperation(value = "获取用户详情")
-    public Result<TbUserInfo> get(@RequestParam("id") Integer id) {
-        TbUserInfo userInfoResult = userInfoService.getUserInfo(id);
 
-        return Result.ofSuccess(userInfoResult);
-    }
 }
