@@ -116,4 +116,9 @@ public class TbUserInfoServiceImpl extends ServiceImpl<TbUserInfoMapper, TbUserI
     public void checkUserName(String loginName) {
 
     }
+
+    @Override
+    public TbUserInfo getUserInfo(Integer id) {
+        return this.baseMapper.getUserInfo(id);
+    }
 }

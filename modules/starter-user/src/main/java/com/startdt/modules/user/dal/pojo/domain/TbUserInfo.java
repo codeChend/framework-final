@@ -17,7 +17,7 @@ import java.util.Date;
  * @since 2019-08-27
  */
 @TableName("tb_user_info")
-public class TbUserInfo implements Serializable {
+public class TbUserInfo extends Model<TbUserInfo> {
 
     private static final long serialVersionUID = 1L;
 
@@ -141,6 +141,15 @@ public class TbUserInfo implements Serializable {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public Date getLoginTime() {
+        return loginTime;
     }
 
     public void setLoginTime(Date loginTime) {

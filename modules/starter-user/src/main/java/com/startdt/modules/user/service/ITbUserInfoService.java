@@ -86,5 +86,6 @@ public interface ITbUserInfoService extends IService<TbUserInfo> {
      */
     void checkUserName(String loginName);
 
+    TbUserInfo getUserInfo(Integer id);
 
 }

@@ -13,4 +13,5 @@ import org.apache.ibatis.annotations.Param;
  * @since 2019-08-27
  */
 public interface TbUserInfoMapper extends BaseMapper<TbUserInfo> {
+    TbUserInfo getUserInfo(@Param("id") Integer id);
 }
