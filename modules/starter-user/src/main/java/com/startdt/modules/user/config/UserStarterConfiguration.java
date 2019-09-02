@@ -28,7 +28,6 @@ public class UserStarterConfiguration {
      * mybatis-plus 分页插件
      */
     @Bean
-
     public PaginationInterceptor paginationInterceptor() {
         return new PaginationInterceptor();
     }
