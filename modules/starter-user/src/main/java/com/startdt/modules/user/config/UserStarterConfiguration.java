@@ -1,6 +1,7 @@
 package com.startdt.modules.user.config;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.startdt.modules.common.pojo.ModulesTree;
 import com.startdt.modules.common.utils.ModulesCache;
 import com.startdt.modules.user.controller.UserInfoController;
@@ -23,6 +24,14 @@ public class UserStarterConfiguration {
         return new PasswordEncode();
     }
 
+    /**
+     * mybatis-plus 分页插件
+     */
+    @Bean
+
+    public PaginationInterceptor paginationInterceptor() {
+        return new PaginationInterceptor();
+    }
 
     @Bean
     public TbUserInfoServiceImpl getUserInfoService(){

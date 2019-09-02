@@ -1,6 +1,8 @@
 package com.startdt.modules.user.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.startdt.modules.common.utils.BeanConverter;
 import com.startdt.modules.common.utils.exception.UserException;
@@ -109,14 +111,15 @@ public class UserInfoController {
         QueryWrapper<TbUserInfo> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("status", 1);
         Page<TbUserInfo> page = new Page<>(pageNum,pageSize);
-        Page<TbUserInfo> pageResult = (Page<TbUserInfo>) userInfoService.page(page,queryWrapper);
+        IPage<TbUserInfo> iPage = userInfoService.page(page,queryWrapper);
+        System.out.println("page:"+ JSON.toJSONString(iPage));
         PageInfo pageInfo = new PageInfo();
         pageInfo.setCurrentPage(pageNum);
         pageInfo.setPageSize(pageSize);
-        pageInfo.setTotalCount(pageResult.getTotal());
-        pageInfo.setTotalPage((int) pageResult.getPages());
-        PageResult<TbUserInfo> pageResult1 = new PageResult<>(pageResult.getRecords(),pageInfo);
-        return Result.ofSuccess(pageResult1);
+        pageInfo.setTotalCount(iPage.getTotal());
+        pageInfo.setTotalPage((int) iPage.getPages());
+        PageResult<TbUserInfo> pageResult = new PageResult<>(iPage.getRecords(),pageInfo);
+        return Result.ofSuccess(pageResult);
     }
 
 
