@@ -1,11 +1,11 @@
 package com.startdt.modules.user.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.startdt.modules.common.pojo.Page;
 import com.startdt.modules.common.utils.result.BizResultConstant;
 import com.startdt.modules.common.utils.result.Result;
 import com.startdt.modules.user.dal.mapper.TbUserInfoMapper;
 import com.startdt.modules.user.dal.pojo.domain.TbUserInfo;
+import com.startdt.modules.user.dal.pojo.domain.TbUserInfoExample;
 import com.startdt.modules.user.service.ITbUserInfoService;
 import com.startdt.modules.user.service.encode.PasswordEncode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,74 +22,79 @@ import java.util.List;
  * @since 2019-08-27
  */
 @Configuration
-public class TbUserInfoServiceImpl extends ServiceImpl<TbUserInfoMapper, TbUserInfo> implements ITbUserInfoService {
+public class TbUserInfoServiceImpl implements ITbUserInfoService{
 
     @Autowired
     private PasswordEncode passwordEncode;
 
+    @Autowired
+    private TbUserInfoMapper userInfoMapper;
+
     @Override
     public Result<TbUserInfo> getByUserName(String userName, Integer status) {
-        QueryWrapper<TbUserInfo> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("user_name",userName);
+        TbUserInfoExample example = new TbUserInfoExample();
+        TbUserInfoExample.Criteria or = example.or();
+        or.andUserNameEqualTo(userName);
         if(status != null){
-            queryWrapper.eq("status", status);
+            or.andStatusEqualTo(status.byteValue());
         }
-        return Result.ofSuccess(this.getOne(queryWrapper));
+        return Result.ofSuccess(userInfoMapper.selectOneByExample(example));
     }
 
     @Override
     public Result<TbUserInfo> insertUser(TbUserInfo entity) {
         entity.setPassword(passwordEncode.encode(entity.getPassword()));
-        boolean save = this.save(entity);
-        if(save){
+        int save = userInfoMapper.insert(entity);
+        if(save>0){
             return Result.ofSuccess(entity);
         }
         return Result.ofErrorT(BizResultConstant.DB_MODIFY_ERROR);
     }
 
     @Override
-    public Result<TbUserInfo> modifyUser(TbUserInfo userInfo) {
+    public Result<Integer> modifyUser(TbUserInfo userInfo) {
+        int save = 0;
         if (userInfo.getId()==null){
             return Result.ofErrorT(BizResultConstant.ID_BLANK);
         }else {
-            this.updateById(userInfo);
+            TbUserInfoExample example = new TbUserInfoExample();
+            example.or().andIdEqualTo(userInfo.getId());
+            save = userInfoMapper.updateByExampleSelective(userInfo,example);
         }
-        return Result.ofSuccess(userInfo);
+        return Result.ofSuccess(save);
     }
 
     @Override
     public Result<Integer> disableUser(Integer userId) {
         TbUserInfo userInfo = new TbUserInfo();
         userInfo.setId(userId);
-        userInfo.setStatus(0);
-        boolean update = this.updateById(userInfo);
-        return Result.ofSuccess(update?1:0);
+        userInfo.setStatus((byte)0);
+        int update = userInfoMapper.updateByPrimaryKeySelective(userInfo);
+        return Result.ofSuccess(update);
     }
 
     @Override
     public Result<TbUserInfo> getUserById(Integer userId) {
-        System.out.println("userId:"+userId);
-        TbUserInfo tbUserInfo = this.getById(userId);
-        System.out.println("tbUserInfo:"+tbUserInfo);
+        TbUserInfo tbUserInfo = userInfoMapper.selectByPrimaryKey(userId);
         return Result.ofSuccess(tbUserInfo);
     }
 
     @Override
     public Result<Integer> editPwd(Integer userId, String oldPwd, String newPwd) {
-        TbUserInfo userInfo = getById(userId);
+        TbUserInfo userInfo = userInfoMapper.selectByPrimaryKey(userId);
         if(!passwordEncode.matches(oldPwd,userInfo.getPassword())){
             return Result.ofErrorT(BizResultConstant.PASSWORD_ERROR);
         }
         TbUserInfo editPwd = new TbUserInfo();
         editPwd.setId(userId);
         editPwd.setPassword(passwordEncode.encode(newPwd));
-        boolean update = this.updateById(userInfo);
-        return Result.ofSuccess(update?1:0);
+        int update = userInfoMapper.updateByPrimaryKeySelective(userInfo);
+        return Result.ofSuccess(update);
     }
 
     @Override
     public Result<Integer> editPwd(Integer userId, String oldPwd, String newPwd, String confirmNewPwd) {
-        TbUserInfo userInfo = getById(userId);
+        TbUserInfo userInfo = userInfoMapper.selectByPrimaryKey(userId);
         if(!newPwd.equals(confirmNewPwd)) {
             return Result.ofErrorT(BizResultConstant.USER_NEW_PASSWORD_DISACCORD);
         }
@@ -102,14 +107,14 @@ public class TbUserInfoServiceImpl extends ServiceImpl<TbUserInfoMapper, TbUserI
         TbUserInfo editPwd = new TbUserInfo();
         editPwd.setId(userId);
         editPwd.setPassword(passwordEncode.encode(newPwd));
-        boolean update = this.updateById(userInfo);
-        return Result.ofSuccess(update?1:0);
+        int update = userInfoMapper.updateByPrimaryKeySelective(userInfo);
+        return Result.ofSuccess(update);
     }
 
     @Override
-    public Result<List<TbUserInfo>> listUsers(QueryWrapper<TbUserInfo> queryWrapper) {
+    public Result<List<TbUserInfo>> listUsers(TbUserInfoExample example) {
 
-        return Result.ofSuccess(this.list(queryWrapper));
+        return Result.ofSuccess(userInfoMapper.selectByExample(example));
     }
 
     @Override
@@ -118,7 +123,22 @@ public class TbUserInfoServiceImpl extends ServiceImpl<TbUserInfoMapper, TbUserI
     }
 
     @Override
-    public TbUserInfo getUserInfo(Integer id) {
-        return this.baseMapper.getUserInfo(id);
+    public Page<TbUserInfo> selectByExamplePaging(TbUserInfoExample example, int currentPage, int pageSize) {
+        if(currentPage <= 0) {
+            currentPage = 1;
+        }
+        if(pageSize <= 0) {
+            pageSize = 10;
+        }
+        long totalCount = userInfoMapper.countByExample(example);
+        List<TbUserInfo> dataList = userInfoMapper.selectByExamplePaging(example, (currentPage - 1) * pageSize, pageSize);
+        Page<TbUserInfo> pageObj=new Page<>();
+        pageObj.setCurrentPage(currentPage);
+        pageObj.setPageSize(pageSize);
+        pageObj.setDataList(dataList);
+        pageObj.setTotalCount(totalCount);
+        pageObj.setTotalPage((int)Math.ceil(totalCount/(float)pageSize));
+        return pageObj;
     }
+
 }

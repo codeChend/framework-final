@@ -1,82 +1,41 @@
 package com.startdt.modules.user.dal.pojo.domain;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.time.LocalDateTime;
-import java.io.Serializable;
 import java.util.Date;
 
-/**
- * <p>
- * 
- * </p>
- *
- * @author weilong
- * @since 2019-08-27
- */
-@TableName("tb_user_info")
-public class TbUserInfo extends Model<TbUserInfo> {
-
-    private static final long serialVersionUID = 1L;
-
-    @TableId(value = "id", type = IdType.AUTO)
+public class TbUserInfo {
     private Integer id;
 
-    /**
-     * 账号
-     */
+    /** 账号 **/
     private String userName;
 
-    /**
-     * 密码
-     */
+    /** 密码 **/
     private String password;
 
-    /**
-     * 昵称
-     */
+    /** 昵称 **/
     private String nickName;
 
-    /**
-     * 电话号码
-     */
+    /** 电话号码 **/
     private String phone;
 
-    /**
-     * 邮箱
-     */
+    /** 邮箱 **/
     private String email;
 
-    /**
-     * 头像
-     */
+    /** 头像 **/
     private String icon;
 
-    /**
-     * 描述
-     */
+    /** 描述 **/
     private String note;
 
-    /**
-     * 帐号启用状态：0->禁用；1->启用
-     */
-    private Integer status;
+    /** 帐号启用状态：0->禁用；1->启用 **/
+    private Byte status;
 
-    /**
-     * 最近登录时间
-     */
+    /** 最近登录时间 **/
     private Date loginTime;
 
-    /**
-     * 创建时间
-     */
+    /** 创建时间 **/
     private Date gmtCreate;
 
-    /**
-     * 更新时间
-     */
+    /** 更新时间 **/
     private Date gmtModified;
 
     public Integer getId() {
@@ -86,107 +45,114 @@ public class TbUserInfo extends Model<TbUserInfo> {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    /** 账号 **/
     public String getUserName() {
         return userName;
     }
 
+    /** 账号 **/
     public void setUserName(String userName) {
         this.userName = userName;
     }
+
+    /** 密码 **/
     public String getPassword() {
         return password;
     }
 
+    /** 密码 **/
     public void setPassword(String password) {
         this.password = password;
     }
+
+    /** 昵称 **/
     public String getNickName() {
         return nickName;
     }
 
+    /** 昵称 **/
     public void setNickName(String nickName) {
         this.nickName = nickName;
     }
+
+    /** 电话号码 **/
     public String getPhone() {
         return phone;
     }
 
+    /** 电话号码 **/
     public void setPhone(String phone) {
         this.phone = phone;
     }
+
+    /** 邮箱 **/
     public String getEmail() {
         return email;
     }
 
+    /** 邮箱 **/
     public void setEmail(String email) {
         this.email = email;
     }
+
+    /** 头像 **/
     public String getIcon() {
         return icon;
     }
 
+    /** 头像 **/
     public void setIcon(String icon) {
         this.icon = icon;
     }
+
+    /** 描述 **/
     public String getNote() {
         return note;
     }
 
+    /** 描述 **/
     public void setNote(String note) {
         this.note = note;
     }
-    public Integer getStatus() {
+
+    /** 帐号启用状态：0->禁用；1->启用 **/
+    public Byte getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    /** 帐号启用状态：0->禁用；1->启用 **/
+    public void setStatus(Byte status) {
         this.status = status;
     }
 
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
-
+    /** 最近登录时间 **/
     public Date getLoginTime() {
         return loginTime;
     }
 
+    /** 最近登录时间 **/
     public void setLoginTime(Date loginTime) {
         this.loginTime = loginTime;
     }
 
+    /** 创建时间 **/
     public Date getGmtCreate() {
         return gmtCreate;
     }
 
+    /** 创建时间 **/
     public void setGmtCreate(Date gmtCreate) {
         this.gmtCreate = gmtCreate;
     }
 
+    /** 更新时间 **/
     public Date getGmtModified() {
         return gmtModified;
     }
 
+    /** 更新时间 **/
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    @Override
-    public String toString() {
-        return "TbUserInfo{" +
-        "id=" + id +
-        ", userName=" + userName +
-        ", password=" + password +
-        ", nickName=" + nickName +
-        ", phone=" + phone +
-        ", email=" + email +
-        ", icon=" + icon +
-        ", note=" + note +
-        ", status=" + status +
-        ", loginTime=" + loginTime +
-        ", gmtCreate=" + gmtCreate +
-        ", gmtModified=" + gmtModified +
-        "}";
     }
 }

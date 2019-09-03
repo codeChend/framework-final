@@ -1,9 +1,9 @@
 package com.startdt.modules.user.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.startdt.modules.common.pojo.Page;
 import com.startdt.modules.common.utils.result.Result;
 import com.startdt.modules.user.dal.pojo.domain.TbUserInfo;
+import com.startdt.modules.user.dal.pojo.domain.TbUserInfoExample;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import java.util.List;
  * @author weilong
  * @since 2019-08-27
  */
-public interface ITbUserInfoService extends IService<TbUserInfo> {
+public interface ITbUserInfoService {
 
     /**
      * 通过用户账号获取用户信息
@@ -37,7 +37,7 @@ public interface ITbUserInfoService extends IService<TbUserInfo> {
      * @param userInfo
      * @return
      */
-    Result<TbUserInfo> modifyUser(TbUserInfo userInfo);
+    Result<Integer> modifyUser(TbUserInfo userInfo);
 
     /**
      * 通过id禁用用户
@@ -75,10 +75,9 @@ public interface ITbUserInfoService extends IService<TbUserInfo> {
 
     /**
      * 通过条件获取用户列表
-     * @param queryWrapper
      * @return
      */
-    Result<List<TbUserInfo>> listUsers(QueryWrapper<TbUserInfo> queryWrapper);
+    Result<List<TbUserInfo>> listUsers(TbUserInfoExample example);
 
     /**
      * 检查用户名是否存在
@@ -86,6 +85,12 @@ public interface ITbUserInfoService extends IService<TbUserInfo> {
      */
     void checkUserName(String loginName);
 
-    TbUserInfo getUserInfo(Integer id);
-
+    /**
+     * 分页根据条件查找用户信息
+     * @param example
+     * @param currentPage
+     * @param pageSize
+     * @return
+     */
+    Page<TbUserInfo> selectByExamplePaging(TbUserInfoExample example, int currentPage, int pageSize);
 }

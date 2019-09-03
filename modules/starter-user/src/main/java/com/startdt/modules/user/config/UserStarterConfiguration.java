@@ -1,12 +1,10 @@
 package com.startdt.modules.user.config;
 
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.startdt.modules.common.pojo.ModulesTree;
 import com.startdt.modules.common.utils.ModulesCache;
 import com.startdt.modules.user.controller.UserInfoController;
 import com.startdt.modules.user.service.encode.PasswordEncode;
-import com.startdt.modules.user.service.impl.TbUserInfoServiceImpl;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,15 +26,15 @@ public class UserStarterConfiguration {
      * mybatis-plus 分页插件
      */
 //    @Bean
-    public PaginationInterceptor paginationInterceptor() {
-        return new PaginationInterceptor();
-    }
+//    public PaginationInterceptor paginationInterceptor() {
+//        return new PaginationInterceptor();
+//    }
 
-    @Bean
-    public TbUserInfoServiceImpl getUserInfoService(){
-
-        return new TbUserInfoServiceImpl();
-    }
+//    @Bean
+//    public TbUserInfoServiceImpl getUserInfoService(){
+//
+//        return new TbUserInfoServiceImpl();
+//    }
 
     @Bean
     public UserInfoController getUserInfoController() throws IOException {

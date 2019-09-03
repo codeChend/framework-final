@@ -1,13 +1,8 @@
 package com.startdt.modules.user.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.startdt.modules.common.pojo.Page;
 import com.startdt.modules.common.utils.BeanConverter;
 import com.startdt.modules.common.utils.exception.UserException;
-import com.startdt.modules.common.utils.page.PageInfo;
-import com.startdt.modules.common.utils.page.PageResult;
 import com.startdt.modules.common.utils.result.BizResultConstant;
 import com.startdt.modules.common.utils.result.Result;
 import com.startdt.modules.user.dal.pojo.domain.TbUserInfo;
@@ -26,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.websocket.server.PathParam;
 
 /**
  * @Author: weilong
@@ -71,9 +65,7 @@ public class UserInfoController {
         userInfo.setNote(registerUserReq.getNote());
         userInfo.setEmail(registerUserReq.getEmail());
         userInfo.setPhone(registerUserReq.getPhone());
-        Result<TbUserInfo> result = userInfoService.modifyUser(userInfo);
-
-        return Result.ofSuccess(result.isSuccess()?1:0);
+        return userInfoService.modifyUser(userInfo);
     }
 
     @GetMapping("/get")
@@ -88,9 +80,9 @@ public class UserInfoController {
         return Result.ofSuccess(result);
     }
 
-    @GetMapping("/delete/{id}")
+    @GetMapping("/delete")
     @ApiOperation(value = "删除用户")
-    public Result<Integer> deleteUser(@PathParam("id") Integer userId) {
+    public Result<Integer> deleteUser(@RequestParam("id") Integer userId) {
         return userInfoService.disableUser(userId);
     }
 
@@ -106,27 +98,8 @@ public class UserInfoController {
             @ApiImplicitParam(name = "pageNum", value = "页码", dataType = "int", paramType = "query", example = "1"),
             @ApiImplicitParam(name = "pageSize", value = "每页大小", dataType = "int", paramType = "query", example = "20")
     })
-    public Result<PageResult<TbUserInfo>> pageUser(@RequestParam(value = "pageNum",defaultValue = "1") Integer pageNum,
-                                              @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize) {
-        QueryWrapper<TbUserInfo> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("status", 1);
-        Page<TbUserInfo> page = new Page<>(pageNum,pageSize);
-        IPage<TbUserInfo> iPage = userInfoService.page(page,queryWrapper);
-        System.out.println("page:"+ JSON.toJSONString(iPage));
-        PageInfo pageInfo = new PageInfo();
-        pageInfo.setCurrentPage(pageNum);
-        pageInfo.setPageSize(pageSize);
-        pageInfo.setTotalCount(iPage.getTotal());
-        pageInfo.setTotalPage((int) iPage.getPages());
-        PageResult<TbUserInfo> pageResult = new PageResult<>(iPage.getRecords(),pageInfo);
-        return Result.ofSuccess(pageResult);
-    }
-
-    @GetMapping("/getById")
-    @ApiOperation(value = "获取用户详情")
-    public Result<TbUserInfo> get(@RequestParam("id") Integer id) {
-        TbUserInfo userInfoResult = userInfoService.getUserInfo(id);
-
-        return Result.ofSuccess(userInfoResult);
+    public Result<Page<TbUserInfo>> pageUser(@RequestParam(value = "pageNum",defaultValue = "1") Integer pageNum,
+                                             @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize) {
+        return Result.ofSuccess(userInfoService.selectByExamplePaging(null,pageNum,pageSize));
     }
 }
