@@ -11,11 +11,21 @@ import com.startdt.modules.user.dal.pojo.domain.TbUserInfo;
 public class UserLoginVO {
     private TbUserInfo userInfo;
 
+    private String token;
+
     public TbUserInfo getUserInfo() {
         return userInfo;
     }
 
     public void setUserInfo(TbUserInfo userInfo) {
         this.userInfo = userInfo;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

@@ -1,5 +1,6 @@
 package com.startdt.framework.examples;
 
+import com.startdt.modules.login.EnableLoginStarter;
 import com.startdt.modules.user.EnableUserStarter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 //演示开启自定义注解的能力
 @EnableUserStarter()
+@EnableLoginStarter
 public class Application  {
 
 //    @Resource

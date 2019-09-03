@@ -1,10 +1,13 @@
 package com.startdt.modules.login.service;
 
+import com.startdt.modules.login.controller.LoginStarterController;
 import com.startdt.modules.login.intercept.BackLoginInterceptor;
 import com.startdt.modules.login.pojo.JwtConfig;
+import com.startdt.modules.login.pojo.LoginUnFilter;
 import com.startdt.modules.login.service.impl.StarterLoginServiceImpl;
 import com.startdt.modules.user.service.ITbUserInfoService;
 import com.startdt.modules.user.service.impl.TbUserInfoServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -19,9 +22,19 @@ public class LoginStarterConfiguration {
     }
 
     @Bean
-    public BackLoginInterceptor backLoginInterceptor(){
+    public LoginUnFilter loginUnFilter(){
+        return new LoginUnFilter();
+    }
+
+    @Bean
+    public LoginStarterController loginStarterController(){
+        return new LoginStarterController();
+    }
+
+    @Bean
+    public BackLoginInterceptor backLoginInterceptor(@Autowired LoginUnFilter loginUnFilter){
         ITbUserInfoService tbUserInfoService = new TbUserInfoServiceImpl();
         JwtConfig jwtConfig = new JwtConfig();
-        return new BackLoginInterceptor(tbUserInfoService,jwtConfig);
+        return new BackLoginInterceptor(tbUserInfoService,jwtConfig,loginUnFilter);
     }
 }

@@ -4,6 +4,7 @@ import com.startdt.modules.common.utils.exception.UserException;
 import com.startdt.modules.common.utils.result.BizResultConstant;
 import com.startdt.modules.common.utils.result.Result;
 import com.startdt.modules.login.pojo.JwtConfig;
+import com.startdt.modules.login.pojo.LoginUnFilter;
 import com.startdt.modules.login.service.JwtTokenUtil;
 import com.startdt.modules.user.dal.pojo.domain.TbUserInfo;
 import com.startdt.modules.user.service.ITbUserInfoService;
@@ -15,10 +16,13 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import sun.rmi.runtime.Log;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author: weilong
@@ -33,9 +37,12 @@ public class BackLoginInterceptor extends HandlerInterceptorAdapter {
 
     private JwtConfig jwtConfig;
 
-    public BackLoginInterceptor(ITbUserInfoService userInfoService,JwtConfig jwtConfig){
+    private LoginUnFilter loginUnFilter;
+
+    public BackLoginInterceptor(ITbUserInfoService userInfoService, JwtConfig jwtConfig, LoginUnFilter loginUnFilter){
         this.userInfoService = userInfoService;
         this.jwtConfig = jwtConfig;
+        this.loginUnFilter = loginUnFilter;
     }
 
     @Override
@@ -52,8 +59,15 @@ public class BackLoginInterceptor extends HandlerInterceptorAdapter {
             return super.preHandle(request, response, handler);
         }
         HandlerMethod handlerMethod = (HandlerMethod) handler;
-        LoginStarter loginStarter = handlerMethod.getMethod().getAnnotation(LoginStarter.class);
-        if(loginStarter == null){
+//        LoginStarter loginStarter = handlerMethod.getMethod().getAnnotation(LoginStarter.class);
+        List<String> unFilter = loginUnFilter.unFilterList();
+        boolean needLogin = false;
+        for(String s : unFilter){
+            if(requestURI.contains(s)){
+                needLogin = true;
+            }
+        }
+        if(!needLogin){
             //无需登录
             return super.preHandle(request,response,handler);
         }
