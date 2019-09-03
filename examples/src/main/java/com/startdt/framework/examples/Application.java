@@ -1,18 +1,19 @@
 package com.startdt.framework.examples;
 
+import com.startdt.modules.common.EnableStarterSwagger;
 import com.startdt.modules.login.EnableLoginStarter;
 import com.startdt.modules.user.EnableUserStarter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
 
 /**
  * @author hourui 2017/10/10 16:48
  */
 @SpringBootApplication
 //演示开启自定义注解的能力
-@EnableUserStarter()
+@EnableUserStarter
 @EnableLoginStarter
+@EnableStarterSwagger
 public class Application  {
 
 //    @Resource
