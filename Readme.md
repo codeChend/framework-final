@@ -20,16 +20,17 @@
 * 如果需要使用该模块定义的swagger配置，可在启动类上加上@EnableStarterSwagger注解
 
 #### starter-user
-* user模块的数据字典： 
-  |字段 |字段类型|说明     
-  ---| --- | ---|  
-  id|integer|用户id  
-  user_name | varchar | 用户账号
-  password | varchar|密码
-  nick_name | varchar | 昵称
-  phone | varchar | 电话号码
-  email | varchar | 邮箱
-  icon | varchar | 头像
+* user模块的数据字典：
+   
+  字段 |字段类型|说明|     
+  |----|----|----|  
+  |id|integer|用户id|  
+  |user_name | varchar | 用户账号
+  |password | varchar|密码
+  |nick_name | varchar | 昵称
+  |phone | varchar | 电话号码
+  |email | varchar | 邮箱
+  |icon | varchar | 头像
 * user模块主要是用户信息的增删改查
 * 用户密码通过BCrypt明文加密
 * 整个user模块的加载通过注解@EnableUserStarter进行启动类加载
@@ -64,6 +65,7 @@
 #### starter-role
 * role模块的数据字典： 
 * role_permission（角色权限表）
+
   |字段 |字段类型|说明     
   ---| --- | ---|  
   id|integer|用户id  
@@ -72,6 +74,7 @@
   nick_name | varchar | 昵称
   status | tinyint | 角色启用状态：0->禁用；1->启用
 * grant_permission_info（授权表）
+
   |字段 |字段类型|说明     
   ---| --- | ---|  
   id|integer|用户id  
