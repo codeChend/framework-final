@@ -22,7 +22,7 @@ public class RolePermissionDTO implements Serializable {
     /**
      * 权限list
      */
-    private List<String> permissions;
+    private List<PermissionCodeDTO> permissions;
 
     /**
      * code码
@@ -65,11 +65,11 @@ public class RolePermissionDTO implements Serializable {
         this.roleName = roleName;
     }
 
-    public List<String> getPermissions() {
+    public List<PermissionCodeDTO> getPermissions() {
         return permissions;
     }
 
-    public void setPermissions(List<String> permissions) {
+    public void setPermissions(List<PermissionCodeDTO> permissions) {
         this.permissions = permissions;
     }
 

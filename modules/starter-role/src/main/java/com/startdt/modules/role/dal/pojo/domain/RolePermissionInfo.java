@@ -1,62 +1,27 @@
 package com.startdt.modules.role.dal.pojo.domain;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.time.LocalDateTime;
-import java.io.Serializable;
+import java.util.Date;
 
-/**
- * <p>
- * 
- * </p>
- *
- * @author weilong
- * @since 2019-08-28
- */
-@TableName("role_permission_info")
-public class RolePermissionInfo extends Model<RolePermissionInfo> {
-
-    private static final long serialVersionUID = 1L;
-
-    @TableId(value = "id", type = IdType.AUTO)
+public class RolePermissionInfo {
     private Integer id;
 
-    /**
-     * 角色名称
-     */
+    /** 角色名称 **/
     private String roleName;
 
-    /**
-     * 权限list，json格式
-     */
-    private String permission;
-
-    /**
-     * code码
-     */
-    private String code;
-
-    /**
-     * 描述
-     */
+    /** 描述 **/
     private String note;
 
-    /**
-     * 角色启用状态：0->禁用；1->启用
-     */
-    private Integer status;
+    /** 角色启用状态：0->禁用；1->启用 **/
+    private Byte status;
 
-    /**
-     * 创建时间
-     */
-    private LocalDateTime gmtCreate;
+    /** 创建时间 **/
+    private Date gmtCreate;
 
-    /**
-     * 更新时间
-     */
-    private LocalDateTime gmtModified;
+    /** 更新时间 **/
+    private Date gmtModified;
+
+    /** 权限list，json格式 **/
+    private String permission;
 
     public Integer getId() {
         return id;
@@ -65,70 +30,64 @@ public class RolePermissionInfo extends Model<RolePermissionInfo> {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    /** 角色名称 **/
     public String getRoleName() {
         return roleName;
     }
 
+    /** 角色名称 **/
     public void setRoleName(String roleName) {
         this.roleName = roleName;
     }
-    public String getPermission() {
-        return permission;
-    }
 
-    public void setPermission(String permission) {
-        this.permission = permission;
-    }
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
-
+    /** 描述 **/
     public String getNote() {
         return note;
     }
 
+    /** 描述 **/
     public void setNote(String note) {
         this.note = note;
     }
-    public Integer getStatus() {
+
+    /** 角色启用状态：0->禁用；1->启用 **/
+    public Byte getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    /** 角色启用状态：0->禁用；1->启用 **/
+    public void setStatus(Byte status) {
         this.status = status;
     }
-    public LocalDateTime getGmtCreate() {
+
+    /** 创建时间 **/
+    public Date getGmtCreate() {
         return gmtCreate;
     }
 
-    public void setGmtCreate(LocalDateTime gmtCreate) {
+    /** 创建时间 **/
+    public void setGmtCreate(Date gmtCreate) {
         this.gmtCreate = gmtCreate;
     }
-    public LocalDateTime getGmtModified() {
+
+    /** 更新时间 **/
+    public Date getGmtModified() {
         return gmtModified;
     }
 
-    public void setGmtModified(LocalDateTime gmtModified) {
+    /** 更新时间 **/
+    public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
     }
 
-    @Override
-    protected Serializable pkVal() {
-        return this.id;
+    /** 权限list，json格式 **/
+    public String getPermission() {
+        return permission;
     }
 
-    @Override
-    public String toString() {
-        return "RolePermissionInfo{" +
-        "id=" + id +
-        ", roleName=" + roleName +
-        ", permission=" + permission +
-        ", code=" + code +
-        ", note=" + note +
-        ", status=" + status +
-        ", gmtCreate=" + gmtCreate +
-        ", gmtModified=" + gmtModified +
-        "}";
+    /** 权限list，json格式 **/
+    public void setPermission(String permission) {
+        this.permission = permission;
     }
 }

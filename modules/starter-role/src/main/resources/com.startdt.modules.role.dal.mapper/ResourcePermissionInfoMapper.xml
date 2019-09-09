@@ -1,0 +1,1104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.startdt.modules.role.dal.mapper.ResourcePermissionInfoMapper">
+  <resultMap id="BaseResultMap" type="com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="parent_code" jdbcType="VARCHAR" property="parentCode" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="res_url" jdbcType="VARCHAR" property="resUrl" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="privilege_chain" jdbcType="VARCHAR" property="privilegeChain" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="icon" jdbcType="VARCHAR" property="icon" />
+    <result column="is_delete" jdbcType="TINYINT" property="isDelete" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, code, parent_code, name, res_url, type, privilege_chain, sort, icon, is_delete, 
+    gmt_create, gmt_modified
+  </sql>
+  <select id="selectByExample" parameterType="com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from resource_permission_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from resource_permission_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from resource_permission_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfoExample">
+    delete from resource_permission_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfo">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into resource_permission_info (code, parent_code, name, 
+      res_url, type, privilege_chain, 
+      sort, icon, is_delete, 
+      gmt_create, gmt_modified)
+    values (#{code,jdbcType=VARCHAR}, #{parentCode,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{resUrl,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT}, #{privilegeChain,jdbcType=VARCHAR}, 
+      #{sort,jdbcType=INTEGER}, #{icon,jdbcType=VARCHAR}, #{isDelete,jdbcType=TINYINT}, 
+      #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfo">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into resource_permission_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="code != null">
+        code,
+      </if>
+      <if test="parentCode != null">
+        parent_code,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="resUrl != null">
+        res_url,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="privilegeChain != null">
+        privilege_chain,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+      <if test="icon != null">
+        icon,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create,
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="parentCode != null">
+        #{parentCode,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="resUrl != null">
+        #{resUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="privilegeChain != null">
+        #{privilegeChain,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="icon != null">
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="gmtCreate != null">
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfoExample" resultType="java.lang.Long">
+    select count(*) from resource_permission_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update resource_permission_info
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.code != null">
+        code = #{record.code,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parentCode != null">
+        parent_code = #{record.parentCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.resUrl != null">
+        res_url = #{record.resUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null">
+        type = #{record.type,jdbcType=TINYINT},
+      </if>
+      <if test="record.privilegeChain != null">
+        privilege_chain = #{record.privilegeChain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sort != null">
+        sort = #{record.sort,jdbcType=INTEGER},
+      </if>
+      <if test="record.icon != null">
+        icon = #{record.icon,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isDelete != null">
+        is_delete = #{record.isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="record.gmtCreate != null">
+        gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null">
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update resource_permission_info
+    set id = #{record.id,jdbcType=INTEGER},
+      code = #{record.code,jdbcType=VARCHAR},
+      parent_code = #{record.parentCode,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      res_url = #{record.resUrl,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=TINYINT},
+      privilege_chain = #{record.privilegeChain,jdbcType=VARCHAR},
+      sort = #{record.sort,jdbcType=INTEGER},
+      icon = #{record.icon,jdbcType=VARCHAR},
+      is_delete = #{record.isDelete,jdbcType=TINYINT},
+      gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfo">
+    update resource_permission_info
+    <set>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="parentCode != null">
+        parent_code = #{parentCode,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="resUrl != null">
+        res_url = #{resUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="privilegeChain != null">
+        privilege_chain = #{privilegeChain,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="icon != null">
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfo">
+    update resource_permission_info
+    set code = #{code,jdbcType=VARCHAR},
+      parent_code = #{parentCode,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      res_url = #{resUrl,jdbcType=VARCHAR},
+      type = #{type,jdbcType=TINYINT},
+      privilege_chain = #{privilegeChain,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER},
+      icon = #{icon,jdbcType=VARCHAR},
+      is_delete = #{isDelete,jdbcType=TINYINT},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectOneByExample" parameterType="com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from resource_permission_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    limit 0,1
+  </select>
+  <insert id="insertBatch" parameterType="com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfo">
+    insert into resource_permission_info (code, 
+      parent_code, name, res_url, 
+      type, privilege_chain, sort, 
+      icon, is_delete, gmt_create, 
+      gmt_modified)
+    values 
+<foreach collection="list" index="index" item="item" separator=",">
+(
+<trim suffixOverrides=",">
+#{item.code,jdbcType=VARCHAR}, 
+      #{item.parentCode,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, #{item.resUrl,jdbcType=VARCHAR}, 
+      #{item.type,jdbcType=TINYINT}, #{item.privilegeChain,jdbcType=VARCHAR}, #{item.sort,jdbcType=INTEGER}, 
+      #{item.icon,jdbcType=VARCHAR}, #{item.isDelete,jdbcType=TINYINT}, #{item.gmtCreate,jdbcType=TIMESTAMP}, 
+      #{item.gmtModified,jdbcType=TIMESTAMP}
+</trim>
+)</foreach>
+
+  </insert>
+  <select id="selectByExamplePaging" parameterType="map" resultMap="BaseResultMap">
+    select
+    <if test="example.distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from resource_permission_info
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+    <if test="example.orderByClause != null">
+      order by ${example.orderByClause}
+    </if>
+    limit ${offset},${limit}
+  </select>
+  <resultMap id="BaseResultMap" type="com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="parent_code" jdbcType="VARCHAR" property="parentCode" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="res_url" jdbcType="VARCHAR" property="resUrl" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="privilege_chain" jdbcType="VARCHAR" property="privilegeChain" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="icon" jdbcType="VARCHAR" property="icon" />
+    <result column="access" jdbcType="INTEGER" property="access" />
+    <result column="assign" jdbcType="TINYINT" property="assign" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, code, parent_code, name, res_url, type, privilege_chain, sort, icon, access, 
+    assign, gmt_create, gmt_modified
+  </sql>
+  <select id="selectByExample" parameterType="com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from resource_permission_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from resource_permission_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from resource_permission_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfoExample">
+    delete from resource_permission_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfo">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into resource_permission_info (code, parent_code, name, 
+      res_url, type, privilege_chain, 
+      sort, icon, access, 
+      assign, gmt_create, gmt_modified
+      )
+    values (#{code,jdbcType=VARCHAR}, #{parentCode,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{resUrl,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT}, #{privilegeChain,jdbcType=VARCHAR}, 
+      #{sort,jdbcType=INTEGER}, #{icon,jdbcType=VARCHAR}, #{access,jdbcType=INTEGER}, 
+      #{assign,jdbcType=TINYINT}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfo">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into resource_permission_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="code != null">
+        code,
+      </if>
+      <if test="parentCode != null">
+        parent_code,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="resUrl != null">
+        res_url,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="privilegeChain != null">
+        privilege_chain,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+      <if test="icon != null">
+        icon,
+      </if>
+      <if test="access != null">
+        access,
+      </if>
+      <if test="assign != null">
+        assign,
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create,
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="parentCode != null">
+        #{parentCode,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="resUrl != null">
+        #{resUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="privilegeChain != null">
+        #{privilegeChain,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="icon != null">
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="access != null">
+        #{access,jdbcType=INTEGER},
+      </if>
+      <if test="assign != null">
+        #{assign,jdbcType=TINYINT},
+      </if>
+      <if test="gmtCreate != null">
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfoExample" resultType="java.lang.Long">
+    select count(*) from resource_permission_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update resource_permission_info
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.code != null">
+        code = #{record.code,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parentCode != null">
+        parent_code = #{record.parentCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.resUrl != null">
+        res_url = #{record.resUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null">
+        type = #{record.type,jdbcType=TINYINT},
+      </if>
+      <if test="record.privilegeChain != null">
+        privilege_chain = #{record.privilegeChain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sort != null">
+        sort = #{record.sort,jdbcType=INTEGER},
+      </if>
+      <if test="record.icon != null">
+        icon = #{record.icon,jdbcType=VARCHAR},
+      </if>
+      <if test="record.access != null">
+        access = #{record.access,jdbcType=INTEGER},
+      </if>
+      <if test="record.assign != null">
+        assign = #{record.assign,jdbcType=TINYINT},
+      </if>
+      <if test="record.gmtCreate != null">
+        gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null">
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update resource_permission_info
+    set id = #{record.id,jdbcType=INTEGER},
+      code = #{record.code,jdbcType=VARCHAR},
+      parent_code = #{record.parentCode,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      res_url = #{record.resUrl,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=TINYINT},
+      privilege_chain = #{record.privilegeChain,jdbcType=VARCHAR},
+      sort = #{record.sort,jdbcType=INTEGER},
+      icon = #{record.icon,jdbcType=VARCHAR},
+      access = #{record.access,jdbcType=INTEGER},
+      assign = #{record.assign,jdbcType=TINYINT},
+      gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfo">
+    update resource_permission_info
+    <set>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="parentCode != null">
+        parent_code = #{parentCode,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="resUrl != null">
+        res_url = #{resUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="privilegeChain != null">
+        privilege_chain = #{privilegeChain,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="icon != null">
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="access != null">
+        access = #{access,jdbcType=INTEGER},
+      </if>
+      <if test="assign != null">
+        assign = #{assign,jdbcType=TINYINT},
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfo">
+    update resource_permission_info
+    set code = #{code,jdbcType=VARCHAR},
+      parent_code = #{parentCode,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      res_url = #{resUrl,jdbcType=VARCHAR},
+      type = #{type,jdbcType=TINYINT},
+      privilege_chain = #{privilegeChain,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER},
+      icon = #{icon,jdbcType=VARCHAR},
+      access = #{access,jdbcType=INTEGER},
+      assign = #{assign,jdbcType=TINYINT},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectOneByExample" parameterType="com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from resource_permission_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    limit 0,1
+  </select>
+  <insert id="insertBatch" parameterType="com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfo">
+    insert into resource_permission_info (code, 
+      parent_code, name, res_url, 
+      type, privilege_chain, sort, 
+      icon, access, assign, 
+      gmt_create, gmt_modified)
+    values 
+<foreach collection="list" index="index" item="item" separator=",">
+(
+<trim suffixOverrides=",">
+#{item.code,jdbcType=VARCHAR}, 
+      #{item.parentCode,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, #{item.resUrl,jdbcType=VARCHAR}, 
+      #{item.type,jdbcType=TINYINT}, #{item.privilegeChain,jdbcType=VARCHAR}, #{item.sort,jdbcType=INTEGER}, 
+      #{item.icon,jdbcType=VARCHAR}, #{item.access,jdbcType=INTEGER}, #{item.assign,jdbcType=TINYINT}, 
+      #{item.gmtCreate,jdbcType=TIMESTAMP}, #{item.gmtModified,jdbcType=TIMESTAMP}
+</trim>
+)</foreach>
+
+  </insert>
+  <select id="selectByExamplePaging" parameterType="map" resultMap="BaseResultMap">
+    select
+    <if test="example.distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from resource_permission_info
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+    <if test="example.orderByClause != null">
+      order by ${example.orderByClause}
+    </if>
+    limit ${offset},${limit}
+  </select>
+  <resultMap id="BaseResultMap" type="com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="parent_code" jdbcType="VARCHAR" property="parentCode" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="res_url" jdbcType="VARCHAR" property="resUrl" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="privilege_chain" jdbcType="VARCHAR" property="privilegeChain" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="icon" jdbcType="VARCHAR" property="icon" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, code, parent_code, name, res_url, type, privilege_chain, sort, icon, gmt_create, 
+    gmt_modified
+  </sql>
+  <select id="selectByExample" parameterType="com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from resource_permission_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from resource_permission_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from resource_permission_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfoExample">
+    delete from resource_permission_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfo">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into resource_permission_info (code, parent_code, name, 
+      res_url, type, privilege_chain, 
+      sort, icon, gmt_create, 
+      gmt_modified)
+    values (#{code,jdbcType=VARCHAR}, #{parentCode,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{resUrl,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{privilegeChain,jdbcType=VARCHAR}, 
+      #{sort,jdbcType=INTEGER}, #{icon,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfo">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into resource_permission_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="code != null">
+        code,
+      </if>
+      <if test="parentCode != null">
+        parent_code,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="resUrl != null">
+        res_url,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="privilegeChain != null">
+        privilege_chain,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+      <if test="icon != null">
+        icon,
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create,
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="parentCode != null">
+        #{parentCode,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="resUrl != null">
+        #{resUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="privilegeChain != null">
+        #{privilegeChain,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="icon != null">
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null">
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfoExample" resultType="java.lang.Long">
+    select count(*) from resource_permission_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update resource_permission_info
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.code != null">
+        code = #{record.code,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parentCode != null">
+        parent_code = #{record.parentCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.resUrl != null">
+        res_url = #{record.resUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null">
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.privilegeChain != null">
+        privilege_chain = #{record.privilegeChain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sort != null">
+        sort = #{record.sort,jdbcType=INTEGER},
+      </if>
+      <if test="record.icon != null">
+        icon = #{record.icon,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreate != null">
+        gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null">
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update resource_permission_info
+    set id = #{record.id,jdbcType=INTEGER},
+      code = #{record.code,jdbcType=VARCHAR},
+      parent_code = #{record.parentCode,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      res_url = #{record.resUrl,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=INTEGER},
+      privilege_chain = #{record.privilegeChain,jdbcType=VARCHAR},
+      sort = #{record.sort,jdbcType=INTEGER},
+      icon = #{record.icon,jdbcType=VARCHAR},
+      gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfo">
+    update resource_permission_info
+    <set>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="parentCode != null">
+        parent_code = #{parentCode,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="resUrl != null">
+        res_url = #{resUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="privilegeChain != null">
+        privilege_chain = #{privilegeChain,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="icon != null">
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfo">
+    update resource_permission_info
+    set code = #{code,jdbcType=VARCHAR},
+      parent_code = #{parentCode,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      res_url = #{resUrl,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      privilege_chain = #{privilegeChain,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER},
+      icon = #{icon,jdbcType=VARCHAR},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectOneByExample" parameterType="com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from resource_permission_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    limit 0,1
+  </select>
+  <insert id="insertBatch" parameterType="com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfo">
+    insert into resource_permission_info (code, 
+      parent_code, name, res_url, 
+      type, privilege_chain, sort, 
+      icon, gmt_create, gmt_modified
+      )
+    values 
+<foreach collection="list" index="index" item="item" separator=",">
+(
+<trim suffixOverrides=",">
+#{item.code,jdbcType=VARCHAR}, 
+      #{item.parentCode,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, #{item.resUrl,jdbcType=VARCHAR}, 
+      #{item.type,jdbcType=INTEGER}, #{item.privilegeChain,jdbcType=VARCHAR}, #{item.sort,jdbcType=INTEGER}, 
+      #{item.icon,jdbcType=VARCHAR}, #{item.gmtCreate,jdbcType=TIMESTAMP}, #{item.gmtModified,jdbcType=TIMESTAMP}
+      
+</trim>
+)</foreach>
+
+  </insert>
+  <select id="selectByExamplePaging" parameterType="map" resultMap="BaseResultMap">
+    select
+    <if test="example.distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from resource_permission_info
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+    <if test="example.orderByClause != null">
+      order by ${example.orderByClause}
+    </if>
+    limit ${offset},${limit}
+  </select>
+</mapper>

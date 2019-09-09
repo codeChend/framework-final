@@ -1,10 +1,13 @@
 package com.startdt.modules.role.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.startdt.modules.common.utils.result.Result;
 import com.startdt.modules.role.dal.pojo.domain.RolePermissionInfo;
+import com.startdt.modules.role.dal.pojo.domain.RolePermissionInfoExample;
+import com.startdt.modules.role.dal.pojo.dto.PermissionNodeDTO;
+import com.startdt.modules.role.dal.pojo.dto.RoleInfoDTO;
 import com.startdt.modules.role.dal.pojo.dto.RolePermissionDTO;
+import com.startdt.modules.role.dal.pojo.request.role.ModifyRoleInfoReq;
+import com.startdt.modules.role.dal.pojo.request.role.SaveRoleInfoReq;
 
 import java.util.List;
 
@@ -17,14 +20,14 @@ import java.util.List;
  * @author weilong
  * @since 2019-08-28
  */
-public interface IRolePermissionInfoService extends IService<RolePermissionInfo> {
+public interface IRolePermissionInfoService{
 
     /**
      * 新增角色权限
-     * @param rolePermissionDTO
+     * @param saveRoleInfoReq
      * @return
      */
-    Result<RolePermissionInfo> insertRolePermission(RolePermissionDTO rolePermissionDTO);
+    Result<Integer> insertRolePermission(SaveRoleInfoReq saveRoleInfoReq);
 
     /**
      * 删除角色权限信息
@@ -38,21 +41,13 @@ public interface IRolePermissionInfoService extends IService<RolePermissionInfo>
      * @param roleInfo
      * @return
      */
-    Result<RolePermissionInfo> editRole(RolePermissionInfo roleInfo);
-
-    /**
-     * 通过角色id获取角色权限
-     * @param id
-     * @return
-     */
-    Result<RolePermissionInfo> getRoleById(Integer id);
+    Result<Integer> editRole(ModifyRoleInfoReq roleInfo);
 
     /**
      * 获取角色列表
-     * @param queryWrapper
-     * @return
+     * @returin
      */
-    Result<List<RolePermissionInfo>> listRole(QueryWrapper<RolePermissionInfo> queryWrapper);
+    Result<List<RoleInfoDTO>> listRole(RolePermissionInfoExample rolePermissionInfoExample);
 
 
     /**
@@ -61,5 +56,34 @@ public interface IRolePermissionInfoService extends IService<RolePermissionInfo>
      * @param status
      * @return
      */
-    Result<RolePermissionInfo> getRoleByName(String roleName,Integer status);
+    Result<RoleInfoDTO> getRoleByName(String roleName,Integer status);
+
+    /**
+     * 通过角色id获取角色权限
+     * @param id
+     * @return
+     */
+    Result<RolePermissionDTO> getRoleById(Integer id);
+
+    /**
+     * 通过userId获取所有菜单权限
+     * @param userId
+     * @return
+     */
+    Result<List<PermissionNodeDTO>> getMenuPermission(String userId);
+
+    /**
+     * 获取所有的接口权限
+     * @param userId
+     * @return
+     */
+    Result<List<String>> getUrlPermission(String userId);
+
+    /**
+     * 获取业务权限code集合
+     * @param userId
+     * @return
+     */
+    Result<List<String>> getBussinessPermission(String userId);
+
 }

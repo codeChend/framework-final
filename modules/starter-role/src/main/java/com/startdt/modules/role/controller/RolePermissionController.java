@@ -1,7 +1,6 @@
 package com.startdt.modules.role.controller;
 
 import com.startdt.modules.common.utils.result.Result;
-import com.startdt.modules.role.dal.pojo.domain.RolePermissionInfo;
 import com.startdt.modules.role.dal.pojo.dto.RolePermissionDTO;
 import com.startdt.modules.role.service.IRolePermissionInfoService;
 import io.swagger.annotations.Api;
@@ -31,7 +30,7 @@ public class RolePermissionController {
 
 
     @PostMapping("/addRolePermission")
-    @ApiOperation(value = "添加用户")
+    @ApiOperation(value = "添加角色权限")
     @Transactional(rollbackFor = Exception.class)
     public Result<RolePermissionInfo> registerUser(@RequestBody @Valid RolePermissionDTO rolePermissionDTO) {
 
