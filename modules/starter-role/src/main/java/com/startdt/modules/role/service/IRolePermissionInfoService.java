@@ -1,5 +1,6 @@
 package com.startdt.modules.role.service;
 
+import com.startdt.modules.common.pojo.Page;
 import com.startdt.modules.common.utils.result.Result;
 import com.startdt.modules.role.dal.pojo.domain.RolePermissionInfo;
 import com.startdt.modules.role.dal.pojo.domain.RolePermissionInfoExample;
@@ -27,27 +28,27 @@ public interface IRolePermissionInfoService{
      * @param saveRoleInfoReq
      * @return
      */
-    Result<Integer> insertRolePermission(SaveRoleInfoReq saveRoleInfoReq);
+    int insertRole(SaveRoleInfoReq saveRoleInfoReq);
 
     /**
-     * 删除角色权限信息
+     * 删除角色信息
      * @param id
      * @return
      */
-    Result<Integer> deleteRolePermission(Integer id);
+    int deleteRole(Integer id);
 
     /**
      * 修改角色权限信息
      * @param roleInfo
      * @return
      */
-    Result<Integer> editRole(ModifyRoleInfoReq roleInfo);
+    Integer editRole(ModifyRoleInfoReq roleInfo);
 
     /**
      * 获取角色列表
      * @returin
      */
-    Result<List<RoleInfoDTO>> listRole(RolePermissionInfoExample rolePermissionInfoExample);
+    Page<RoleInfoDTO> listRole(RolePermissionInfoExample rolePermissionInfoExample,int currentPage,int pageSize);
 
 
     /**
@@ -56,34 +57,34 @@ public interface IRolePermissionInfoService{
      * @param status
      * @return
      */
-    Result<RoleInfoDTO> getRoleByName(String roleName,Integer status);
+    RoleInfoDTO getRoleByName(String roleName,Integer status);
 
     /**
      * 通过角色id获取角色权限
      * @param id
      * @return
      */
-    Result<RolePermissionDTO> getRoleById(Integer id);
+    RolePermissionDTO getRoleById(Integer id);
 
     /**
      * 通过userId获取所有菜单权限
      * @param userId
      * @return
      */
-    Result<List<PermissionNodeDTO>> getMenuPermission(String userId);
+    List<PermissionNodeDTO> getMenuPermission(String userId);
 
     /**
-     * 获取所有的接口权限
+     * 获取所有的url权限集
      * @param userId
      * @return
      */
-    Result<List<String>> getUrlPermission(String userId);
+    List<String> getUrlPermission(String userId);
 
     /**
      * 获取业务权限code集合
      * @param userId
      * @return
      */
-    Result<List<String>> getBussinessPermission(String userId);
+    List<String> getBussinessPermission(String userId);
 
 }

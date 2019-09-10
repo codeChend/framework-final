@@ -19,14 +19,14 @@ public interface IResourcePermissionService {
      * @param permissionNodeDTOS
      * @return
      */
-    int saveResourPermission(PermissionNodeDTO permissionNodeDTOS);
+    int saveResourcePermission(PermissionNodeDTO permissionNodeDTOS);
 
     /**
      * 修改资源权限名称和图标
      * @param permissionDTO
      * @return
      */
-    int modifyResourPermission(PermissionDTO permissionDTO);
+    int modifyResourcePermission(PermissionDTO permissionDTO);
 
     /**
      * 修改同等级资源的排序

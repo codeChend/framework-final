@@ -17,12 +17,12 @@ import java.util.List;
 @Service
 public class ResourcePermissionServiceImpl implements IResourcePermissionService{
     @Override
-    public int saveResourPermission(PermissionNodeDTO permissionNodeDTOS) {
+    public int saveResourcePermission(PermissionNodeDTO permissionNodeDTOS) {
         return 0;
     }
 
     @Override
-    public int modifyResourPermission(PermissionDTO permissionDTO) {
+    public int modifyResourcePermission(PermissionDTO permissionDTO) {
         return 0;
     }
 

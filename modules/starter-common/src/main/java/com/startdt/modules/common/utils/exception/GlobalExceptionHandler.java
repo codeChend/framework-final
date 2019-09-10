@@ -18,9 +18,9 @@ import java.util.List;
 public class GlobalExceptionHandler {
 
     // ⒉全局异常处理返回JSON
-    @ExceptionHandler(value = UserException.class)
+    @ExceptionHandler(value = FrameworkException.class)
     @ResponseBody
-    public Result jsonErrorHandler(HttpServletRequest req, UserException e) {
+    public Result jsonErrorHandler(HttpServletRequest req, FrameworkException e) {
         return Result.ofError(e.getCode(), e.getMessage());
     }
 
@@ -35,4 +35,5 @@ public class GlobalExceptionHandler {
         }
         return Result.ofError(BizResultConstant.PARAM_ERROR.getResultCode(), sb.toString());
     }
+
 }

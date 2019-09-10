@@ -1,9 +1,11 @@
 package com.startdt.modules.role.service.impl;
 
+import com.startdt.modules.common.pojo.Page;
+import com.startdt.modules.role.dal.pojo.domain.GrantPermissionExample;
+import com.startdt.modules.role.dal.pojo.dto.RoleInfoDTO;
 import com.startdt.modules.role.dal.pojo.request.grant.GrantUserRoleReq;
 import com.startdt.modules.role.service.IGrantPermissionService;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -31,7 +33,8 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
     }
 
     @Override
-    public List<String> getRoleByUserId(String userId) {
+    public Page<RoleInfoDTO> getRoleByUserId(GrantPermissionExample example, int currentPage, int pageSize) {
         return null;
     }
+
 }

@@ -2,6 +2,7 @@ package com.startdt.framework.examples;
 
 import com.startdt.modules.common.EnableStarterSwagger;
 import com.startdt.modules.login.EnableLoginStarter;
+import com.startdt.modules.role.EnableRoleStarter;
 import com.startdt.modules.user.EnableUserStarter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,6 +15,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @EnableUserStarter
 @EnableLoginStarter
 @EnableStarterSwagger
+@EnableRoleStarter
 public class Application  {
 
 //    @Resource

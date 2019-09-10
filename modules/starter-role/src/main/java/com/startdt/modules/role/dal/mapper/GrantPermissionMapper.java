@@ -1,7 +1,10 @@
 package com.startdt.modules.role.dal.mapper;
 
-import java.util.List;
+import com.startdt.modules.role.dal.pojo.domain.GrantPermission;
+import com.startdt.modules.role.dal.pojo.domain.GrantPermissionExample;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface GrantPermissionMapper {
     long countByExample(GrantPermissionExample example);

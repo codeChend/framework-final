@@ -1,6 +1,6 @@
 package com.startdt.modules.login.intercept;
 
-import com.startdt.modules.common.utils.exception.UserException;
+import com.startdt.modules.common.utils.exception.FrameworkException;
 import com.startdt.modules.common.utils.result.BizResultConstant;
 import com.startdt.modules.common.utils.result.Result;
 import com.startdt.modules.login.pojo.JwtConfig;
@@ -16,11 +16,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
-import sun.rmi.runtime.Log;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -76,33 +74,33 @@ public class BackLoginInterceptor extends HandlerInterceptorAdapter {
             String authToken = authHeader.substring(jwtConfig.getTokenHead().length());
             Claims claimsFromToken = JwtTokenUtil.getClaimsFromToken(authToken);
             if(claimsFromToken == null){
-                throw new UserException(BizResultConstant.TOKEN_VERIFY);
+                throw new FrameworkException(BizResultConstant.TOKEN_VERIFY);
             }
             //获得用户，检查用户存在和用户状态
             String subject = claimsFromToken.getSubject();
             if(StringUtils.isEmpty(subject)){
-                throw new UserException(BizResultConstant.NO_USER);
+                throw new FrameworkException(BizResultConstant.NO_USER);
             }
 
             Result<TbUserInfo> userResult = userInfoService.getByUserName(subject,null);
 
             if(!userResult.isSuccess() || userResult.getValue() == null ){
-                throw new UserException(BizResultConstant.NO_USER);
+                throw new FrameworkException(BizResultConstant.NO_USER);
             }
             TbUserInfo userInfo = userResult.getValue();
             if(userInfo.getStatus() == 0){
-                throw new UserException(BizResultConstant.USER_DISABLED);
+                throw new FrameworkException(BizResultConstant.USER_DISABLED);
             }
             Date expiration = claimsFromToken.getExpiration();
             if(expiration.getTime() < System.currentTimeMillis()){
-                throw new UserException(BizResultConstant.ERROR_USER_SESSION_EXPIRED);
+                throw new FrameworkException(BizResultConstant.ERROR_USER_SESSION_EXPIRED);
             }
             //存储用户账号信息
             CurrentUser.set(userInfo);
 
             return super.preHandle(request,response,handler);
         }else{
-            throw new UserException(BizResultConstant.ERROR_USER_SESSION_EXPIRED);
+            throw new FrameworkException(BizResultConstant.ERROR_USER_SESSION_EXPIRED);
         }
     }
 

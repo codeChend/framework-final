@@ -21,7 +21,6 @@
 		<module>modules/starter-role</module>
 		<module>modules/starter-common</module>
 		<module>modules/starter-login</module>
-		<module>modules/starter-menu</module>
 	</modules>
 	<description>framework-final is a Basic Framework based on Springboot. </description>
 	<url>http://git.startdt.net/businessplatform/framework-final.git</url>
@@ -121,7 +120,7 @@
 			</dependency>
 			<dependency>
 				<groupId>com.startdt.platform</groupId>
-				<artifactId>starter-menu</artifactId>
+				<artifactId>starter-role</artifactId>
 				<version>${revision}</version>
 			</dependency>
 

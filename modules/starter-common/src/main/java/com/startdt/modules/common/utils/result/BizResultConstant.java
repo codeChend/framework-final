@@ -41,6 +41,8 @@ public class BizResultConstant {
 
     public static final BizResultConstant USER_NAME_EXIST = new BizResultConstant(3010, "该用户名已存在");
     public static final BizResultConstant NO_CONTENT_DATA = new BizResultConstant(3011, "数据不存在");
+    public static final BizResultConstant ROLE_IS_EXIST = new BizResultConstant(3012, "角色已存在");
+    public static final BizResultConstant ROLE_IS_NOT_EXIST = new BizResultConstant(3012, "角色不存在");
 
 
 }

@@ -1,6 +1,9 @@
 package com.startdt.modules.role.service;
 
 
+import com.startdt.modules.common.pojo.Page;
+import com.startdt.modules.role.dal.pojo.domain.GrantPermissionExample;
+import com.startdt.modules.role.dal.pojo.dto.RoleInfoDTO;
 import com.startdt.modules.role.dal.pojo.request.grant.GrantUserRoleReq;
 
 import java.util.List;
@@ -32,8 +35,10 @@ public interface IGrantPermissionService {
 
     /**
      * 获取用户所有的角色
-     * @param userId
+     * @param example
+     * @param currentPage
+     * @param pageSize
      * @return
      */
-    List<String> getRoleByUserId(String userId);
+    Page<RoleInfoDTO> getRoleByUserId(GrantPermissionExample example, int currentPage, int pageSize);
 }

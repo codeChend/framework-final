@@ -1,18 +1,24 @@
 package com.startdt.modules.role.controller;
 
+import com.startdt.modules.common.pojo.Page;
+import com.startdt.modules.common.utils.result.BizResultConstant;
 import com.startdt.modules.common.utils.result.Result;
+import com.startdt.modules.role.dal.pojo.dto.PermissionNodeDTO;
+import com.startdt.modules.role.dal.pojo.dto.RoleInfoDTO;
 import com.startdt.modules.role.dal.pojo.dto.RolePermissionDTO;
+import com.startdt.modules.role.dal.pojo.request.role.ModifyRoleInfoReq;
+import com.startdt.modules.role.dal.pojo.request.role.SaveRoleInfoReq;
 import com.startdt.modules.role.service.IRolePermissionInfoService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @Author: weilong
@@ -29,14 +35,94 @@ public class RolePermissionController {
     private IRolePermissionInfoService rolePermissionInfoService;
 
 
-    @PostMapping("/addRolePermission")
-    @ApiOperation(value = "添加角色权限")
-    @Transactional(rollbackFor = Exception.class)
-    public Result<RolePermissionInfo> registerUser(@RequestBody @Valid RolePermissionDTO rolePermissionDTO) {
+    @PostMapping("/addRole")
+    @ApiOperation(value = "addRole",notes = "添加角色")
+    public Result<Integer> registerUser(@RequestBody @Valid SaveRoleInfoReq saveRoleInfoReq) {
 
-        return rolePermissionInfoService.insertRolePermission(rolePermissionDTO);
+        //根据角色名称获取角色信息
+        RoleInfoDTO roleInfoDTO = rolePermissionInfoService.getRoleByName(saveRoleInfoReq.getRoleName(),1);
+        if(roleInfoDTO == null){
+            return Result.ofErrorT(BizResultConstant.ROLE_IS_EXIST);
+        }
+        int save = rolePermissionInfoService.insertRole(saveRoleInfoReq);
+
+        return Result.ofSuccess(save);
     }
 
+    @GetMapping("/deleteRole")
+    @ApiOperation(value = "deleteRole",notes = "删除角色")
+    public Result<Integer> deleteRole(@RequestParam("id") Integer id) {
 
+        //根据角色id获取角色信息
+        RolePermissionDTO roleInfoDTO = rolePermissionInfoService.getRoleById(id);
+        if(roleInfoDTO != null){
+            return Result.ofErrorT(BizResultConstant.ROLE_IS_NOT_EXIST);
+        }
+        int delete = rolePermissionInfoService.deleteRole(id);
+
+        return Result.ofSuccess(delete);
+    }
+
+    @PostMapping("/editRole")
+    @ApiOperation(value = "editRole",notes = "修改角色")
+    public Result<Integer> editRole(@RequestBody @Validated ModifyRoleInfoReq modifyRoleInfoReq) {
+
+        //根据角色id获取角色信息
+        RolePermissionDTO rolePermissionDTO = rolePermissionInfoService.getRoleById(modifyRoleInfoReq.getId());
+        if(rolePermissionDTO == null){
+            return Result.ofErrorT(BizResultConstant.ROLE_IS_NOT_EXIST);
+        }
+        boolean isSame = rolePermissionDTO.getRoleName().equals(modifyRoleInfoReq.getRoleName());
+
+        RoleInfoDTO roleInfoDTO = rolePermissionInfoService.getRoleByName(modifyRoleInfoReq.getRoleName(),1);
+        if(!isSame && roleInfoDTO!=null){
+            return Result.ofErrorT(BizResultConstant.ROLE_IS_EXIST);
+        }
+
+        return Result.ofSuccess(rolePermissionInfoService.editRole(modifyRoleInfoReq));
+    }
+
+    @GetMapping("/listRole")
+    @ApiOperation(value = "listRole",notes = "分页获取角色列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(value = "currentPage", name = "当前页", example = "1"),
+            @ApiImplicitParam(value = "pageSize", name = "每页大小", example = "10")
+    })
+    public Result<Page<RoleInfoDTO>> listRole(@RequestParam("currentPage") Integer currentPage,@RequestParam("pageSize") Integer pageSize) {
+
+        Page<RoleInfoDTO> roleInfoDTOPage = rolePermissionInfoService.listRole(null,currentPage,pageSize);
+
+        return Result.ofSuccess(roleInfoDTOPage);
+    }
+
+    @GetMapping("/getMenuPermission")
+    @ApiOperation(value = "getMenuPermission",notes = "通过userId分层获取所有菜单权限")
+    @ApiImplicitParams(
+            @ApiImplicitParam(value = "userId",name = "用户id")
+    )
+    public Result<List<PermissionNodeDTO>> getMenuPermission(@RequestParam("userId") String userId) {
+
+        return Result.ofSuccess(rolePermissionInfoService.getMenuPermission(userId));
+    }
+
+    @GetMapping("/getUrlPermission")
+    @ApiOperation(value = "getUrlPermission",notes = "通过userId获取所有的url权限集")
+    @ApiImplicitParams(
+            @ApiImplicitParam(value = "userId",name = "用户id")
+    )
+    public Result<List<String>> getUrlPermission(@RequestParam("userId") String userId) {
+
+        return Result.ofSuccess(rolePermissionInfoService.getUrlPermission(userId));
+    }
+
+    @GetMapping("/getBusinessPermission")
+    @ApiOperation(value = "getBusinessPermission",notes = "通过userId获取外部业务权限code集合")
+    @ApiImplicitParams(
+            @ApiImplicitParam(value = "userId",name = "用户id")
+    )
+    public Result<List<String>> getBussinessPermission(@RequestParam("userId") String userId) {
+
+        return Result.ofSuccess(rolePermissionInfoService.getBussinessPermission(userId));
+    }
 
 }

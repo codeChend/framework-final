@@ -2,7 +2,7 @@ package com.startdt.modules.user.controller;
 
 import com.startdt.modules.common.pojo.Page;
 import com.startdt.modules.common.utils.BeanConverter;
-import com.startdt.modules.common.utils.exception.UserException;
+import com.startdt.modules.common.utils.exception.FrameworkException;
 import com.startdt.modules.common.utils.result.BizResultConstant;
 import com.startdt.modules.common.utils.result.Result;
 import com.startdt.modules.user.dal.pojo.domain.TbUserInfo;
@@ -48,7 +48,7 @@ public class UserInfoController {
         try{
             bizUserInfo = userInfoService.insertUser(userInfo);
         }catch (DuplicateKeyException exception) {
-            throw new UserException(BizResultConstant.USER_NAME_EXIST);
+            throw new FrameworkException(BizResultConstant.USER_NAME_EXIST);
         }
 
         return Result.ofSuccess(bizUserInfo.getValue());

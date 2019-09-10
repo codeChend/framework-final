@@ -1,5 +1,9 @@
 package com.startdt.modules.role.dal.pojo.dto;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import org.hibernate.validator.constraints.NotEmpty;
+
 import java.util.Date;
 import java.util.List;
 
@@ -9,27 +13,32 @@ import java.util.List;
  * @Date: Create in 2019/9/6 下午4:20
  * @Modified By:
  */
+@ApiModel(value = "PermissionNodeDTO",description = "权限节点实体")
 public class PermissionNodeDTO {
 
     /** 权限code **/
+    @ApiModelProperty(value = "code",name = "权限code")
     private String code;
 
     /** 权限code **/
+    @ApiModelProperty(value = "code",name = "权限code")
     private String parentCode;
 
     /** 权限名称 **/
+    @ApiModelProperty(value = "name",name = "权限名称")
+    @NotEmpty(message = "权限名称不能为空")
     private String name;
 
     /** 路径 **/
+    @ApiModelProperty(value = "resUrl",name = "路径")
     private String resUrl;
 
     /** 类型，0 菜单，1 按钮，2 资源 **/
+    @ApiModelProperty(value = "type",name = "类型，0 菜单，1 按钮，2 资源 ",example = "0")
     private Byte type;
 
-    /** 排序 **/
-    private Integer sort;
-
     /** 图标 **/
+    @ApiModelProperty(value = "icon",name = "图标 ")
     private String icon;
 
     private List<PermissionNodeDTO> permissionNodeSon;
@@ -64,14 +73,6 @@ public class PermissionNodeDTO {
 
     public void setType(Byte type) {
         this.type = type;
-    }
-
-    public Integer getSort() {
-        return sort;
-    }
-
-    public void setSort(Integer sort) {
-        this.sort = sort;
     }
 
     public String getIcon() {
