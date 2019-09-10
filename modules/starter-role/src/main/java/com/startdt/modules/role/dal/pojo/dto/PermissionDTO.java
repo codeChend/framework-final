@@ -10,18 +10,18 @@ import io.swagger.annotations.ApiModelProperty;
  * @Date: Create in 2019/9/6 下午4:52
  * @Modified By:
  */
-@ApiModel(value = "PermissionDTO",description = "权限修改请求实体")
+@ApiModel(value =  "权限修改请求实体")
 public class PermissionDTO {
     /** 权限code **/
-    @ApiModelProperty(value = "code",name = "权限code")
+    @ApiModelProperty(value = "权限code",name = "code")
     private String code;
 
     /** 权限名称 **/
-    @ApiModelProperty(value = "name",name = "权限名称")
+    @ApiModelProperty(value = "权限名称",name = "name")
     private String name;
 
     /** 图标 **/
-    @ApiModelProperty(value = "icon",name = "图标")
+    @ApiModelProperty(value = "图标",name = "icon")
     private String icon;
 
     public String getCode() {

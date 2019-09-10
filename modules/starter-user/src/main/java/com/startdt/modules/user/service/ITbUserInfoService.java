@@ -4,6 +4,7 @@ import com.startdt.modules.common.pojo.Page;
 import com.startdt.modules.common.utils.result.Result;
 import com.startdt.modules.user.dal.pojo.domain.TbUserInfo;
 import com.startdt.modules.user.dal.pojo.domain.TbUserInfoExample;
+import com.startdt.modules.user.dal.pojo.vo.UserDetailVO;
 
 import java.util.List;
 
@@ -92,5 +93,5 @@ public interface ITbUserInfoService {
      * @param pageSize
      * @return
      */
-    Page<TbUserInfo> selectByExamplePaging(TbUserInfoExample example, int currentPage, int pageSize);
+    Page<UserDetailVO> selectByExamplePaging(TbUserInfoExample example, int currentPage, int pageSize);
 }

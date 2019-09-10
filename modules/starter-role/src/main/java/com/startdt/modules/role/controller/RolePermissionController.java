@@ -36,7 +36,7 @@ public class RolePermissionController {
 
 
     @PostMapping("/addRole")
-    @ApiOperation(value = "addRole",notes = "添加角色")
+    @ApiOperation(value = "添加角色")
     public Result<Integer> registerUser(@RequestBody @Valid SaveRoleInfoReq saveRoleInfoReq) {
 
         //根据角色名称获取角色信息
@@ -50,7 +50,7 @@ public class RolePermissionController {
     }
 
     @GetMapping("/deleteRole")
-    @ApiOperation(value = "deleteRole",notes = "删除角色")
+    @ApiOperation(value =  "删除角色")
     public Result<Integer> deleteRole(@RequestParam("id") Integer id) {
 
         //根据角色id获取角色信息
@@ -64,7 +64,7 @@ public class RolePermissionController {
     }
 
     @PostMapping("/editRole")
-    @ApiOperation(value = "editRole",notes = "修改角色")
+    @ApiOperation(value =  "修改角色")
     public Result<Integer> editRole(@RequestBody @Validated ModifyRoleInfoReq modifyRoleInfoReq) {
 
         //根据角色id获取角色信息
@@ -83,10 +83,10 @@ public class RolePermissionController {
     }
 
     @GetMapping("/listRole")
-    @ApiOperation(value = "listRole",notes = "分页获取角色列表")
+    @ApiOperation(value ="分页获取角色列表")
     @ApiImplicitParams({
-            @ApiImplicitParam(value = "currentPage", name = "当前页", example = "1"),
-            @ApiImplicitParam(value = "pageSize", name = "每页大小", example = "10")
+            @ApiImplicitParam(value = "当前页", name = "currentPage", example = "1"),
+            @ApiImplicitParam(value = "每页大小", name = "pageSize", example = "10")
     })
     public Result<Page<RoleInfoDTO>> listRole(@RequestParam("currentPage") Integer currentPage,@RequestParam("pageSize") Integer pageSize) {
 
@@ -96,9 +96,9 @@ public class RolePermissionController {
     }
 
     @GetMapping("/getMenuPermission")
-    @ApiOperation(value = "getMenuPermission",notes = "通过userId分层获取所有菜单权限")
+    @ApiOperation(value = "通过userId分层获取所有菜单权限")
     @ApiImplicitParams(
-            @ApiImplicitParam(value = "userId",name = "用户id")
+            @ApiImplicitParam(value = "用户id",name = "userId")
     )
     public Result<List<PermissionNodeDTO>> getMenuPermission(@RequestParam("userId") String userId) {
 
@@ -106,9 +106,9 @@ public class RolePermissionController {
     }
 
     @GetMapping("/getUrlPermission")
-    @ApiOperation(value = "getUrlPermission",notes = "通过userId获取所有的url权限集")
+    @ApiOperation(value =  "通过userId获取所有的url权限集")
     @ApiImplicitParams(
-            @ApiImplicitParam(value = "userId",name = "用户id")
+            @ApiImplicitParam(value = "用户id",name = "userId")
     )
     public Result<List<String>> getUrlPermission(@RequestParam("userId") String userId) {
 
@@ -116,11 +116,11 @@ public class RolePermissionController {
     }
 
     @GetMapping("/getBusinessPermission")
-    @ApiOperation(value = "getBusinessPermission",notes = "通过userId获取外部业务权限code集合")
+    @ApiOperation(value = "通过userId获取外部业务权限code集合")
     @ApiImplicitParams(
-            @ApiImplicitParam(value = "userId",name = "用户id")
+            @ApiImplicitParam(value = "用户id",name = "userId")
     )
-    public Result<List<String>> getBussinessPermission(@RequestParam("userId") String userId) {
+    public Result<List<String>> getBusinessPermission(@RequestParam("userId") String userId) {
 
         return Result.ofSuccess(rolePermissionInfoService.getBussinessPermission(userId));
     }

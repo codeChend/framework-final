@@ -28,20 +28,10 @@ public class LoginStarterController {
     @Autowired
     private StarterLoginService loginService;
 
-    @Autowired
-    private LoginUnFilter loginUnFilter;
-
-
     @PostMapping("/login")
     @ApiOperation(value = "用户登录")
     @Transactional(rollbackFor = Exception.class)
     public Result<UserLoginVO> login(@RequestBody @Valid LoginReq loginReq) {
-
         return Result.ofSuccess(loginService.login(loginReq.getUserName(),loginReq.getPassWord()));
-    }
-
-    @GetMapping("/get")
-    public Result get(){
-        return Result.ofSuccess(loginUnFilter.unFilterList());
     }
 }

@@ -1,11 +1,13 @@
 package com.startdt.modules.user.service.impl;
 
 import com.startdt.modules.common.pojo.Page;
+import com.startdt.modules.common.utils.BeanConverter;
 import com.startdt.modules.common.utils.result.BizResultConstant;
 import com.startdt.modules.common.utils.result.Result;
 import com.startdt.modules.user.dal.mapper.TbUserInfoMapper;
 import com.startdt.modules.user.dal.pojo.domain.TbUserInfo;
 import com.startdt.modules.user.dal.pojo.domain.TbUserInfoExample;
+import com.startdt.modules.user.dal.pojo.vo.UserDetailVO;
 import com.startdt.modules.user.service.ITbUserInfoService;
 import com.startdt.modules.user.service.encode.PasswordEncode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,7 +125,7 @@ public class TbUserInfoServiceImpl implements ITbUserInfoService{
     }
 
     @Override
-    public Page<TbUserInfo> selectByExamplePaging(TbUserInfoExample example, int currentPage, int pageSize) {
+    public Page<UserDetailVO> selectByExamplePaging(TbUserInfoExample example, int currentPage, int pageSize) {
         if(currentPage <= 0) {
             currentPage = 1;
         }
@@ -132,10 +134,12 @@ public class TbUserInfoServiceImpl implements ITbUserInfoService{
         }
         long totalCount = userInfoMapper.countByExample(example);
         List<TbUserInfo> dataList = userInfoMapper.selectByExamplePaging(example, (currentPage - 1) * pageSize, pageSize);
-        Page<TbUserInfo> pageObj=new Page<>();
+        List<UserDetailVO> userDetailVOS = BeanConverter.mapList(dataList,UserDetailVO.class);
+
+        Page<UserDetailVO> pageObj=new Page<>();
         pageObj.setCurrentPage(currentPage);
         pageObj.setPageSize(pageSize);
-        pageObj.setDataList(dataList);
+        pageObj.setDataList(userDetailVOS);
         pageObj.setTotalCount(totalCount);
         pageObj.setTotalPage((int)Math.ceil(totalCount/(float)pageSize));
         return pageObj;

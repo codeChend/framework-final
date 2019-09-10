@@ -10,21 +10,21 @@ import io.swagger.annotations.ApiModelProperty;
  * @Date: Create in 2019/9/9 下午4:10
  * @Modified By:
  */
-@ApiModel(value = "RoleInfoDTO",description = "角色实体")
+@ApiModel(value = "角色实体")
 public class RoleInfoDTO {
 
-    @ApiModelProperty(value = "id",name = "角色id")
+    @ApiModelProperty(value = "角色id",name = "id")
     private Integer id;
     /**
      * 角色名称
      */
-    @ApiModelProperty(value = "roleName",name = "角色名称")
+    @ApiModelProperty(value = "角色名称",name = "roleName")
     private String roleName;
 
     /**
      * 描述
      */
-    @ApiModelProperty(value = "note",name = "描述")
+    @ApiModelProperty(value = "描述",name = "note")
     private String note;
 
     public Integer getId() {

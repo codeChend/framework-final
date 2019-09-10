@@ -11,18 +11,18 @@ import org.hibernate.validator.constraints.NotEmpty;
  * @Date: Create in 2019/9/9 下午5:37
  * @Modified By:
  */
-@ApiModel(value = "GrantUserRoleReq",description = "用户授予角色请求实体")
+@ApiModel(value = "用户授予角色请求实体")
 public class GrantUserRoleReq {
 
-    @ApiModelProperty(value = "userId",name = "用户id")
+    @ApiModelProperty(value = "用户id",name = "userId")
     @NotEmpty(message = "用户id不能为空")
     private String userId;
 
-    @ApiModelProperty(value = "roleCode",name = "角色code")
+    @ApiModelProperty(value = "角色code",name = "roleCode")
     @NotEmpty(message = "角色code不能为空")
     private String roleCode;
 
-    @ApiModelProperty(value = "note",name = "说明")
+    @ApiModelProperty(value = "说明",name = "note")
     private String note;
 
     public String getUserId() {

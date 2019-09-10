@@ -98,7 +98,7 @@ public class UserInfoController {
             @ApiImplicitParam(name = "pageNum", value = "页码", dataType = "int", paramType = "query", example = "1"),
             @ApiImplicitParam(name = "pageSize", value = "每页大小", dataType = "int", paramType = "query", example = "20")
     })
-    public Result<Page<TbUserInfo>> pageUser(@RequestParam(value = "pageNum",defaultValue = "1") Integer pageNum,
+    public Result<Page<UserDetailVO>> pageUser(@RequestParam(value = "pageNum",defaultValue = "1") Integer pageNum,
                                              @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize) {
         return Result.ofSuccess(userInfoService.selectByExamplePaging(null,pageNum,pageSize));
     }

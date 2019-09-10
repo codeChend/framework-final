@@ -13,34 +13,35 @@ import java.util.List;
  * @Date: Create in 2019/9/6 下午4:20
  * @Modified By:
  */
-@ApiModel(value = "PermissionNodeDTO",description = "权限节点实体")
+@ApiModel(value = "权限节点实体")
 public class PermissionNodeDTO {
 
     /** 权限code **/
-    @ApiModelProperty(value = "code",name = "权限code")
+    @ApiModelProperty(value = "权限code",name = "code")
     private String code;
 
     /** 权限code **/
-    @ApiModelProperty(value = "code",name = "权限code")
+    @ApiModelProperty(value = "父类权限code",name = "parentCode")
     private String parentCode;
 
     /** 权限名称 **/
-    @ApiModelProperty(value = "name",name = "权限名称")
+    @ApiModelProperty(value = "权限名称",name = "name")
     @NotEmpty(message = "权限名称不能为空")
     private String name;
 
     /** 路径 **/
-    @ApiModelProperty(value = "resUrl",name = "路径")
+    @ApiModelProperty(value = "路径",name = "resUrl")
     private String resUrl;
 
     /** 类型，0 菜单，1 按钮，2 资源 **/
-    @ApiModelProperty(value = "type",name = "类型，0 菜单，1 按钮，2 资源 ",example = "0")
+    @ApiModelProperty(value = "类型，0 菜单，1 按钮，2 资源 ",name = "type",example = "0")
     private Byte type;
 
     /** 图标 **/
-    @ApiModelProperty(value = "icon",name = "图标 ")
+    @ApiModelProperty(value = "图标",name = "icon")
     private String icon;
 
+    @ApiModelProperty(value = "子节点集",name = "permissionNodeSon")
     private List<PermissionNodeDTO> permissionNodeSon;
 
     public String getCode() {

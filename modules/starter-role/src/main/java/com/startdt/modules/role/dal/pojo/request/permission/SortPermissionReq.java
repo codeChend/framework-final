@@ -11,10 +11,10 @@ import java.util.List;
  * @Date: Create in 2019/9/10 下午2:48
  * @Modified By:
  */
-@ApiModel(value = "SortPermissionReq",description = "资源排序请求入参")
+@ApiModel(value = "资源排序请求入参")
 public class SortPermissionReq {
 
-    @ApiModelProperty(value = "codes",name = "权限code列表")
+    @ApiModelProperty(value = "权限code列表",name = "codes")
     private List<String> codes;
 
     public List<String> getCodes() {

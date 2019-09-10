@@ -9,6 +9,8 @@ import com.startdt.modules.role.dal.pojo.dto.RoleInfoDTO;
 import com.startdt.modules.role.dal.pojo.request.grant.GrantUserRoleReq;
 import com.startdt.modules.role.service.IGrantPermissionService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,21 +33,26 @@ public class GrantPermissionController {
     private IGrantPermissionService grantPermissionService;
 
     @PostMapping("/grantUserRole")
-    @ApiOperation(value = "grantUserRole",notes = "用户赋予某个角色")
+    @ApiOperation(value = "用户赋予某个角色")
     public Result<Integer> grantUserRole(@RequestBody @Valid GrantUserRoleReq permissionNodeDTO) {
 
         return Result.ofSuccess(grantPermissionService.grantUserRole(permissionNodeDTO));
     }
 
     @PostMapping("/deleteUserRole")
-    @ApiOperation(value = "deleteUserRole",notes = "禁用用户的某个角色")
+    @ApiOperation(value = "禁用用户的某个角色")
     public Result<Integer> deleteUserRole(@RequestBody @Valid GrantUserRoleReq permissionNodeDTO) {
 
         return Result.ofSuccess(grantPermissionService.deletUserRole(permissionNodeDTO.getUserId(),permissionNodeDTO.getRoleCode()));
     }
 
     @GetMapping("/getRoleByUserId")
-    @ApiOperation(value = "getRoleByUserId",notes = "获取用户所有的角色")
+    @ApiOperation(value = "获取用户所有的角色")
+    @ApiImplicitParams({
+            @ApiImplicitParam(value = "用户id",name = "userId"),
+            @ApiImplicitParam(value = "当前页",name = "currentPage"),
+            @ApiImplicitParam(value = "每页大小",name = "pageSize"),
+    })
     public Result<Page<RoleInfoDTO>> getRoleByUserId(@RequestParam("userId") String userId,
                                                      @RequestParam("currentPage") Integer currentPage,
                                                      @RequestParam("pageSize") Integer pageSize) {
