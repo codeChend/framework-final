@@ -5,23 +5,23 @@ import java.util.Date;
 public class ResourcePermissionInfo {
     private Integer id;
 
-    /** 权限code **/
+    /** 权限ccode **/
     private String code;
-
-    /** 父code **/
-    private String parentCode;
 
     /** 权限名称 **/
     private String name;
+
+    /** 父权限code **/
+    private String parentCode;
+
+    /** 权限值 **/
+    private String value;
 
     /** 路径 **/
     private String resUrl;
 
     /** 类型，0 菜单，1 按钮，2 资源 **/
     private Byte type;
-
-    /** 权限链路 **/
-    private String privilegeChain;
 
     /** 排序 **/
     private Integer sort;
@@ -46,24 +46,14 @@ public class ResourcePermissionInfo {
         this.id = id;
     }
 
-    /** 权限code **/
+    /** 权限ccode **/
     public String getCode() {
         return code;
     }
 
-    /** 权限code **/
+    /** 权限ccode **/
     public void setCode(String code) {
         this.code = code;
-    }
-
-    /** 父code **/
-    public String getParentCode() {
-        return parentCode;
-    }
-
-    /** 父code **/
-    public void setParentCode(String parentCode) {
-        this.parentCode = parentCode;
     }
 
     /** 权限名称 **/
@@ -74,6 +64,26 @@ public class ResourcePermissionInfo {
     /** 权限名称 **/
     public void setName(String name) {
         this.name = name;
+    }
+
+    /** 父权限code **/
+    public String getParentCode() {
+        return parentCode;
+    }
+
+    /** 父权限code **/
+    public void setParentCode(String parentCode) {
+        this.parentCode = parentCode;
+    }
+
+    /** 权限值 **/
+    public String getValue() {
+        return value;
+    }
+
+    /** 权限值 **/
+    public void setValue(String value) {
+        this.value = value;
     }
 
     /** 路径 **/
@@ -94,16 +104,6 @@ public class ResourcePermissionInfo {
     /** 类型，0 菜单，1 按钮，2 资源 **/
     public void setType(Byte type) {
         this.type = type;
-    }
-
-    /** 权限链路 **/
-    public String getPrivilegeChain() {
-        return privilegeChain;
-    }
-
-    /** 权限链路 **/
-    public void setPrivilegeChain(String privilegeChain) {
-        this.privilegeChain = privilegeChain;
     }
 
     /** 排序 **/

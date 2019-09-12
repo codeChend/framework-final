@@ -43,6 +43,7 @@ public class BizResultConstant {
     public static final BizResultConstant NO_CONTENT_DATA = new BizResultConstant(3011, "数据不存在");
     public static final BizResultConstant ROLE_IS_EXIST = new BizResultConstant(3012, "角色已存在");
     public static final BizResultConstant ROLE_IS_NOT_EXIST = new BizResultConstant(3012, "角色不存在");
+    public static final BizResultConstant PERMISSION_IS_NOT_SAME_LEVEL = new BizResultConstant(3013, "权限不同级");
 
 
 }

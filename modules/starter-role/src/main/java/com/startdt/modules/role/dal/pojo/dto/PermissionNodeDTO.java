@@ -29,6 +29,10 @@ public class PermissionNodeDTO {
     @NotEmpty(message = "权限名称不能为空")
     private String name;
 
+    /** 权限名称 **/
+    @ApiModelProperty(value = "权限值",name = "value")
+    private String value;
+
     /** 路径 **/
     @ApiModelProperty(value = "路径",name = "resUrl")
     private String resUrl;
@@ -98,5 +102,13 @@ public class PermissionNodeDTO {
 
     public void setParentCode(String parentCode) {
         this.parentCode = parentCode;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 }

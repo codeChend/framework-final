@@ -3,6 +3,7 @@ package com.startdt.modules.role.dal.pojo.dto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * @Author: weilong
@@ -14,11 +15,16 @@ import io.swagger.annotations.ApiModelProperty;
 public class PermissionDTO {
     /** 权限code **/
     @ApiModelProperty(value = "权限code",name = "code")
+    @NotEmpty(message = "权限code不为空")
     private String code;
 
     /** 权限名称 **/
     @ApiModelProperty(value = "权限名称",name = "name")
     private String name;
+
+    /** 权限code **/
+    @ApiModelProperty(value = "value",name = "value")
+    private String value;
 
     /** 图标 **/
     @ApiModelProperty(value = "图标",name = "icon")
@@ -46,5 +52,13 @@ public class PermissionDTO {
 
     public void setIcon(String icon) {
         this.icon = icon;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 }

@@ -225,6 +225,76 @@ public class ResourcePermissionInfoExample {
             return (Criteria) this;
         }
 
+        public Criteria andNameIsNull() {
+            addCriterion("name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameIsNotNull() {
+            addCriterion("name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameEqualTo(String value) {
+            addCriterion("name =", value);
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotEqualTo(String value) {
+            addCriterion("name <>", value);
+            return (Criteria) this;
+        }
+
+        public Criteria andNameGreaterThan(String value) {
+            addCriterion("name >", value);
+            return (Criteria) this;
+        }
+
+        public Criteria andNameGreaterThanOrEqualTo(String value) {
+            addCriterion("name >=", value);
+            return (Criteria) this;
+        }
+
+        public Criteria andNameLessThan(String value) {
+            addCriterion("name <", value);
+            return (Criteria) this;
+        }
+
+        public Criteria andNameLessThanOrEqualTo(String value) {
+            addCriterion("name <=", value);
+            return (Criteria) this;
+        }
+
+        public Criteria andNameLike(String value) {
+            addCriterion("name like", value);
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotLike(String value) {
+            addCriterion("name not like", value);
+            return (Criteria) this;
+        }
+
+        public Criteria andNameIn(List<String> values) {
+            addCriterion("name in", values);
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotIn(List<String> values) {
+            addCriterion("name not in", values);
+            return (Criteria) this;
+        }
+
+        public Criteria andNameBetween(String value1, String value2) {
+            addCriterion("name between", value1, value2);
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotBetween(String value1, String value2) {
+            addCriterion("name not between", value1, value2);
+            return (Criteria) this;
+        }
+
         public Criteria andParentCodeIsNull() {
             addCriterion("parent_code is null");
             return (Criteria) this;
@@ -295,73 +365,73 @@ public class ResourcePermissionInfoExample {
             return (Criteria) this;
         }
 
-        public Criteria andNameIsNull() {
-            addCriterion("name is null");
+        public Criteria andValueIsNull() {
+            addCriterion("value is null");
             return (Criteria) this;
         }
 
-        public Criteria andNameIsNotNull() {
-            addCriterion("name is not null");
+        public Criteria andValueIsNotNull() {
+            addCriterion("value is not null");
             return (Criteria) this;
         }
 
-        public Criteria andNameEqualTo(String value) {
-            addCriterion("name =", value);
+        public Criteria andValueEqualTo(String value) {
+            addCriterion("value =", value);
             return (Criteria) this;
         }
 
-        public Criteria andNameNotEqualTo(String value) {
-            addCriterion("name <>", value);
+        public Criteria andValueNotEqualTo(String value) {
+            addCriterion("value <>", value);
             return (Criteria) this;
         }
 
-        public Criteria andNameGreaterThan(String value) {
-            addCriterion("name >", value);
+        public Criteria andValueGreaterThan(String value) {
+            addCriterion("value >", value);
             return (Criteria) this;
         }
 
-        public Criteria andNameGreaterThanOrEqualTo(String value) {
-            addCriterion("name >=", value);
+        public Criteria andValueGreaterThanOrEqualTo(String value) {
+            addCriterion("value >=", value);
             return (Criteria) this;
         }
 
-        public Criteria andNameLessThan(String value) {
-            addCriterion("name <", value);
+        public Criteria andValueLessThan(String value) {
+            addCriterion("value <", value);
             return (Criteria) this;
         }
 
-        public Criteria andNameLessThanOrEqualTo(String value) {
-            addCriterion("name <=", value);
+        public Criteria andValueLessThanOrEqualTo(String value) {
+            addCriterion("value <=", value);
             return (Criteria) this;
         }
 
-        public Criteria andNameLike(String value) {
-            addCriterion("name like", value);
+        public Criteria andValueLike(String value) {
+            addCriterion("value like", value);
             return (Criteria) this;
         }
 
-        public Criteria andNameNotLike(String value) {
-            addCriterion("name not like", value);
+        public Criteria andValueNotLike(String value) {
+            addCriterion("value not like", value);
             return (Criteria) this;
         }
 
-        public Criteria andNameIn(List<String> values) {
-            addCriterion("name in", values);
+        public Criteria andValueIn(List<String> values) {
+            addCriterion("value in", values);
             return (Criteria) this;
         }
 
-        public Criteria andNameNotIn(List<String> values) {
-            addCriterion("name not in", values);
+        public Criteria andValueNotIn(List<String> values) {
+            addCriterion("value not in", values);
             return (Criteria) this;
         }
 
-        public Criteria andNameBetween(String value1, String value2) {
-            addCriterion("name between", value1, value2);
+        public Criteria andValueBetween(String value1, String value2) {
+            addCriterion("value between", value1, value2);
             return (Criteria) this;
         }
 
-        public Criteria andNameNotBetween(String value1, String value2) {
-            addCriterion("name not between", value1, value2);
+        public Criteria andValueNotBetween(String value1, String value2) {
+            addCriterion("value not between", value1, value2);
             return (Criteria) this;
         }
 
@@ -492,76 +562,6 @@ public class ResourcePermissionInfoExample {
 
         public Criteria andTypeNotBetween(Byte value1, Byte value2) {
             addCriterion("type not between", value1, value2);
-            return (Criteria) this;
-        }
-
-        public Criteria andPrivilegeChainIsNull() {
-            addCriterion("privilege_chain is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPrivilegeChainIsNotNull() {
-            addCriterion("privilege_chain is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPrivilegeChainEqualTo(String value) {
-            addCriterion("privilege_chain =", value);
-            return (Criteria) this;
-        }
-
-        public Criteria andPrivilegeChainNotEqualTo(String value) {
-            addCriterion("privilege_chain <>", value);
-            return (Criteria) this;
-        }
-
-        public Criteria andPrivilegeChainGreaterThan(String value) {
-            addCriterion("privilege_chain >", value);
-            return (Criteria) this;
-        }
-
-        public Criteria andPrivilegeChainGreaterThanOrEqualTo(String value) {
-            addCriterion("privilege_chain >=", value);
-            return (Criteria) this;
-        }
-
-        public Criteria andPrivilegeChainLessThan(String value) {
-            addCriterion("privilege_chain <", value);
-            return (Criteria) this;
-        }
-
-        public Criteria andPrivilegeChainLessThanOrEqualTo(String value) {
-            addCriterion("privilege_chain <=", value);
-            return (Criteria) this;
-        }
-
-        public Criteria andPrivilegeChainLike(String value) {
-            addCriterion("privilege_chain like", value);
-            return (Criteria) this;
-        }
-
-        public Criteria andPrivilegeChainNotLike(String value) {
-            addCriterion("privilege_chain not like", value);
-            return (Criteria) this;
-        }
-
-        public Criteria andPrivilegeChainIn(List<String> values) {
-            addCriterion("privilege_chain in", values);
-            return (Criteria) this;
-        }
-
-        public Criteria andPrivilegeChainNotIn(List<String> values) {
-            addCriterion("privilege_chain not in", values);
-            return (Criteria) this;
-        }
-
-        public Criteria andPrivilegeChainBetween(String value1, String value2) {
-            addCriterion("privilege_chain between", value1, value2);
-            return (Criteria) this;
-        }
-
-        public Criteria andPrivilegeChainNotBetween(String value1, String value2) {
-            addCriterion("privilege_chain not between", value1, value2);
             return (Criteria) this;
         }
 
