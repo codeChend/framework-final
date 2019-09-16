@@ -71,6 +71,9 @@ public class RolePermissionInfoServiceImpl implements IRolePermissionInfoService
         if(pageSize <= 0) {
             pageSize = 10;
         }
+        if(example == null){
+            example = new RolePermissionInfoExample();
+        }
         long totalCount = rolePermissionInfoMapper.countByExample(example);
         List<RolePermissionInfo> dataList = rolePermissionInfoMapper.selectByExamplePaging(example, (currentPage - 1) * pageSize, pageSize);
         List<RoleInfoDTO> resultList = BeanConverter.mapList(dataList,RoleInfoDTO.class);

@@ -3,6 +3,7 @@ package com.startdt.modules.role.controller;
 import com.startdt.modules.common.pojo.Page;
 import com.startdt.modules.common.utils.result.BizResultConstant;
 import com.startdt.modules.common.utils.result.Result;
+import com.startdt.modules.role.dal.pojo.domain.RolePermissionInfoExample;
 import com.startdt.modules.role.dal.pojo.dto.PermissionNodeDTO;
 import com.startdt.modules.role.dal.pojo.dto.RoleInfoDTO;
 import com.startdt.modules.role.dal.pojo.dto.RolePermissionDTO;
@@ -41,7 +42,7 @@ public class RolePermissionController {
 
         //根据角色名称获取角色信息
         RoleInfoDTO roleInfoDTO = rolePermissionInfoService.getRoleByName(saveRoleInfoReq.getRoleName(),1);
-        if(roleInfoDTO == null){
+        if(roleInfoDTO != null){
             return Result.ofErrorT(BizResultConstant.ROLE_IS_EXIST);
         }
         int save = rolePermissionInfoService.insertRole(saveRoleInfoReq);
