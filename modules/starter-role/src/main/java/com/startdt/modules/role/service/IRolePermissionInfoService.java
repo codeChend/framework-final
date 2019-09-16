@@ -10,6 +10,7 @@ import com.startdt.modules.role.dal.pojo.dto.RolePermissionDTO;
 import com.startdt.modules.role.dal.pojo.request.role.ModifyRoleInfoReq;
 import com.startdt.modules.role.dal.pojo.request.role.SaveRoleInfoReq;
 
+import javax.management.relation.RoleInfo;
 import java.util.List;
 
 
@@ -48,7 +49,7 @@ public interface IRolePermissionInfoService{
      * 获取角色列表
      * @returin
      */
-    Page<RoleInfoDTO> listRole(RolePermissionInfoExample rolePermissionInfoExample,int currentPage,int pageSize);
+    Page<RoleInfoDTO> pageRole(RolePermissionInfoExample rolePermissionInfoExample,int currentPage,int pageSize);
 
 
     /**
@@ -67,24 +68,10 @@ public interface IRolePermissionInfoService{
     RolePermissionDTO getRoleById(Integer id);
 
     /**
-     * 通过userId获取所有菜单权限
-     * @param userId
+     * 通过条件获取角色list
+     * @param roleIds
      * @return
      */
-    List<PermissionNodeDTO> getMenuPermission(String userId);
-
-    /**
-     * 获取所有的url权限集
-     * @param userId
-     * @return
-     */
-    List<String> getUrlPermission(String userId);
-
-    /**
-     * 获取业务权限code集合
-     * @param userId
-     * @return
-     */
-    List<String> getBussinessPermission(String userId);
+    List<RoleInfoDTO> listRole(List<String> roleIds);
 
 }

@@ -3,6 +3,7 @@ package com.startdt.modules.role.service;
 
 import com.startdt.modules.common.pojo.Page;
 import com.startdt.modules.role.dal.pojo.domain.GrantPermissionExample;
+import com.startdt.modules.role.dal.pojo.dto.PermissionNodeDTO;
 import com.startdt.modules.role.dal.pojo.dto.RoleInfoDTO;
 import com.startdt.modules.role.dal.pojo.request.grant.GrantUserRoleReq;
 
@@ -31,7 +32,7 @@ public interface IGrantPermissionService {
      * @param roleId
      * @return
      */
-    int deletUserRole(String userId,String roleId);
+    int deleteUserRole(String userId,String roleId);
 
     /**
      * 获取用户所有的角色
@@ -41,4 +42,25 @@ public interface IGrantPermissionService {
      * @return
      */
     Page<RoleInfoDTO> getRoleByUserId(GrantPermissionExample example, int currentPage, int pageSize);
+
+    /**
+     * 通过userId获取所有菜单权限
+     * @param userId
+     * @return
+     */
+    List<PermissionNodeDTO> getMenuPermission(String userId);
+
+    /**
+     * 获取所有的url权限集
+     * @param userId
+     * @return
+     */
+    List<String> getUrlPermission(String userId);
+
+    /**
+     * 获取业务权限code集合
+     * @param userId
+     * @return
+     */
+    List<String> getBussinessPermission(String userId);
 }

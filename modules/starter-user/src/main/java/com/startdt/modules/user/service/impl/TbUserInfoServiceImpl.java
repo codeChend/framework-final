@@ -45,8 +45,12 @@ public class TbUserInfoServiceImpl implements ITbUserInfoService{
 
     @Override
     public Result<TbUserInfo> insertUser(TbUserInfo entity) {
+        Result<TbUserInfo> userInfo = getByUserName(entity.getUserName(),1);
+        if(userInfo.isSuccess() && userInfo.getValue()!=null){
+            return Result.ofErrorT(BizResultConstant.USER_NAME_EXIST);
+        }
         entity.setPassword(passwordEncode.encode(entity.getPassword()));
-        int save = userInfoMapper.insert(entity);
+        int save = userInfoMapper.insertSelective(entity);
         if(save>0){
             return Result.ofSuccess(entity);
         }
@@ -131,6 +135,9 @@ public class TbUserInfoServiceImpl implements ITbUserInfoService{
         }
         if(pageSize <= 0) {
             pageSize = 10;
+        }
+        if(example == null){
+            example = new TbUserInfoExample();
         }
         long totalCount = userInfoMapper.countByExample(example);
         List<TbUserInfo> dataList = userInfoMapper.selectByExamplePaging(example, (currentPage - 1) * pageSize, pageSize);

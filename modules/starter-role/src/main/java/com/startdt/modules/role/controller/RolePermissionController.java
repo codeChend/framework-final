@@ -56,7 +56,7 @@ public class RolePermissionController {
 
         //根据角色id获取角色信息
         RolePermissionDTO roleInfoDTO = rolePermissionInfoService.getRoleById(id);
-        if(roleInfoDTO != null){
+        if(roleInfoDTO == null){
             return Result.ofErrorT(BizResultConstant.ROLE_IS_NOT_EXIST);
         }
         int delete = rolePermissionInfoService.deleteRole(id);
@@ -91,39 +91,13 @@ public class RolePermissionController {
     })
     public Result<Page<RoleInfoDTO>> listRole(@RequestParam("currentPage") Integer currentPage,@RequestParam("pageSize") Integer pageSize) {
 
-        Page<RoleInfoDTO> roleInfoDTOPage = rolePermissionInfoService.listRole(null,currentPage,pageSize);
+        RolePermissionInfoExample example = new RolePermissionInfoExample();
+        example.or().andStatusEqualTo((byte)1);
+
+        Page<RoleInfoDTO> roleInfoDTOPage = rolePermissionInfoService.pageRole(example,currentPage,pageSize);
 
         return Result.ofSuccess(roleInfoDTOPage);
     }
 
-    @GetMapping("/getMenuPermission")
-    @ApiOperation(value = "通过userId分层获取所有菜单权限")
-    @ApiImplicitParams(
-            @ApiImplicitParam(value = "用户id",name = "userId")
-    )
-    public Result<List<PermissionNodeDTO>> getMenuPermission(@RequestParam("userId") String userId) {
-
-        return Result.ofSuccess(rolePermissionInfoService.getMenuPermission(userId));
-    }
-
-    @GetMapping("/getUrlPermission")
-    @ApiOperation(value =  "通过userId获取所有的url权限集")
-    @ApiImplicitParams(
-            @ApiImplicitParam(value = "用户id",name = "userId")
-    )
-    public Result<List<String>> getUrlPermission(@RequestParam("userId") String userId) {
-
-        return Result.ofSuccess(rolePermissionInfoService.getUrlPermission(userId));
-    }
-
-    @GetMapping("/getBusinessPermission")
-    @ApiOperation(value = "通过userId获取外部业务权限code集合")
-    @ApiImplicitParams(
-            @ApiImplicitParam(value = "用户id",name = "userId")
-    )
-    public Result<List<String>> getBusinessPermission(@RequestParam("userId") String userId) {
-
-        return Result.ofSuccess(rolePermissionInfoService.getBussinessPermission(userId));
-    }
 
 }

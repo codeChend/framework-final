@@ -331,4 +331,16 @@
     </if>
     limit ${offset},${limit}
   </select>
+
+  <select id="selectByIds" resultMap="BaseResultMap">
+    select
+    distinct
+    <include refid="Base_Column_List" />
+    from role_permission_info
+    WHERE
+    id in
+    <foreach collection="list" index="index" item="item" separator="," >
+      #{item}
+    </foreach>
+  </select>
 </mapper>

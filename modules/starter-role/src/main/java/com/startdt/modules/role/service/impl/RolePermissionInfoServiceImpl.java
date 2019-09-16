@@ -17,8 +17,10 @@ import com.startdt.modules.role.dal.pojo.request.role.SaveRoleInfoReq;
 import com.startdt.modules.role.service.IRolePermissionInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -64,7 +66,7 @@ public class RolePermissionInfoServiceImpl implements IRolePermissionInfoService
     }
 
     @Override
-    public Page<RoleInfoDTO> listRole(RolePermissionInfoExample example,int currentPage,int pageSize) {
+    public Page<RoleInfoDTO> pageRole(RolePermissionInfoExample example,int currentPage,int pageSize) {
         if(currentPage <= 0) {
             currentPage = 1;
         }
@@ -112,19 +114,15 @@ public class RolePermissionInfoServiceImpl implements IRolePermissionInfoService
     }
 
     @Override
-    public List<PermissionNodeDTO> getMenuPermission(String userId) {
-        return null;
-    }
+    public List<RoleInfoDTO> listRole(List<String> roleIds) {
+        if(CollectionUtils.isEmpty(roleIds)){
+            return Collections.emptyList();
+        }
+        List<RolePermissionInfo> rolePermissionInfos = rolePermissionInfoMapper.selectByIds(roleIds);
 
-    @Override
-    public List<String> getUrlPermission(String userId) {
-        return null;
-    }
+        List<RoleInfoDTO> roleInfoDTOS = BeanConverter.mapList(rolePermissionInfos,RoleInfoDTO.class);
 
-    @Override
-    public List<String> getBussinessPermission(String userId) {
-        return null;
+        return roleInfoDTOS;
     }
-
 
 }

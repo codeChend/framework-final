@@ -2,6 +2,7 @@ package com.startdt.modules.role.controller;
 
 import com.startdt.modules.common.pojo.Page;
 import com.startdt.modules.common.utils.enums.PrincipalTypeEnum;
+import com.startdt.modules.common.utils.enums.ResourceTypeEnum;
 import com.startdt.modules.common.utils.result.Result;
 import com.startdt.modules.role.dal.pojo.domain.GrantPermissionExample;
 import com.startdt.modules.role.dal.pojo.dto.PermissionNodeDTO;
@@ -15,6 +16,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -43,7 +45,7 @@ public class GrantPermissionController {
     @ApiOperation(value = "禁用用户的某个角色")
     public Result<Integer> deleteUserRole(@RequestBody @Valid GrantUserRoleReq permissionNodeDTO) {
 
-        return Result.ofSuccess(grantPermissionService.deletUserRole(permissionNodeDTO.getUserId(),permissionNodeDTO.getRoleCode()));
+        return Result.ofSuccess(grantPermissionService.deleteUserRole(permissionNodeDTO.getUserId(),permissionNodeDTO.getRoleCode()));
     }
 
     @GetMapping("/getRoleByUserId")
@@ -57,7 +59,38 @@ public class GrantPermissionController {
                                                      @RequestParam("currentPage") Integer currentPage,
                                                      @RequestParam("pageSize") Integer pageSize) {
         GrantPermissionExample example = new GrantPermissionExample();
-        example.or().andPrincipalPartEqualTo(userId).andPrincipalPartTypeEqualTo(PrincipalTypeEnum.USER.getCode().byteValue());
+        example.or().andPrincipalPartEqualTo(userId).andPrincipalPartTypeEqualTo(PrincipalTypeEnum.USER.getCode().byteValue())
+                .andResourcesTypeEqualTo(ResourceTypeEnum.ROLE.getCode().byteValue()).andStatusEqualTo((byte)1);
         return Result.ofSuccess(grantPermissionService.getRoleByUserId(example,currentPage,pageSize));
+    }
+
+//    @GetMapping("/getMenuPermission")
+//    @ApiOperation(value = "通过userId分层获取所有菜单权限")
+//    @ApiImplicitParams(
+//            @ApiImplicitParam(value = "用户id",name = "userId")
+//    )
+    public Result<List<PermissionNodeDTO>> getMenuPermission(@RequestParam("userId") String userId) {
+
+        return Result.ofSuccess(grantPermissionService.getMenuPermission(userId));
+    }
+
+//    @GetMapping("/getUrlPermission")
+//    @ApiOperation(value =  "通过userId获取所有的url权限集")
+//    @ApiImplicitParams(
+//            @ApiImplicitParam(value = "用户id",name = "userId")
+//    )
+    public Result<List<String>> getUrlPermission(@RequestParam("userId") String userId) {
+
+        return Result.ofSuccess(grantPermissionService.getUrlPermission(userId));
+    }
+
+//    @GetMapping("/getBusinessPermission")
+//    @ApiOperation(value = "通过userId获取外部业务权限code集合")
+//    @ApiImplicitParams(
+//            @ApiImplicitParam(value = "用户id",name = "userId")
+//    )
+    public Result<List<String>> getBusinessPermission(@RequestParam("userId") String userId) {
+
+        return Result.ofSuccess(grantPermissionService.getBussinessPermission(userId));
     }
 }

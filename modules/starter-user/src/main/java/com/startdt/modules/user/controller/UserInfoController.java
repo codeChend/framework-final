@@ -6,6 +6,7 @@ import com.startdt.modules.common.utils.exception.FrameworkException;
 import com.startdt.modules.common.utils.result.BizResultConstant;
 import com.startdt.modules.common.utils.result.Result;
 import com.startdt.modules.user.dal.pojo.domain.TbUserInfo;
+import com.startdt.modules.user.dal.pojo.domain.TbUserInfoExample;
 import com.startdt.modules.user.dal.pojo.request.ModifyUserReq;
 import com.startdt.modules.user.dal.pojo.request.UpdatePwdReq;
 import com.startdt.modules.user.dal.pojo.vo.UserDetailVO;
@@ -44,14 +45,8 @@ public class UserInfoController {
     @Transactional(rollbackFor = Exception.class)
     public Result<TbUserInfo> registerUser(@RequestBody @Valid ModifyUserReq modifyUserReq) {
         TbUserInfo userInfo = BeanConverter.convert(modifyUserReq, TbUserInfo.class);
-        Result<TbUserInfo> bizUserInfo = null;
-        try{
-            bizUserInfo = userInfoService.insertUser(userInfo);
-        }catch (DuplicateKeyException exception) {
-            throw new FrameworkException(BizResultConstant.USER_NAME_EXIST);
-        }
 
-        return Result.ofSuccess(bizUserInfo.getValue());
+        return userInfoService.insertUser(userInfo);
     }
 
     @PostMapping("/update")
@@ -100,6 +95,8 @@ public class UserInfoController {
     })
     public Result<Page<UserDetailVO>> pageUser(@RequestParam(value = "pageNum",defaultValue = "1") Integer pageNum,
                                              @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize) {
-        return Result.ofSuccess(userInfoService.selectByExamplePaging(null,pageNum,pageSize));
+        TbUserInfoExample example = new TbUserInfoExample();
+        example.or().andStatusEqualTo((byte)1);
+        return Result.ofSuccess(userInfoService.selectByExamplePaging(example,pageNum,pageSize));
     }
 }
