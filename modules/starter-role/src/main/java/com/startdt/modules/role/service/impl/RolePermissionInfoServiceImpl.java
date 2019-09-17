@@ -22,6 +22,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -118,11 +119,10 @@ public class RolePermissionInfoServiceImpl implements IRolePermissionInfoService
         if(CollectionUtils.isEmpty(roleIds)){
             return Collections.emptyList();
         }
-        List<RolePermissionInfo> rolePermissionInfos = rolePermissionInfoMapper.selectByIds(roleIds);
+        List<Integer> ids = roleIds.parallelStream().map(s -> Integer.valueOf(s)).collect(Collectors.toList());
+        List<RolePermissionInfo> rolePermissionInfos = rolePermissionInfoMapper.selectByIds(ids);
 
-        List<RoleInfoDTO> roleInfoDTOS = BeanConverter.mapList(rolePermissionInfos,RoleInfoDTO.class);
-
-        return roleInfoDTOS;
+        return BeanConverter.mapList(rolePermissionInfos,RoleInfoDTO.class);
     }
 
 }

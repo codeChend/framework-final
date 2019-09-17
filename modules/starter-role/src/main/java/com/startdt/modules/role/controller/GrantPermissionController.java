@@ -55,13 +55,13 @@ public class GrantPermissionController {
             @ApiImplicitParam(value = "当前页",name = "currentPage"),
             @ApiImplicitParam(value = "每页大小",name = "pageSize"),
     })
-    public Result<Page<RoleInfoDTO>> getRoleByUserId(@RequestParam("userId") String userId,
+    public Result<Page<RoleInfoDTO>> getRoleByUserId(@RequestParam("userId") Integer userId,
                                                      @RequestParam("currentPage") Integer currentPage,
                                                      @RequestParam("pageSize") Integer pageSize) {
         GrantPermissionExample example = new GrantPermissionExample();
-        example.or().andPrincipalPartEqualTo(userId).andPrincipalPartTypeEqualTo(PrincipalTypeEnum.USER.getCode().byteValue())
+        example.or().andPrincipalPartEqualTo(userId.toString()).andPrincipalPartTypeEqualTo(PrincipalTypeEnum.USER.getCode().byteValue())
                 .andResourcesTypeEqualTo(ResourceTypeEnum.ROLE.getCode().byteValue()).andStatusEqualTo((byte)1);
-        return Result.ofSuccess(grantPermissionService.getRoleByUserId(example,currentPage,pageSize));
+        return Result.ofSuccess(grantPermissionService.pageRoleByUserId(example,currentPage,pageSize));
     }
 
 //    @GetMapping("/getMenuPermission")
@@ -91,6 +91,6 @@ public class GrantPermissionController {
 //    )
     public Result<List<String>> getBusinessPermission(@RequestParam("userId") String userId) {
 
-        return Result.ofSuccess(grantPermissionService.getBussinessPermission(userId));
+        return Result.ofSuccess(grantPermissionService.getBusinessPermission(userId));
     }
 }

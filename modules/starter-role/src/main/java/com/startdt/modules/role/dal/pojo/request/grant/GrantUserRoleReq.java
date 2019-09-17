@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * @Author: weilong
  * @Description:
@@ -14,30 +16,30 @@ import org.hibernate.validator.constraints.NotEmpty;
 @ApiModel(value = "用户授予角色请求实体")
 public class GrantUserRoleReq {
 
-    @ApiModelProperty(value = "用户id",name = "userId")
-    @NotEmpty(message = "用户id不能为空")
-    private String userId;
+    @ApiModelProperty(value = "用户id",name = "userId",example = "1")
+    @NotNull(message = "用户id不能为空")
+    private Integer userId;
 
-    @ApiModelProperty(value = "角色code",name = "roleCode")
-    @NotEmpty(message = "角色code不能为空")
-    private String roleCode;
+    @ApiModelProperty(value = "角色code",name = "roleCode",example = "2")
+    @NotNull(message = "角色code不能为空")
+    private Integer roleCode;
 
     @ApiModelProperty(value = "说明",name = "note")
     private String note;
 
-    public String getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
-    public String getRoleCode() {
+    public Integer getRoleCode() {
         return roleCode;
     }
 
-    public void setRoleCode(String roleCode) {
+    public void setRoleCode(Integer roleCode) {
         this.roleCode = roleCode;
     }
 

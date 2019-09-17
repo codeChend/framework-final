@@ -9,9 +9,9 @@ package com.startdt.modules.common.utils.enums;
 public enum PermissionTypeEnum {
     MENU_PERMISSION(0,"菜单","一级菜单"),
 
-    BUTTON_PERMISSION(1,"按钮","按钮权限"),
+    BUTTON_PERMISSION(1,"按钮","按钮权限");
 
-    RESOURCE_PERMISSION(2,"资源","资源权限");
+//    RESOURCE_PERMISSION(2,"资源","资源权限");
 
     private Integer code;
 

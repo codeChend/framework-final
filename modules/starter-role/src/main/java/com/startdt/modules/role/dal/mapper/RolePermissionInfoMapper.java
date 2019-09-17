@@ -44,5 +44,5 @@ public interface RolePermissionInfoMapper {
 
     int updateByPrimaryKey(RolePermissionInfo record);
 
-    List<RolePermissionInfo> selectByIds(List<String> roleIds);
+    List<RolePermissionInfo> selectByIds(List<Integer> roleIds);
 }

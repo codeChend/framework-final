@@ -32,7 +32,7 @@ public interface IGrantPermissionService {
      * @param roleId
      * @return
      */
-    int deleteUserRole(String userId,String roleId);
+    int deleteUserRole(Integer userId,Integer roleId);
 
     /**
      * 获取用户所有的角色
@@ -41,7 +41,14 @@ public interface IGrantPermissionService {
      * @param pageSize
      * @return
      */
-    Page<RoleInfoDTO> getRoleByUserId(GrantPermissionExample example, int currentPage, int pageSize);
+    Page<RoleInfoDTO> pageRoleByUserId(GrantPermissionExample example, int currentPage, int pageSize);
+
+    /**
+     * 通过用户id获取角色列表
+     * @param userId
+     * @return
+     */
+    List<RoleInfoDTO> listByUserId(String userId);
 
     /**
      * 通过userId获取所有菜单权限
@@ -62,5 +69,5 @@ public interface IGrantPermissionService {
      * @param userId
      * @return
      */
-    List<String> getBussinessPermission(String userId);
+    List<String> getBusinessPermission(String userId);
 }

@@ -339,7 +339,7 @@
     from role_permission_info
     WHERE
     id in
-    <foreach collection="list" index="index" item="item" separator="," >
+    <foreach collection="list" index="index" item="item" open="(" separator="," close=")" >
       #{item}
     </foreach>
   </select>
