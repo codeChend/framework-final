@@ -1,4 +1,4 @@
-package com.startdt.modules.role.dal.pojo.dto;
+package com.startdt.modules.role.dal.pojo.request.permission;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
@@ -12,7 +12,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  * @Modified By:
  */
 @ApiModel(value =  "权限修改请求实体")
-public class PermissionDTO {
+public class PermissionReq {
     /** 权限code **/
     @ApiModelProperty(value = "权限code",name = "code")
     @NotEmpty(message = "权限code不为空")

@@ -1,6 +1,7 @@
 package com.startdt.modules.role.service;
 
-import com.startdt.modules.role.dal.pojo.dto.PermissionDTO;
+import com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfo;
+import com.startdt.modules.role.dal.pojo.request.permission.PermissionReq;
 import com.startdt.modules.role.dal.pojo.dto.PermissionNodeDTO;
 import com.startdt.modules.role.dal.pojo.dto.QueryPermissionDTO;
 
@@ -23,10 +24,10 @@ public interface IResourcePermissionService {
 
     /**
      * 修改资源权限名称和图标
-     * @param permissionDTO
+     * @param permissionReq
      * @return
      */
-    int modifyResourcePermission(PermissionDTO permissionDTO);
+    int modifyResourcePermission(PermissionReq permissionReq);
 
     /**
      * 修改同等级资源的排序
@@ -47,5 +48,19 @@ public interface IResourcePermissionService {
      * @param queryPermissionDTO
      * @return
      */
-    List<PermissionNodeDTO> PermissionNodeSelective(QueryPermissionDTO queryPermissionDTO);
+    List<PermissionNodeDTO> permissionNodeSelective(QueryPermissionDTO queryPermissionDTO);
+
+    /**
+     * 根据权限code批量获取权限列表
+     * @param codes
+     * @return
+     */
+    List<ResourcePermissionInfo> permissionInfoByCodes(List<String> codes);
+
+    /**
+     * 通过父节点获取权限信息
+     * @param parentCode
+     * @return
+     */
+    List<ResourcePermissionInfo> permissionInfoByParentCode(String parentCode);
 }

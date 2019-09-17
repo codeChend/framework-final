@@ -72,7 +72,7 @@ public interface IRolePermissionInfoService{
      * @param roleIds
      * @return
      */
-    List<RoleInfoDTO> listRole(List<String> roleIds);
+    List<RolePermissionDTO> listRole(List<String> roleIds);
 
 
 

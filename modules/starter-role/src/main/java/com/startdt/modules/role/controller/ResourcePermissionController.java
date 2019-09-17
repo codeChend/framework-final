@@ -1,13 +1,10 @@
 package com.startdt.modules.role.controller;
 
-import com.startdt.modules.common.utils.result.BizResultConstant;
 import com.startdt.modules.common.utils.result.Result;
-import com.startdt.modules.role.dal.pojo.dto.PermissionDTO;
+import com.startdt.modules.role.dal.pojo.request.permission.PermissionReq;
 import com.startdt.modules.role.dal.pojo.dto.PermissionNodeDTO;
 import com.startdt.modules.role.dal.pojo.dto.QueryPermissionDTO;
-import com.startdt.modules.role.dal.pojo.dto.RoleInfoDTO;
 import com.startdt.modules.role.dal.pojo.request.permission.SortPermissionReq;
-import com.startdt.modules.role.dal.pojo.request.role.SaveRoleInfoReq;
 import com.startdt.modules.role.service.IResourcePermissionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -41,9 +38,9 @@ public class ResourcePermissionController {
 
     @PostMapping("/modifyResourcePermission")
     @ApiOperation(value = "保存新的模块资源权限信息")
-    public Result<Integer> modifyResourcePermission(@RequestBody @Valid PermissionDTO permissionDTO) {
+    public Result<Integer> modifyResourcePermission(@RequestBody @Valid PermissionReq permissionReq) {
 
-        return Result.ofSuccess(resourcePermissionService.modifyResourcePermission(permissionDTO));
+        return Result.ofSuccess(resourcePermissionService.modifyResourcePermission(permissionReq));
     }
 
     @PostMapping("/sortPermission")
@@ -65,6 +62,6 @@ public class ResourcePermissionController {
     @ApiOperation(value = "根据条件查询权限资源列表")
     public Result<List<PermissionNodeDTO>> PermissionNodeSelective(@RequestBody QueryPermissionDTO queryPermissionDTO) {
 
-        return Result.ofSuccess(resourcePermissionService.PermissionNodeSelective(queryPermissionDTO));
+        return Result.ofSuccess(resourcePermissionService.permissionNodeSelective(queryPermissionDTO));
     }
 }

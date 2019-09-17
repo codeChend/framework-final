@@ -3,6 +3,8 @@ package com.startdt.modules.role.service;
 
 import com.startdt.modules.common.pojo.Page;
 import com.startdt.modules.role.dal.pojo.domain.GrantPermissionExample;
+import com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfo;
+import com.startdt.modules.role.dal.pojo.dto.PermissionAccessDTO;
 import com.startdt.modules.role.dal.pojo.dto.PermissionNodeDTO;
 import com.startdt.modules.role.dal.pojo.dto.RoleInfoDTO;
 import com.startdt.modules.role.dal.pojo.request.grant.GrantUserRoleReq;
@@ -51,11 +53,25 @@ public interface IGrantPermissionService {
     List<RoleInfoDTO> listByUserId(String userId);
 
     /**
+     * 根据用户获取系统级的全部权限list
+     * @param userId
+     * @return
+     */
+    List<ResourcePermissionInfo> permissionAllByUserId(String userId);
+
+                                                      /**
      * 通过userId获取所有菜单权限
      * @param userId
      * @return
      */
     List<PermissionNodeDTO> getMenuPermission(String userId);
+
+    /**
+     * 通过角色id获取权限树进行授权
+     * @param roleId
+     * @return
+     */
+    List<PermissionAccessDTO> getRolePermission(Integer roleId);
 
     /**
      * 获取所有的url权限集

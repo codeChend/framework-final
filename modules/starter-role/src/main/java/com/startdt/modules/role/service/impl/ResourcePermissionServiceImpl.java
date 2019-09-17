@@ -6,17 +6,17 @@ import com.startdt.modules.common.utils.result.BizResultConstant;
 import com.startdt.modules.role.dal.mapper.ResourcePermissionInfoMapper;
 import com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfo;
 import com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfoExample;
-import com.startdt.modules.role.dal.pojo.dto.PermissionDTO;
+import com.startdt.modules.role.dal.pojo.request.permission.PermissionReq;
 import com.startdt.modules.role.dal.pojo.dto.PermissionNodeDTO;
 import com.startdt.modules.role.dal.pojo.dto.QueryPermissionDTO;
 import com.startdt.modules.role.service.IResourcePermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -63,17 +63,17 @@ public class ResourcePermissionServiceImpl implements IResourcePermissionService
     }
 
     @Override
-    public int modifyResourcePermission(PermissionDTO permissionDTO) {
+    public int modifyResourcePermission(PermissionReq permissionReq) {
         //查询该权限是否存
         ResourcePermissionInfoExample example = new ResourcePermissionInfoExample();
-        example.or().andCodeEqualTo(permissionDTO.getCode()).andIsDeleteEqualTo((byte)0);
+        example.or().andCodeEqualTo(permissionReq.getCode()).andIsDeleteEqualTo((byte)0);
         ResourcePermissionInfo resourcePermissionInfo = resourcePermissionInfoMapper.selectOneByExample(example);
         if(resourcePermissionInfo == null){
             throw new FrameworkException(BizResultConstant.NO_CONTENT_DATA);
         }
-        resourcePermissionInfo.setName(permissionDTO.getName());
-        resourcePermissionInfo.setValue(permissionDTO.getValue());
-        resourcePermissionInfo.setIcon(permissionDTO.getIcon());
+        resourcePermissionInfo.setName(permissionReq.getName());
+        resourcePermissionInfo.setValue(permissionReq.getValue());
+        resourcePermissionInfo.setIcon(permissionReq.getIcon());
 
         return resourcePermissionInfoMapper.updateByExampleSelective(resourcePermissionInfo,example);
     }
@@ -121,7 +121,7 @@ public class ResourcePermissionServiceImpl implements IResourcePermissionService
     }
 
     @Override
-    public List<PermissionNodeDTO> PermissionNodeSelective(QueryPermissionDTO queryPermissionDTO) {
+    public List<PermissionNodeDTO> permissionNodeSelective(QueryPermissionDTO queryPermissionDTO) {
         ResourcePermissionInfoExample example = new ResourcePermissionInfoExample();
         ResourcePermissionInfoExample.Criteria criteria = example.or();
         if(!StringUtils.isEmpty(queryPermissionDTO.getCode()) || !StringUtils.isEmpty(queryPermissionDTO.getName())){
@@ -137,6 +137,22 @@ public class ResourcePermissionServiceImpl implements IResourcePermissionService
         recursionPermissionSon(nodeDTOS);
 
         return nodeDTOS;
+    }
+
+    @Override
+    public List<ResourcePermissionInfo> permissionInfoByCodes(List<String> codes) {
+        if(CollectionUtils.isEmpty(codes)){
+            return Collections.emptyList();
+        }
+        return resourcePermissionInfoMapper.selectByIds(codes);
+    }
+
+    @Override
+    public List<ResourcePermissionInfo> permissionInfoByParentCode(String parentCode) {
+        ResourcePermissionInfoExample example = new ResourcePermissionInfoExample();
+        example.or().andParentCodeEqualTo(parentCode).andIsDeleteEqualTo((byte)0);
+
+        return resourcePermissionInfoMapper.selectByExample(example);
     }
 
     private void recursionResource(PermissionNodeDTO permissionNodeDTO,List<ResourcePermissionInfo> list,int sort){

@@ -33,10 +33,10 @@ public class Swagger2Configuration {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-            .title("接口文档")
+            .title("手脚架接口文档")
             .description("统一接口文档")
             .termsOfServiceUrl("http://www.startdt.com/")
-            .version("1.0.0")
+            .version("1.1.0")
             .build();
     }
 }

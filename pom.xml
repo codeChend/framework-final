@@ -124,6 +124,11 @@
 				<artifactId>starter-role</artifactId>
 				<version>${revision}</version>
 			</dependency>
+			<dependency>
+				<groupId>com.startdt.platform</groupId>
+				<artifactId>framework-modules</artifactId>
+				<version>${revision}</version>
+			</dependency>
 
 			<dependency>
 				<groupId>com.startdt.platform</groupId>

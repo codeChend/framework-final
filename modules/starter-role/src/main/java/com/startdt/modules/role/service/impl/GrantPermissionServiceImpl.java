@@ -1,22 +1,27 @@
 package com.startdt.modules.role.service.impl;
 
 import com.startdt.modules.common.pojo.Page;
+import com.startdt.modules.common.utils.BeanConverter;
 import com.startdt.modules.common.utils.enums.PrincipalTypeEnum;
 import com.startdt.modules.common.utils.enums.ResourceTypeEnum;
+import com.startdt.modules.common.utils.enums.RolePermissionEnum;
+import com.startdt.modules.common.utils.exception.FrameworkException;
+import com.startdt.modules.common.utils.result.BizResultConstant;
 import com.startdt.modules.role.dal.mapper.GrantPermissionMapper;
 import com.startdt.modules.role.dal.pojo.domain.GrantPermission;
 import com.startdt.modules.role.dal.pojo.domain.GrantPermissionExample;
-import com.startdt.modules.role.dal.pojo.dto.PermissionNodeDTO;
-import com.startdt.modules.role.dal.pojo.dto.RoleInfoDTO;
+import com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfo;
+import com.startdt.modules.role.dal.pojo.dto.*;
 import com.startdt.modules.role.dal.pojo.request.grant.GrantUserRoleReq;
 import com.startdt.modules.role.service.IGrantPermissionService;
+import com.startdt.modules.role.service.IResourcePermissionService;
 import com.startdt.modules.role.service.IRolePermissionInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -35,6 +40,9 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
 
     @Autowired
     private IRolePermissionInfoService rolePermissionInfoService;
+
+    @Autowired
+    private IResourcePermissionService resourcePermissionService;
 
     @Override
     public int grantUserRole(GrantUserRoleReq grantUserRoleReq) {
@@ -79,12 +87,13 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
         long totalCount = grantPermissionMapper.countByExample(example);
         List<GrantPermission> dataList = grantPermissionMapper.selectByExamplePaging(example, (currentPage - 1) * pageSize, pageSize);
         List<String> roleIds =  dataList.parallelStream().map(GrantPermission::getResources).collect(Collectors.toList());;
-        List<RoleInfoDTO> resultList = rolePermissionInfoService.listRole(roleIds);
+        List<RolePermissionDTO> resultList = rolePermissionInfoService.listRole(roleIds);
+
 
         Page<RoleInfoDTO> pageObj=new Page<>();
         pageObj.setCurrentPage(currentPage);
         pageObj.setPageSize(pageSize);
-        pageObj.setDataList(resultList);
+        pageObj.setDataList(BeanConverter.mapList(resultList,RoleInfoDTO.class));
         pageObj.setTotalCount(totalCount);
         pageObj.setTotalPage((int)Math.ceil(totalCount/(float)pageSize));
 
@@ -103,28 +112,163 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
 
         List<String> roleIds = grantPermissions.parallelStream().map(GrantPermission::getResources).collect(Collectors.toList());
 
-        return rolePermissionInfoService.listRole(roleIds);
+        return BeanConverter.mapList(rolePermissionInfoService.listRole(roleIds), RoleInfoDTO.class);
+    }
+
+    @Override
+    public List<ResourcePermissionInfo> permissionAllByUserId(String userId){
+        //通过userId获取所有角色信息
+        List<RoleInfoDTO> roleInfoDTOS = listByUserId(userId);
+        //根据角色信息获取权限信息
+        List<String> roleIds = roleInfoDTOS.parallelStream().map(roleInfoDTO -> String.valueOf(roleInfoDTO.getId())).collect(Collectors.toList());
+        List<RolePermissionDTO> rolePermissionDTOS = rolePermissionInfoService.listRole(roleIds);
+
+        //过滤出系统级权限
+        List<PermissionCodeDTO> systemPermission = new ArrayList<>();
+        rolePermissionDTOS.forEach(rolePermissionDTO -> {
+            List<PermissionCodeDTO> permissionCodeDTOs = rolePermissionDTO.getPermissions()
+                    .parallelStream().filter(permissionCode -> RolePermissionEnum.SYSTEM_PERMISSION.getCode() == permissionCode.getType())
+                    .collect(Collectors.toList());
+
+            systemPermission.addAll(permissionCodeDTOs);
+        });
+        //去重
+        Set h = new HashSet(systemPermission);
+        systemPermission.clear();
+        systemPermission.addAll(h);
+        //根据权限code获取权限信息
+        List<String> permissionCodes = systemPermission.parallelStream().map(PermissionCodeDTO::getCode).collect(Collectors.toList());
+
+        return resourcePermissionService.permissionInfoByCodes(permissionCodes);
+
     }
 
     @Override
     public List<PermissionNodeDTO> getMenuPermission(String userId) {
-        //通过userId获取所有角色信息
-        List<RoleInfoDTO> roleInfoDTOS = listByUserId(userId);
-        //根据角色信息获取权限信息
-//        rolePermissionInfoService.getRoleById()
+        List<ResourcePermissionInfo> permissionNodeDTOS = permissionAllByUserId(userId);
 
-        return null;
+        //过滤父节点的权限集
+        permissionNodeDTOS = permissionNodeDTOS
+                .parallelStream().filter(permission -> StringUtils.isEmpty(permission.getParentCode()))
+                .collect(Collectors.toList());
+
+        List<PermissionNodeDTO> resultList = BeanConverter.mapList(permissionNodeDTOS,PermissionNodeDTO.class);
+
+        List<String> permissionCodes = resultList.parallelStream().map(PermissionNodeDTO::getCode).collect(Collectors.toList());
+
+        //递归所有有权限的点
+        recursionNode(resultList,permissionCodes);
+
+        return resultList;
+    }
+
+    @Override
+    public List<PermissionAccessDTO> getRolePermission(Integer roleId) {
+        if(roleId == null){
+            return Collections.emptyList();
+        }
+        //获取角色所拥有的权限集
+        RolePermissionDTO rolePermissionDTO = rolePermissionInfoService.getRoleById(roleId);
+        if(rolePermissionDTO == null || CollectionUtils.isEmpty(rolePermissionDTO.getPermissions())){
+            throw new FrameworkException(BizResultConstant.ROLE_IS_NOT_EXIST_NO_AUTH);
+        }
+
+        List<PermissionCodeDTO> permissionCodeDTOS = rolePermissionDTO.getPermissions();
+
+        permissionCodeDTOS = permissionCodeDTOS.parallelStream()
+                .filter(permissionCodeDTO -> permissionCodeDTO.getType() == RolePermissionEnum.SYSTEM_PERMISSION.getCode()).collect(Collectors.toList());
+
+        //根据权限code获取权限信息
+        List<String> permissionCodes = permissionCodeDTOS.parallelStream().map(PermissionCodeDTO::getCode).collect(Collectors.toList());
+
+        List<ResourcePermissionInfo> permissionInfos = resourcePermissionService.permissionInfoByCodes(permissionCodes);
+
+        //过滤父节点的权限集
+        List<ResourcePermissionInfo> permissionNodeDTOS = permissionInfos
+                .parallelStream().filter(permission -> StringUtils.isEmpty(permission.getParentCode()))
+                .collect(Collectors.toList());
+
+        //获取权限树
+        List<PermissionNodeDTO> authTree = resourcePermissionService.permissionNodeSelective(null);
+
+        List<PermissionAccessDTO> permissionAccessDTOS = BeanConverter.mapList(authTree,PermissionAccessDTO.class);
+
+        recursionAccessNode(permissionAccessDTOS,permissionCodes);
+
+        return permissionAccessDTOS;
     }
 
     @Override
     public List<String> getUrlPermission(String userId) {
-        return null;
+        //根据userId获取系统级所有权限集
+        List<ResourcePermissionInfo> permissionInfoList = permissionAllByUserId(userId);
+
+        return permissionInfoList.parallelStream().map(ResourcePermissionInfo::getResUrl).collect(Collectors.toList());
     }
 
     @Override
     public List<String> getBusinessPermission(String userId) {
-        return null;
+        //通过userId获取所有角色信息
+        List<RoleInfoDTO> roleInfoDTOS = listByUserId(userId);
+        //根据角色信息获取权限信息
+        List<String> roleIds = roleInfoDTOS.parallelStream().map(roleInfoDTO -> String.valueOf(roleInfoDTO.getId())).collect(Collectors.toList());
+        List<RolePermissionDTO> rolePermissionDTOS = rolePermissionInfoService.listRole(roleIds);
+
+        //过滤出业务级权限
+        List<PermissionCodeDTO> businessPermission = new ArrayList<>();
+        rolePermissionDTOS.forEach(rolePermissionDTO -> {
+            List<PermissionCodeDTO> permissionCodeDTOs = rolePermissionDTO.getPermissions()
+                    .parallelStream().filter(permissionCode -> RolePermissionEnum.BUSINESS_PERMISSION.getCode() == permissionCode.getType())
+                    .collect(Collectors.toList());
+
+            businessPermission.addAll(permissionCodeDTOs);
+        });
+
+        List<String> permissionCodes = businessPermission.parallelStream().map(PermissionCodeDTO::getCode).collect(Collectors.toList());
+
+        //去重
+        HashSet h = new HashSet(permissionCodes);
+        permissionCodes.clear();
+        permissionCodes.addAll(h);
+
+        return permissionCodes;
     }
+
+    private void recursionNode(List<PermissionNodeDTO> permissionNodeDTOS,List<String> permissionCodes){
+        permissionNodeDTOS.forEach(permissionNodeDTO -> {
+            List<ResourcePermissionInfo> resourcePermissionInfos1 = resourcePermissionService.permissionInfoByParentCode(permissionNodeDTO.getParentCode());
+            List<PermissionNodeDTO> permissionSon = new ArrayList<>();
+            if(!CollectionUtils.isEmpty(resourcePermissionInfos1)){
+                resourcePermissionInfos1.forEach(resourcePermissionInfo -> {
+                    if(permissionCodes.contains(resourcePermissionInfo.getCode())){
+                        permissionSon.add(BeanConverter.convert(resourcePermissionInfo,PermissionNodeDTO.class));
+                    }
+                });
+                recursionNode(permissionSon,permissionCodes);
+            }
+            permissionNodeDTO.setPermissionNodeSon(permissionSon);
+        });
+    }
+
+    /**
+     * 递归授权树
+     * @param permissionAccessDTOS
+     * @param permissionCodes
+     */
+    private void recursionAccessNode(List<PermissionAccessDTO> permissionAccessDTOS,List<String> permissionCodes){
+        permissionAccessDTOS.forEach(permissionAccessDTO -> {
+            String code = permissionAccessDTO.getCode();
+            if(permissionCodes.contains(code)){
+                permissionAccessDTO.setAccess(true);
+            }
+            if(CollectionUtils.isEmpty(permissionAccessDTO.getPermissionAccessSon())){
+                //递归
+                recursionAccessNode(permissionAccessDTO.getPermissionAccessSon(),permissionCodes);
+            }
+        });
+    }
+
+
 
 
 }

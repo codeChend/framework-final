@@ -1,6 +1,8 @@
 package com.startdt.modules.role.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.google.common.collect.Lists;
 import com.startdt.modules.common.pojo.Page;
 import com.startdt.modules.common.utils.BeanConverter;
 import com.startdt.modules.common.utils.exception.FrameworkException;
@@ -115,14 +117,25 @@ public class RolePermissionInfoServiceImpl implements IRolePermissionInfoService
     }
 
     @Override
-    public List<RoleInfoDTO> listRole(List<String> roleIds) {
+    public List<RolePermissionDTO> listRole(List<String> roleIds) {
         if(CollectionUtils.isEmpty(roleIds)){
             return Collections.emptyList();
         }
         List<Integer> ids = roleIds.parallelStream().map(s -> Integer.valueOf(s)).collect(Collectors.toList());
         List<RolePermissionInfo> rolePermissionInfos = rolePermissionInfoMapper.selectByIds(ids);
 
-        return BeanConverter.mapList(rolePermissionInfos,RoleInfoDTO.class);
+        List<RolePermissionDTO> resultList = Lists.newArrayList();
+
+        rolePermissionInfos.forEach(rolePermissionInfo -> {
+            RolePermissionDTO rolePermissionDTO = BeanConverter.convert(rolePermissionInfo,RolePermissionDTO.class);
+            if(!StringUtils.isEmpty(rolePermissionInfo.getPermission())){
+                List<PermissionCodeDTO> permissionCodeDTO = JSON.parseArray(rolePermissionInfo.getPermission(),PermissionCodeDTO.class);
+                rolePermissionDTO.setPermissions(permissionCodeDTO);
+            }
+            resultList.add(rolePermissionDTO);
+        });
+
+        return resultList;
     }
 
 }
