@@ -2,6 +2,7 @@ package com.startdt.modules.role.dal.pojo.dto;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,12 +43,12 @@ public class RolePermissionDTO implements Serializable {
     /**
      * 创建时间
      */
-    private LocalDateTime gmtCreate;
+    private Date gmtCreate;
 
     /**
      * 更新时间
      */
-    private LocalDateTime gmtModified;
+    private Date gmtModified;
 
     public Integer getId() {
         return id;
@@ -97,19 +98,19 @@ public class RolePermissionDTO implements Serializable {
         this.status = status;
     }
 
-    public LocalDateTime getGmtCreate() {
+    public Date getGmtCreate() {
         return gmtCreate;
     }
 
-    public void setGmtCreate(LocalDateTime gmtCreate) {
+    public void setGmtCreate(Date gmtCreate) {
         this.gmtCreate = gmtCreate;
     }
 
-    public LocalDateTime getGmtModified() {
+    public Date getGmtModified() {
         return gmtModified;
     }
 
-    public void setGmtModified(LocalDateTime gmtModified) {
+    public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
     }
 }

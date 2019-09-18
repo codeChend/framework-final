@@ -1,5 +1,7 @@
 package com.startdt.modules.role.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Lists;
 import com.startdt.modules.common.pojo.Page;
 import com.startdt.modules.common.utils.BeanConverter;
 import com.startdt.modules.common.utils.enums.PrincipalTypeEnum;
@@ -11,6 +13,7 @@ import com.startdt.modules.role.dal.mapper.GrantPermissionMapper;
 import com.startdt.modules.role.dal.pojo.domain.GrantPermission;
 import com.startdt.modules.role.dal.pojo.domain.GrantPermissionExample;
 import com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfo;
+import com.startdt.modules.role.dal.pojo.domain.RolePermissionInfo;
 import com.startdt.modules.role.dal.pojo.dto.*;
 import com.startdt.modules.role.dal.pojo.request.grant.GrantUserRoleReq;
 import com.startdt.modules.role.service.IGrantPermissionService;
@@ -101,12 +104,12 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
     }
 
     @Override
-    public List<RoleInfoDTO> listByUserId(String userId) {
-        if(StringUtils.isEmpty(userId)){
+    public List<RoleInfoDTO> listByUserId(Integer userId) {
+        if(userId == null){
             return Collections.emptyList();
         }
         GrantPermissionExample example = new GrantPermissionExample();
-        example.or().andPrincipalPartEqualTo(userId).andPrincipalPartTypeEqualTo(PrincipalTypeEnum.USER.getCode().byteValue());
+        example.or().andPrincipalPartEqualTo(String.valueOf(userId)).andPrincipalPartTypeEqualTo(PrincipalTypeEnum.USER.getCode().byteValue());
 
         List<GrantPermission> grantPermissions = grantPermissionMapper.selectByExample(example);
 
@@ -116,7 +119,7 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
     }
 
     @Override
-    public List<ResourcePermissionInfo> permissionAllByUserId(String userId){
+    public List<ResourcePermissionInfo> permissionAllByUserId(Integer userId){
         //通过userId获取所有角色信息
         List<RoleInfoDTO> roleInfoDTOS = listByUserId(userId);
         //根据角色信息获取权限信息
@@ -144,7 +147,7 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
     }
 
     @Override
-    public List<PermissionNodeDTO> getMenuPermission(String userId) {
+    public List<PermissionNodeDTO> getMenuPermission(Integer userId) {
         List<ResourcePermissionInfo> permissionNodeDTOS = permissionAllByUserId(userId);
 
         //过滤父节点的权限集
@@ -199,7 +202,7 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
     }
 
     @Override
-    public List<String> getUrlPermission(String userId) {
+    public List<String> getUrlPermission(Integer userId) {
         //根据userId获取系统级所有权限集
         List<ResourcePermissionInfo> permissionInfoList = permissionAllByUserId(userId);
 
@@ -207,7 +210,7 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
     }
 
     @Override
-    public List<String> getBusinessPermission(String userId) {
+    public List<String> getBusinessPermission(Integer userId) {
         //通过userId获取所有角色信息
         List<RoleInfoDTO> roleInfoDTOS = listByUserId(userId);
         //根据角色信息获取权限信息
@@ -232,6 +235,45 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
         permissionCodes.addAll(h);
 
         return permissionCodes;
+    }
+
+    @Override
+    public int grantRolePermission(Integer roleId, List<String> permissionCode) {
+        RolePermissionDTO rolePermissionDTO = rolePermissionInfoService.getRoleById(roleId);
+        if(rolePermissionDTO == null){
+            throw new FrameworkException(BizResultConstant.ROLE_IS_NOT_EXIST);
+        }
+        List<PermissionCodeDTO> permissionCodeDTOS = rolePermissionDTO.getPermissions();
+
+        List<ResourcePermissionInfo> list = resourcePermissionService.permissionInfoByCodes(permissionCode);
+
+        Map<String,ResourcePermissionInfo> map = new HashMap<>();
+
+        list.forEach(resourcePermissionInfo -> {
+            map.put(resourcePermissionInfo.getCode(),resourcePermissionInfo);
+        });
+
+        permissionCode.forEach(permission -> {
+            ResourcePermissionInfo resourcePermissionInfo = map.get(permission);
+            if(resourcePermissionInfo != null){
+                recursionGrantNode(permissionCodeDTOS,map,resourcePermissionInfo);
+            }
+        });
+
+        return rolePermissionInfoService.modifyRolePermission(rolePermissionDTO);
+    }
+
+    @Override
+    public int releaseRolePermission(Integer roleId, List<String> permissionCode) {
+        RolePermissionDTO rolePermissionDTO = rolePermissionInfoService.getRoleById(roleId);
+        if(rolePermissionDTO == null){
+            throw new FrameworkException(BizResultConstant.ROLE_IS_NOT_EXIST);
+        }
+        List<PermissionCodeDTO> permissionCodeDTOS = rolePermissionDTO.getPermissions();
+
+
+
+        return 0;
     }
 
     private void recursionNode(List<PermissionNodeDTO> permissionNodeDTOS,List<String> permissionCodes){
@@ -268,7 +310,32 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
         });
     }
 
+    /**
+     * 递归给父节点授权
+     * @param permissionCodeDTOS
+     * @param map
+     * @param resourcePermissionInfo
+     */
+    private void recursionGrantNode(List<PermissionCodeDTO> permissionCodeDTOS,Map<String,ResourcePermissionInfo> map,ResourcePermissionInfo resourcePermissionInfo){
+        PermissionCodeDTO permissionCodeDTO = new PermissionCodeDTO();
+        permissionCodeDTO.setCode(resourcePermissionInfo.getCode());
+        permissionCodeDTO.setType(RolePermissionEnum.SYSTEM_PERMISSION.getCode());
 
+        if(!permissionCodeDTOS.contains(permissionCodeDTO)){
+            permissionCodeDTOS.add(permissionCodeDTO);
+        }
+        String parentCode = resourcePermissionInfo.getParentCode();
+        if(!StringUtils.isEmpty(parentCode)){
+            ResourcePermissionInfo parentResource = map.get(parentCode);
+            if(parentResource == null){
+                parentResource = resourcePermissionService.permissionInfoByCode(parentCode);
+            }
+            if(parentResource != null){
+                map.remove(parentCode);
 
+                recursionGrantNode(permissionCodeDTOS,map,parentResource);
+            }
 
+        }
+    }
 }

@@ -155,6 +155,13 @@ public class ResourcePermissionServiceImpl implements IResourcePermissionService
         return resourcePermissionInfoMapper.selectByExample(example);
     }
 
+    @Override
+    public ResourcePermissionInfo permissionInfoByCode(String code) {
+        ResourcePermissionInfoExample example = new ResourcePermissionInfoExample();
+        example.or().andCodeEqualTo(code).andIsDeleteEqualTo((byte)0);
+        return resourcePermissionInfoMapper.selectOneByExample(example);
+    }
+
     private void recursionResource(PermissionNodeDTO permissionNodeDTO,List<ResourcePermissionInfo> list,int sort){
 
         ResourcePermissionInfo resourcePermissionInfo = BeanConverter.convert(permissionNodeDTO,ResourcePermissionInfo.class);

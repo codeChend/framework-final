@@ -50,21 +50,21 @@ public interface IGrantPermissionService {
      * @param userId
      * @return
      */
-    List<RoleInfoDTO> listByUserId(String userId);
+    List<RoleInfoDTO> listByUserId(Integer userId);
 
     /**
      * 根据用户获取系统级的全部权限list
      * @param userId
      * @return
      */
-    List<ResourcePermissionInfo> permissionAllByUserId(String userId);
+    List<ResourcePermissionInfo> permissionAllByUserId(Integer userId);
 
-                                                      /**
+    /**
      * 通过userId获取所有菜单权限
      * @param userId
      * @return
      */
-    List<PermissionNodeDTO> getMenuPermission(String userId);
+    List<PermissionNodeDTO> getMenuPermission(Integer userId);
 
     /**
      * 通过角色id获取权限树进行授权
@@ -78,12 +78,28 @@ public interface IGrantPermissionService {
      * @param userId
      * @return
      */
-    List<String> getUrlPermission(String userId);
+    List<String> getUrlPermission(Integer userId);
 
     /**
      * 获取业务权限code集合
      * @param userId
      * @return
      */
-    List<String> getBusinessPermission(String userId);
+    List<String> getBusinessPermission(Integer userId);
+
+    /**
+     * 给角色授权，若是子节点会附带上根节点的权限
+     * @param roleId
+     * @param permissionCode
+     * @return
+     */
+    int grantRolePermission(Integer roleId,List<String> permissionCode);
+
+    /**
+     * 释放权限，若是父节点会释放所有子节点权限
+     * @param roleId
+     * @param permissionCode
+     * @return
+     */
+    int releaseRolePermission(Integer roleId,List<String> permissionCode);
 }

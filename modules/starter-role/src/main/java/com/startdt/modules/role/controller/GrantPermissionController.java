@@ -5,9 +5,11 @@ import com.startdt.modules.common.utils.enums.PrincipalTypeEnum;
 import com.startdt.modules.common.utils.enums.ResourceTypeEnum;
 import com.startdt.modules.common.utils.result.Result;
 import com.startdt.modules.role.dal.pojo.domain.GrantPermissionExample;
+import com.startdt.modules.role.dal.pojo.dto.PermissionAccessDTO;
 import com.startdt.modules.role.dal.pojo.dto.PermissionNodeDTO;
 import com.startdt.modules.role.dal.pojo.dto.RoleInfoDTO;
 import com.startdt.modules.role.dal.pojo.request.grant.GrantUserRoleReq;
+import com.startdt.modules.role.dal.pojo.request.grant.RolePermissionReq;
 import com.startdt.modules.role.service.IGrantPermissionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -64,33 +66,57 @@ public class GrantPermissionController {
         return Result.ofSuccess(grantPermissionService.pageRoleByUserId(example,currentPage,pageSize));
     }
 
-//    @GetMapping("/getMenuPermission")
-//    @ApiOperation(value = "通过userId分层获取所有菜单权限")
-//    @ApiImplicitParams(
-//            @ApiImplicitParam(value = "用户id",name = "userId")
-//    )
-    public Result<List<PermissionNodeDTO>> getMenuPermission(@RequestParam("userId") String userId) {
+    @GetMapping("/getMenuPermission")
+    @ApiOperation(value = "通过userId分层获取所有菜单权限")
+    @ApiImplicitParams(
+            @ApiImplicitParam(value = "用户id",name = "userId")
+    )
+    public Result<List<PermissionNodeDTO>> getMenuPermission(@RequestParam("userId") Integer userId) {
 
         return Result.ofSuccess(grantPermissionService.getMenuPermission(userId));
     }
 
-//    @GetMapping("/getUrlPermission")
-//    @ApiOperation(value =  "通过userId获取所有的url权限集")
-//    @ApiImplicitParams(
-//            @ApiImplicitParam(value = "用户id",name = "userId")
-//    )
-    public Result<List<String>> getUrlPermission(@RequestParam("userId") String userId) {
+    @GetMapping("/getUrlPermission")
+    @ApiOperation(value =  "通过userId获取所有的url权限集")
+    @ApiImplicitParams(
+            @ApiImplicitParam(value = "用户id",name = "userId")
+    )
+    public Result<List<String>> getUrlPermission(@RequestParam("userId") Integer userId) {
 
         return Result.ofSuccess(grantPermissionService.getUrlPermission(userId));
     }
 
-//    @GetMapping("/getBusinessPermission")
-//    @ApiOperation(value = "通过userId获取外部业务权限code集合")
-//    @ApiImplicitParams(
-//            @ApiImplicitParam(value = "用户id",name = "userId")
-//    )
-    public Result<List<String>> getBusinessPermission(@RequestParam("userId") String userId) {
+    @GetMapping("/getBusinessPermission")
+    @ApiOperation(value = "通过userId获取外部业务权限code集合")
+    @ApiImplicitParams(
+            @ApiImplicitParam(value = "用户id",name = "userId")
+    )
+    public Result<List<String>> getBusinessPermission(@RequestParam("userId") Integer userId) {
 
         return Result.ofSuccess(grantPermissionService.getBusinessPermission(userId));
+    }
+
+    @GetMapping("/getRolePermission")
+    @ApiOperation(value = "通过角色id获取内部系统权限树集合")
+    @ApiImplicitParams(
+            @ApiImplicitParam(value = "用户id",name = "userId")
+    )
+    public Result<List<PermissionAccessDTO>> getRolePermission(@RequestParam("roleId") Integer roleId) {
+
+        return Result.ofSuccess(grantPermissionService.getRolePermission(roleId));
+    }
+
+    @PostMapping("/grantRolePermission")
+    @ApiOperation(value = "给角色授权")
+    public Result grantRolePermission(@RequestBody RolePermissionReq rolePermissionReq){
+
+        return Result.ofSuccess(grantPermissionService.grantRolePermission(rolePermissionReq.getRoleId(),rolePermissionReq.getPermissionCodes()));
+    }
+
+    @PostMapping("/releaseRolePermission")
+    @ApiOperation(value = "释放角色的某些权限")
+    public Result releaseRolePermission(@RequestBody RolePermissionReq rolePermissionReq){
+
+        return Result.ofSuccess(grantPermissionService.releaseRolePermission(rolePermissionReq.getRoleId(),rolePermissionReq.getPermissionCodes()));
     }
 }

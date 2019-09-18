@@ -11,7 +11,6 @@ import com.startdt.modules.role.dal.mapper.RolePermissionInfoMapper;
 import com.startdt.modules.role.dal.pojo.domain.RolePermissionInfo;
 import com.startdt.modules.role.dal.pojo.domain.RolePermissionInfoExample;
 import com.startdt.modules.role.dal.pojo.dto.PermissionCodeDTO;
-import com.startdt.modules.role.dal.pojo.dto.PermissionNodeDTO;
 import com.startdt.modules.role.dal.pojo.dto.RoleInfoDTO;
 import com.startdt.modules.role.dal.pojo.dto.RolePermissionDTO;
 import com.startdt.modules.role.dal.pojo.request.role.ModifyRoleInfoReq;
@@ -22,7 +21,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -108,10 +109,11 @@ public class RolePermissionInfoServiceImpl implements IRolePermissionInfoService
             throw new FrameworkException(BizResultConstant.NO_CONTENT_DATA);
         }
         RolePermissionDTO rolePermissionDTO = BeanConverter.convert(rolePermissionInfo,RolePermissionDTO.class);
+        List<PermissionCodeDTO> permissionCodeDTO = new ArrayList<>();
         if(!StringUtils.isEmpty(rolePermissionInfo.getPermission())){
-            List<PermissionCodeDTO> permissionCodeDTO = JSONArray.parseArray(rolePermissionInfo.getPermission(),PermissionCodeDTO.class);
-            rolePermissionDTO.setPermissions(permissionCodeDTO);
+            permissionCodeDTO = JSONArray.parseArray(rolePermissionInfo.getPermission(),PermissionCodeDTO.class);
         }
+        rolePermissionDTO.setPermissions(permissionCodeDTO);
 
         return rolePermissionDTO;
     }
@@ -136,6 +138,16 @@ public class RolePermissionInfoServiceImpl implements IRolePermissionInfoService
         });
 
         return resultList;
+    }
+
+    @Override
+    public int modifyRolePermission(RolePermissionDTO permissionDTO) {
+
+        RolePermissionInfo rolePermissionInfo = BeanConverter.convert(permissionDTO,RolePermissionInfo.class);
+        rolePermissionInfo.setPermission(JSON.toJSONString(permissionDTO.getPermissions()));
+        rolePermissionInfo.setGmtModified(new Date());
+
+        return rolePermissionInfoMapper.updateByPrimaryKeySelective(rolePermissionInfo);
     }
 
 }

@@ -63,4 +63,11 @@ public interface IResourcePermissionService {
      * @return
      */
     List<ResourcePermissionInfo> permissionInfoByParentCode(String parentCode);
+
+    /**
+     * 根据权限code获取权限列表
+     * @param code
+     * @return
+     */
+    ResourcePermissionInfo permissionInfoByCode(String code);
 }

@@ -74,6 +74,11 @@ public interface IRolePermissionInfoService{
      */
     List<RolePermissionDTO> listRole(List<String> roleIds);
 
-
+    /**
+     * 角色添加授权
+     * @param permissionDTO
+     * @return
+     */
+    int modifyRolePermission(RolePermissionDTO permissionDTO);
 
 }
