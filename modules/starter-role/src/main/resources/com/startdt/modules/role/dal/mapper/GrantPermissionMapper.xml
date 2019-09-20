@@ -286,7 +286,7 @@
     <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
-    limit 0,1
+    limit 1
   </select>
   <insert id="insertBatch" parameterType="com.startdt.modules.role.dal.pojo.domain.GrantPermission">
     insert into grant_permission (principal_part, 

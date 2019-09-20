@@ -10,10 +10,10 @@
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="icon" jdbcType="VARCHAR" property="icon" />
     <result column="note" jdbcType="VARCHAR" property="note" />
-    <result column="status" jdbcType="TINYINT" property="status" />
-    <result column="login_time" jdbcType="TIMESTAMP" property="loginTime" />
-    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
-    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+    <result column="status"  property="status" />
+    <result column="login_time" property="loginTime" />
+    <result column="gmt_create"  property="gmtCreate" />
+    <result column="gmt_modified" property="gmtModified" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -331,7 +331,7 @@
     <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
-    limit 0,1
+    limit 1
   </select>
   <insert id="insertBatch" parameterType="com.startdt.modules.user.dal.pojo.domain.TbUserInfo">
     insert into tb_user_info (user_name, 

@@ -37,7 +37,7 @@ public class ResourcePermissionController {
     }
 
     @PostMapping("/modifyResourcePermission")
-    @ApiOperation(value = "保存新的模块资源权限信息")
+    @ApiOperation(value = "修改模块资源权限信息")
     public Result<Integer> modifyResourcePermission(@RequestBody @Valid PermissionReq permissionReq) {
 
         return Result.ofSuccess(resourcePermissionService.modifyResourcePermission(permissionReq));

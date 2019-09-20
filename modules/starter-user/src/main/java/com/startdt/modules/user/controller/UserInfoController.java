@@ -95,8 +95,8 @@ public class UserInfoController {
     })
     public Result<Page<UserDetailVO>> pageUser(@RequestParam(value = "pageNum",defaultValue = "1") Integer pageNum,
                                              @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize) {
-        TbUserInfoExample example = new TbUserInfoExample();
-        example.or().andStatusEqualTo((byte)1);
-        return Result.ofSuccess(userInfoService.selectByExamplePaging(example,pageNum,pageSize));
+//        TbUserInfoExample example = new TbUserInfoExample();
+//        example.or().andStatusEqualTo((byte)1);
+        return Result.ofSuccess(userInfoService.selectByExamplePaging(null,pageNum,pageSize));
     }
 }

@@ -15,7 +15,7 @@ import java.util.List;
 public class UserDetailVO {
 
     @ApiModelProperty(value = "主键id",name="id",example = "1")
-    private String id;
+    private Integer id;
     /**
      * 账号
      */
@@ -53,11 +53,11 @@ public class UserDetailVO {
     private String note;
 
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

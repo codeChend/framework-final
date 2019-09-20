@@ -12,7 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 //演示开启自定义注解的能力
-@EnableUserStarter
+//@EnableUserStarter
 @EnableLoginStarter
 @EnableStarterSwagger
 @EnableRoleStarter

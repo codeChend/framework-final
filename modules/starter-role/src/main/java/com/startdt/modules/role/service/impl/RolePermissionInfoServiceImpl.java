@@ -2,10 +2,13 @@ package com.startdt.modules.role.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.startdt.modules.common.pojo.Page;
 import com.startdt.modules.common.utils.BeanConverter;
 import com.startdt.modules.common.utils.exception.FrameworkException;
+import com.startdt.modules.common.utils.page.PageUtil;
 import com.startdt.modules.common.utils.result.BizResultConstant;
 import com.startdt.modules.role.dal.mapper.RolePermissionInfoMapper;
 import com.startdt.modules.role.dal.pojo.domain.RolePermissionInfo;
@@ -16,6 +19,8 @@ import com.startdt.modules.role.dal.pojo.dto.RolePermissionDTO;
 import com.startdt.modules.role.dal.pojo.request.role.ModifyRoleInfoReq;
 import com.startdt.modules.role.dal.pojo.request.role.SaveRoleInfoReq;
 import com.startdt.modules.role.service.IRolePermissionInfoService;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.CollectionUtils;
@@ -36,10 +41,14 @@ import java.util.stream.Collectors;
  * @since 2019-08-28
  */
 @Configuration
+@Slf4j
 public class RolePermissionInfoServiceImpl implements IRolePermissionInfoService {
 
     @Autowired
     private RolePermissionInfoMapper rolePermissionInfoMapper;
+
+    @Autowired
+    private SqlSessionFactory sqlSessionFactory;
 
     @Override
     public int insertRole(SaveRoleInfoReq rolePermissionDTO) {
@@ -80,17 +89,17 @@ public class RolePermissionInfoServiceImpl implements IRolePermissionInfoService
         if(example == null){
             example = new RolePermissionInfoExample();
         }
-        long totalCount = rolePermissionInfoMapper.countByExample(example);
-        List<RolePermissionInfo> dataList = rolePermissionInfoMapper.selectByExamplePaging(example, (currentPage - 1) * pageSize, pageSize);
-        List<RoleInfoDTO> resultList = BeanConverter.mapList(dataList,RoleInfoDTO.class);
 
-        Page<RoleInfoDTO> pageObj=new Page<>();
-        pageObj.setCurrentPage(currentPage);
-        pageObj.setPageSize(pageSize);
-        pageObj.setDataList(resultList);
-        pageObj.setTotalCount(totalCount);
-        pageObj.setTotalPage((int)Math.ceil(totalCount/(float)pageSize));
-        return pageObj;
+        PageHelper.startPage(currentPage, pageSize);
+
+        List<RolePermissionInfo> dataList = rolePermissionInfoMapper.selectByExample(example);
+
+        PageInfo<RolePermissionInfo> pageInfo = new PageInfo<>(dataList);
+
+
+        log.info("分页结果为{}",JSON.toJSONString(pageInfo));
+
+        return PageUtil.convertPage(pageInfo,RoleInfoDTO.class);
     }
 
     @Override

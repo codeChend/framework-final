@@ -1,19 +1,19 @@
 package com.startdt.modules.role.service.impl;
 
-import com.alibaba.fastjson.JSON;
-import com.google.common.collect.Lists;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.startdt.modules.common.pojo.Page;
 import com.startdt.modules.common.utils.BeanConverter;
 import com.startdt.modules.common.utils.enums.PrincipalTypeEnum;
 import com.startdt.modules.common.utils.enums.ResourceTypeEnum;
 import com.startdt.modules.common.utils.enums.RolePermissionEnum;
 import com.startdt.modules.common.utils.exception.FrameworkException;
+import com.startdt.modules.common.utils.page.PageUtil;
 import com.startdt.modules.common.utils.result.BizResultConstant;
 import com.startdt.modules.role.dal.mapper.GrantPermissionMapper;
 import com.startdt.modules.role.dal.pojo.domain.GrantPermission;
 import com.startdt.modules.role.dal.pojo.domain.GrantPermissionExample;
 import com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfo;
-import com.startdt.modules.role.dal.pojo.domain.RolePermissionInfo;
 import com.startdt.modules.role.dal.pojo.dto.*;
 import com.startdt.modules.role.dal.pojo.request.grant.GrantUserRoleReq;
 import com.startdt.modules.role.service.IGrantPermissionService;
@@ -87,20 +87,13 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
             example = new GrantPermissionExample();
         }
 
-        long totalCount = grantPermissionMapper.countByExample(example);
-        List<GrantPermission> dataList = grantPermissionMapper.selectByExamplePaging(example, (currentPage - 1) * pageSize, pageSize);
-        List<String> roleIds =  dataList.parallelStream().map(GrantPermission::getResources).collect(Collectors.toList());;
-        List<RolePermissionDTO> resultList = rolePermissionInfoService.listRole(roleIds);
+        PageHelper.startPage(currentPage, pageSize);
 
+        List<GrantPermission> dataList = grantPermissionMapper.selectByExample(example);
 
-        Page<RoleInfoDTO> pageObj=new Page<>();
-        pageObj.setCurrentPage(currentPage);
-        pageObj.setPageSize(pageSize);
-        pageObj.setDataList(BeanConverter.mapList(resultList,RoleInfoDTO.class));
-        pageObj.setTotalCount(totalCount);
-        pageObj.setTotalPage((int)Math.ceil(totalCount/(float)pageSize));
+        PageInfo<GrantPermission> pageInfo = new PageInfo<>(dataList);
 
-        return pageObj;
+        return PageUtil.convertPage(pageInfo,RoleInfoDTO.class);
     }
 
     @Override

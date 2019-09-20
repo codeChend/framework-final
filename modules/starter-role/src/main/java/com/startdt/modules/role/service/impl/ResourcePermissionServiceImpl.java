@@ -47,7 +47,7 @@ public class ResourcePermissionServiceImpl implements IResourcePermissionService
             criteria.andParentCodeIsNull();
             permissionNodeDTOS.setParentCode(null);
         }
-        example.setOrderByClause("'id' DESC");
+        example.setOrderByClause("'code' DESC");
         String code = "100";
         int sort = 0;
         ResourcePermissionInfo resourcePermissionInfo = resourcePermissionInfoMapper.selectOneByExample(example);
@@ -55,6 +55,7 @@ public class ResourcePermissionServiceImpl implements IResourcePermissionService
             code = Long.valueOf(resourcePermissionInfo.getCode()) + 1 + "";
             sort = resourcePermissionInfo.getSort() + 1;
         }
+        permissionNodeDTOS.setCode(code);
         //递归拆分所有节点list
         recursionResource(permissionNodeDTOS,saveList,sort);
 
@@ -173,9 +174,9 @@ public class ResourcePermissionServiceImpl implements IResourcePermissionService
             for(PermissionNodeDTO permissionNodeSon : permissionNodeDTO.getPermissionNodeSon()){
 
                 permissionNodeSon.setParentCode(permissionNodeDTO.getCode());
-                permissionNodeSon.setCode(permissionNodeDTO.getCode() + "_" + 100 + sonSort);
+                permissionNodeSon.setCode(permissionNodeDTO.getCode() + "_" + (100 + sonSort));
                 recursionResource(permissionNodeSon,list,sort);
-                sort++;
+                sonSort++;
             }
         }
     }

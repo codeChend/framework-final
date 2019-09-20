@@ -331,14 +331,13 @@
     <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
-    limit 0,1
+    limit 1
   </select>
   <insert id="insertBatch" parameterType="com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfo">
     insert into resource_permission_info (code, 
       name, parent_code, value, 
       res_url, type, sort, 
-      icon, is_delete, gmt_create, 
-      gmt_modified)
+      icon)
     values 
 <foreach collection="list" index="index" item="item" separator="," >
 (
@@ -346,8 +345,7 @@
 #{item.code,jdbcType=VARCHAR}, 
       #{item.name,jdbcType=VARCHAR}, #{item.parentCode,jdbcType=VARCHAR}, #{item.value,jdbcType=VARCHAR}, 
       #{item.resUrl,jdbcType=VARCHAR}, #{item.type,jdbcType=TINYINT}, #{item.sort,jdbcType=INTEGER}, 
-      #{item.icon,jdbcType=VARCHAR}, #{item.isDelete,jdbcType=TINYINT}, #{item.gmtCreate,jdbcType=TIMESTAMP}, 
-      #{item.gmtModified,jdbcType=TIMESTAMP}
+      #{item.icon,jdbcType=VARCHAR}
 </trim>
 )</foreach>
 

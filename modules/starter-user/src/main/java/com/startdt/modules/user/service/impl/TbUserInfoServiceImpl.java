@@ -1,7 +1,11 @@
 package com.startdt.modules.user.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.startdt.modules.common.pojo.Page;
 import com.startdt.modules.common.utils.BeanConverter;
+import com.startdt.modules.common.utils.page.PageUtil;
 import com.startdt.modules.common.utils.result.BizResultConstant;
 import com.startdt.modules.common.utils.result.Result;
 import com.startdt.modules.user.dal.mapper.TbUserInfoMapper;
@@ -130,26 +134,16 @@ public class TbUserInfoServiceImpl implements ITbUserInfoService{
 
     @Override
     public Page<UserDetailVO> selectByExamplePaging(TbUserInfoExample example, int currentPage, int pageSize) {
-        if(currentPage <= 0) {
-            currentPage = 1;
-        }
-        if(pageSize <= 0) {
-            pageSize = 10;
-        }
+
+        PageHelper.startPage(currentPage, pageSize,true,true);
+
         if(example == null){
             example = new TbUserInfoExample();
         }
-        long totalCount = userInfoMapper.countByExample(example);
-        List<TbUserInfo> dataList = userInfoMapper.selectByExamplePaging(example, (currentPage - 1) * pageSize, pageSize);
-        List<UserDetailVO> userDetailVOS = BeanConverter.mapList(dataList,UserDetailVO.class);
+        List<TbUserInfo> dataList = userInfoMapper.selectByExample(example);
+        PageInfo<TbUserInfo> pageInfo = new PageInfo<>(dataList);
 
-        Page<UserDetailVO> pageObj=new Page<>();
-        pageObj.setCurrentPage(currentPage);
-        pageObj.setPageSize(pageSize);
-        pageObj.setDataList(userDetailVOS);
-        pageObj.setTotalCount(totalCount);
-        pageObj.setTotalPage((int)Math.ceil(totalCount/(float)pageSize));
-        return pageObj;
+        return PageUtil.convertPage(pageInfo,UserDetailVO.class);
     }
 
 }
