@@ -107,11 +107,8 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfo">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into resource_permission_info (code, name, parent_code, 
+  <insert id="insert" parameterType="com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfo" useGeneratedKeys="true" keyProperty="id">
+    insert into resource_permission_info (code, name, parent_code,
       value, res_url, type, 
       sort, icon, is_delete, 
       gmt_create, gmt_modified)
@@ -120,10 +117,7 @@
       #{sort,jdbcType=INTEGER}, #{icon,jdbcType=VARCHAR}, #{isDelete,jdbcType=TINYINT}, 
       #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfo">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
+  <insert id="insertSelective" parameterType="com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfo" useGeneratedKeys="true" keyProperty="id">
     insert into resource_permission_info
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="code != null">
@@ -333,7 +327,7 @@
     </if>
     limit 1
   </select>
-  <insert id="insertBatch" parameterType="com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfo">
+  <insert id="insertBatch" parameterType="com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfo" useGeneratedKeys="true" keyProperty="id">
     insert into resource_permission_info (code, 
       name, parent_code, value, 
       res_url, type, sort, 

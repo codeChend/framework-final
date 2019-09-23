@@ -94,4 +94,11 @@ public interface ITbUserInfoService {
      * @return
      */
     Page<UserDetailVO> selectByExamplePaging(TbUserInfoExample example, int currentPage, int pageSize);
+
+    /**
+     * 批量插入用户信息
+     * @param userInfoList
+     * @return
+     */
+    Result<List<UserDetailVO>> batchInsertUser(List<TbUserInfo> userInfoList);
 }

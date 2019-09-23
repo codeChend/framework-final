@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @Author: weilong
@@ -30,7 +31,7 @@ import javax.validation.Valid;
  * @Modified By:
  */
 @RestController
-@RequestMapping("/starter/user")
+@RequestMapping("/starter")
 @Api(value = "后台-用户管理", tags = "后台-用户管理")
 public class UserInfoController {
 
@@ -40,7 +41,7 @@ public class UserInfoController {
     @Autowired
     private PasswordEncode passwordEncode;
 
-    @PostMapping("/register")
+    @PostMapping("/user")
     @ApiOperation(value = "添加用户")
     @Transactional(rollbackFor = Exception.class)
     public Result<TbUserInfo> registerUser(@RequestBody @Valid ModifyUserReq modifyUserReq) {
@@ -63,7 +64,7 @@ public class UserInfoController {
         return userInfoService.modifyUser(userInfo);
     }
 
-    @GetMapping("/get")
+    @GetMapping("/user")
     @ApiOperation(value = "获取用户详情")
     public Result<UserDetailVO> getDetail(@RequestParam("id") Integer id) {
         Result<TbUserInfo> userInfoResult = userInfoService.getUserById(id);

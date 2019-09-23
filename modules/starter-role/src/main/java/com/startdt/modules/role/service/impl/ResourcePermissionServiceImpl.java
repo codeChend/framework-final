@@ -47,12 +47,18 @@ public class ResourcePermissionServiceImpl implements IResourcePermissionService
             criteria.andParentCodeIsNull();
             permissionNodeDTOS.setParentCode(null);
         }
-        example.setOrderByClause("'code' DESC");
+        example.setOrderByClause("code DESC");
         String code = "100";
         int sort = 0;
         ResourcePermissionInfo resourcePermissionInfo = resourcePermissionInfoMapper.selectOneByExample(example);
         if(resourcePermissionInfo != null){
-            code = Long.valueOf(resourcePermissionInfo.getCode()) + 1 + "";
+            String mid = "";
+            String parent = resourcePermissionInfo.getParentCode();
+            if(!StringUtils.isEmpty(parent)){
+                mid = resourcePermissionInfo.getCode().substring(parent.length()+1);
+                parent += "_";
+            }
+            code = parent + (Long.valueOf(mid) + 1) + "";
             sort = resourcePermissionInfo.getSort() + 1;
         }
         permissionNodeDTOS.setCode(code);
@@ -62,6 +68,8 @@ public class ResourcePermissionServiceImpl implements IResourcePermissionService
         //批量保存资源信息
         return resourcePermissionInfoMapper.insertBatch(saveList);
     }
+
+
 
     @Override
     public int modifyResourcePermission(PermissionReq permissionReq) {

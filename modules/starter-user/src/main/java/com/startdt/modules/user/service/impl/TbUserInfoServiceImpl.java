@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.startdt.modules.common.pojo.Page;
 import com.startdt.modules.common.utils.BeanConverter;
+import com.startdt.modules.common.utils.exception.FrameworkException;
 import com.startdt.modules.common.utils.page.PageUtil;
 import com.startdt.modules.common.utils.result.BizResultConstant;
 import com.startdt.modules.common.utils.result.Result;
@@ -14,10 +15,17 @@ import com.startdt.modules.user.dal.pojo.domain.TbUserInfoExample;
 import com.startdt.modules.user.dal.pojo.vo.UserDetailVO;
 import com.startdt.modules.user.service.ITbUserInfoService;
 import com.startdt.modules.user.service.encode.PasswordEncode;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -28,6 +36,7 @@ import java.util.List;
  * @since 2019-08-27
  */
 @Configuration
+@Slf4j
 public class TbUserInfoServiceImpl implements ITbUserInfoService{
 
     @Autowired
@@ -55,6 +64,7 @@ public class TbUserInfoServiceImpl implements ITbUserInfoService{
         }
         entity.setPassword(passwordEncode.encode(entity.getPassword()));
         int save = userInfoMapper.insertSelective(entity);
+        log.info("插入用户信息返回:isSave:{},result:{}",save,JSON.toJSONString(entity));
         if(save>0){
             return Result.ofSuccess(entity);
         }
@@ -144,6 +154,42 @@ public class TbUserInfoServiceImpl implements ITbUserInfoService{
         PageInfo<TbUserInfo> pageInfo = new PageInfo<>(dataList);
 
         return PageUtil.convertPage(pageInfo,UserDetailVO.class);
+    }
+
+    @Override
+    @Transactional
+    public Result<List<UserDetailVO>> batchInsertUser(List<TbUserInfo> userInfoList) {
+        //过滤重复账号
+        Map<String,TbUserInfo> userInfoMap = new HashMap<>();
+        StringBuffer sb = new StringBuffer();
+        userInfoList.forEach(userInfo -> {
+            String userName = userInfo.getUserName();
+            TbUserInfo userMap = userInfoMap.get(userName);
+            if(userMap!=null){
+                sb.append("该"+userName+"账号重复"+";");
+            }
+            TbUserInfoExample example = new TbUserInfoExample();
+            example.or().andStatusEqualTo((byte)1).andUserNameEqualTo(userName);
+            List<TbUserInfo> selectUser = userInfoMapper.selectByExample(example);
+            if(!CollectionUtils.isEmpty(selectUser)){
+                sb.append("该"+userName+"账号在数据库已存在"+"");
+            }
+            userInfoMap.put(userName,userInfo);
+        });
+
+        if(!StringUtils.isEmpty(sb)){
+            throw new FrameworkException(3000,sb.toString());
+        }
+
+        //批量插入
+        int insert = userInfoMapper.insertBatch(userInfoList);
+
+        if(insert != userInfoList.size()){
+            //事务回滚
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return Result.ofErrorT(BizResultConstant.DB_MODIFY_ERROR);
+        }
+        return Result.ofSuccess(BeanConverter.mapList(userInfoList,UserDetailVO.class));
     }
 
 }
