@@ -3,6 +3,8 @@ package com.startdt.modules.role.controller;
 import com.startdt.modules.common.pojo.Page;
 import com.startdt.modules.common.utils.enums.PrincipalTypeEnum;
 import com.startdt.modules.common.utils.enums.ResourceTypeEnum;
+import com.startdt.modules.common.utils.page.PageInfo;
+import com.startdt.modules.common.utils.page.PageResult;
 import com.startdt.modules.common.utils.result.Result;
 import com.startdt.modules.role.dal.pojo.domain.GrantPermissionExample;
 import com.startdt.modules.role.dal.pojo.dto.PermissionAccessDTO;
@@ -29,44 +31,45 @@ import java.util.List;
  * @Modified By:
  */
 @RestController
-@RequestMapping("/starter/grant")
+@RequestMapping("/starter/grants")
 @Api(value = "后台-授权管理", tags = "后台-授权管理")
 public class GrantPermissionController {
 
     @Autowired
     private IGrantPermissionService grantPermissionService;
 
-    @PostMapping("/grantUserRole")
+    @PostMapping("/v1")
     @ApiOperation(value = "用户赋予某个角色")
     public Result<Integer> grantUserRole(@RequestBody @Valid GrantUserRoleReq permissionNodeDTO) {
 
         return Result.ofSuccess(grantPermissionService.grantUserRole(permissionNodeDTO));
     }
 
-    @PostMapping("/deleteUserRole")
+    @DeleteMapping("/v1")
     @ApiOperation(value = "禁用用户的某个角色")
     public Result<Integer> deleteUserRole(@RequestBody @Valid GrantUserRoleReq permissionNodeDTO) {
 
         return Result.ofSuccess(grantPermissionService.deleteUserRole(permissionNodeDTO.getUserId(),permissionNodeDTO.getRoleCode()));
     }
 
-    @GetMapping("/getRoleByUserId")
+    @GetMapping("/v1/getRoleByUserId")
     @ApiOperation(value = "获取用户所有的角色")
     @ApiImplicitParams({
             @ApiImplicitParam(value = "用户id",name = "userId"),
             @ApiImplicitParam(value = "当前页",name = "currentPage"),
             @ApiImplicitParam(value = "每页大小",name = "pageSize"),
     })
-    public Result<Page<RoleInfoDTO>> getRoleByUserId(@RequestParam("userId") Integer userId,
-                                                     @RequestParam("currentPage") Integer currentPage,
-                                                     @RequestParam("pageSize") Integer pageSize) {
+    public Result<PageResult<RoleInfoDTO>> getRoleByUserId(@RequestParam("userId") Integer userId,
+                                                           @RequestParam("currentPage") Integer currentPage,
+                                                           @RequestParam("pageSize") Integer pageSize) {
         GrantPermissionExample example = new GrantPermissionExample();
         example.or().andPrincipalPartEqualTo(userId.toString()).andPrincipalPartTypeEqualTo(PrincipalTypeEnum.USER.getCode().byteValue())
                 .andResourcesTypeEqualTo(ResourceTypeEnum.ROLE.getCode().byteValue()).andStatusEqualTo((byte)1);
+
         return Result.ofSuccess(grantPermissionService.pageRoleByUserId(example,currentPage,pageSize));
     }
 
-    @GetMapping("/getMenuPermission")
+    @GetMapping("/v1/getMenuPermission")
     @ApiOperation(value = "通过userId分层获取所有菜单权限")
     @ApiImplicitParams(
             @ApiImplicitParam(value = "用户id",name = "userId")
@@ -76,7 +79,7 @@ public class GrantPermissionController {
         return Result.ofSuccess(grantPermissionService.getMenuPermission(userId));
     }
 
-    @GetMapping("/getUrlPermission")
+    @GetMapping("/v1/getUrlPermission")
     @ApiOperation(value =  "通过userId获取所有的url权限集")
     @ApiImplicitParams(
             @ApiImplicitParam(value = "用户id",name = "userId")
@@ -86,7 +89,7 @@ public class GrantPermissionController {
         return Result.ofSuccess(grantPermissionService.getUrlPermission(userId));
     }
 
-    @GetMapping("/getBusinessPermission")
+    @GetMapping("/v1/getBusinessPermission")
     @ApiOperation(value = "通过userId获取外部业务权限code集合")
     @ApiImplicitParams(
             @ApiImplicitParam(value = "用户id",name = "userId")
@@ -96,7 +99,7 @@ public class GrantPermissionController {
         return Result.ofSuccess(grantPermissionService.getBusinessPermission(userId));
     }
 
-    @GetMapping("/getRolePermission")
+    @GetMapping("/v1/getRolePermission")
     @ApiOperation(value = "通过角色id获取内部系统权限树集合")
     @ApiImplicitParams(
             @ApiImplicitParam(value = "用户id",name = "userId")

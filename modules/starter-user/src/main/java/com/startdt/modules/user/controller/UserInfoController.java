@@ -1,14 +1,14 @@
 package com.startdt.modules.user.controller;
 
-import com.startdt.modules.common.pojo.Page;
 import com.startdt.modules.common.utils.BeanConverter;
-import com.startdt.modules.common.utils.exception.FrameworkException;
+import com.startdt.modules.common.utils.page.PageResult;
 import com.startdt.modules.common.utils.result.BizResultConstant;
+import com.startdt.modules.common.utils.result.DataInfo;
 import com.startdt.modules.common.utils.result.Result;
 import com.startdt.modules.user.dal.pojo.domain.TbUserInfo;
-import com.startdt.modules.user.dal.pojo.domain.TbUserInfoExample;
 import com.startdt.modules.user.dal.pojo.request.ModifyUserReq;
 import com.startdt.modules.user.dal.pojo.request.UpdatePwdReq;
+import com.startdt.modules.user.dal.pojo.request.UserInfoReq;
 import com.startdt.modules.user.dal.pojo.vo.UserDetailVO;
 import com.startdt.modules.user.service.ITbUserInfoService;
 import com.startdt.modules.user.service.encode.PasswordEncode;
@@ -17,12 +17,11 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
+import javax.websocket.server.PathParam;
 
 /**
  * @Author: weilong
@@ -41,19 +40,19 @@ public class UserInfoController {
     @Autowired
     private PasswordEncode passwordEncode;
 
-    @PostMapping("/user")
+    @PostMapping("/v1/users")
     @ApiOperation(value = "添加用户")
     @Transactional(rollbackFor = Exception.class)
-    public Result<TbUserInfo> registerUser(@RequestBody @Valid ModifyUserReq modifyUserReq) {
-        TbUserInfo userInfo = BeanConverter.convert(modifyUserReq, TbUserInfo.class);
+    public Result<DataInfo<TbUserInfo>> registerUser(@RequestBody @Valid UserInfoReq userInfoReq) {
+        TbUserInfo userInfo = BeanConverter.convert(userInfoReq, TbUserInfo.class);
 
-        return userInfoService.insertUser(userInfo);
+        return Result.ofSuccess(DataInfo.resultToData(userInfoService.insertUser(userInfo)));
     }
 
-    @PostMapping("/update")
+    @PatchMapping("/v1/users")
     @ApiOperation(value = "编辑用户")
     @Transactional(rollbackFor = Exception.class)
-    public Result<Integer> updateUser(@RequestBody ModifyUserReq registerUserReq) {
+    public Result<DataInfo<TbUserInfo>> updateUser(@RequestBody ModifyUserReq registerUserReq) {
         TbUserInfo userInfo = new TbUserInfo();
         userInfo.setId(registerUserReq.getId());
         userInfo.setPassword(passwordEncode.encode(registerUserReq.getPassword()));
@@ -61,43 +60,48 @@ public class UserInfoController {
         userInfo.setNote(registerUserReq.getNote());
         userInfo.setEmail(registerUserReq.getEmail());
         userInfo.setPhone(registerUserReq.getPhone());
-        return userInfoService.modifyUser(userInfo);
+
+        return Result.ofSuccess(DataInfo.resultToData(userInfoService.modifyUser(userInfo)));
     }
 
-    @GetMapping("/user")
+    @GetMapping("/v1/users/{id}")
     @ApiOperation(value = "获取用户详情")
-    public Result<UserDetailVO> getDetail(@RequestParam("id") Integer id) {
-        Result<TbUserInfo> userInfoResult = userInfoService.getUserById(id);
-        if(!userInfoResult.isSuccess()) {
-            return Result.ofErrorT(userInfoResult.getCode(),userInfoResult.getMessage());
-        }
-        UserDetailVO result = BeanConverter.convert(userInfoResult.getValue(), UserDetailVO.class);
+    public Result<DataInfo<UserDetailVO>> getDetail(@PathVariable("id") Integer id) {
+        TbUserInfo userInfoResult = userInfoService.getUserById(id);
 
-        return Result.ofSuccess(result);
+        UserDetailVO result = BeanConverter.convert(userInfoResult, UserDetailVO.class);
+
+        return Result.ofSuccess(DataInfo.resultToData(result));
     }
 
-    @GetMapping("/delete")
+    @DeleteMapping("/v1/users/{id}")
     @ApiOperation(value = "删除用户")
-    public Result<Integer> deleteUser(@RequestParam("id") Integer userId) {
-        return userInfoService.disableUser(userId);
+    public Result deleteUser(@PathVariable("id") Integer userId) {
+        int delete = userInfoService.disableUser(userId);
+        if(delete<1){
+            return Result.ofErrorT(BizResultConstant.DB_MODIFY_ERROR);
+        }
+
+        return Result.ofSuccess();
     }
 
-    @PostMapping("/updatePwd")
-    @ApiOperation(value = "修改用户密码")
-    public Result<Integer> updatePwd(@Valid @RequestBody UpdatePwdReq updatePwdReq) {
-        return userInfoService.editPwd(updatePwdReq.getId(), updatePwdReq.getOldPwd(), updatePwdReq.getNewPwd(), updatePwdReq.getConfirmNewPwd());
-    }
+//    @PatchMapping("/v1/users")
+//    @ApiOperation(value = "修改用户密码")
+//    public Result<DataInfo<TbUserInfo>> updatePwd(@Valid @RequestBody UpdatePwdReq updatePwdReq) {
+//        TbUserInfo tbUserInfo = userInfoService.editPwd(updatePwdReq.getId(), updatePwdReq.getOldPwd(), updatePwdReq.getNewPwd(), updatePwdReq.getConfirmNewPwd());
+//
+//        return Result.ofSuccess(DataInfo.resultToData(tbUserInfo));
+//    }
 
-    @GetMapping("/list/page")
+    @GetMapping("/v1/users")
     @ApiOperation(value = "分页获取用户列表")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageNum", value = "页码", dataType = "int", paramType = "query", example = "1"),
             @ApiImplicitParam(name = "pageSize", value = "每页大小", dataType = "int", paramType = "query", example = "20")
     })
-    public Result<Page<UserDetailVO>> pageUser(@RequestParam(value = "pageNum",defaultValue = "1") Integer pageNum,
-                                             @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize) {
-//        TbUserInfoExample example = new TbUserInfoExample();
-//        example.or().andStatusEqualTo((byte)1);
+    public Result<PageResult<UserDetailVO>> pageUser(@RequestParam(value = "pageNum",defaultValue = "1") Integer pageNum,
+                                                     @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize) {
+
         return Result.ofSuccess(userInfoService.selectByExamplePaging(null,pageNum,pageSize));
     }
 }

@@ -23,28 +23,30 @@ public class BizResultConstant {
         return this.description;
     }
 
-    public static final BizResultConstant SYSTEM_NOT_SUPPORT = new BizResultConstant(1000, "系统错误");
+    public static final BizResultConstant SYSTEM_NOT_SUPPORT = new BizResultConstant(10000, "系统错误");
 
-    public static final BizResultConstant PARAM_ERROR = new BizResultConstant(3000, "参数错误!");
+    public static final BizResultConstant SERVICE_NOT_SUPPORT = new BizResultConstant(20000, "服务级错误");
+
+    public static final BizResultConstant PARAM_ERROR = new BizResultConstant(40000, "参数错误!");
 
 
-    public static final BizResultConstant ID_BLANK = new BizResultConstant(3001, "缺少id!");
-    public static final BizResultConstant DB_MODIFY_ERROR = new BizResultConstant(3002, "数据库操作失败");
-    public static final BizResultConstant PASSWORD_ERROR = new BizResultConstant(3003, "密码不正确");
-    public static final BizResultConstant USER_NEW_PASSWORD_DISACCORD = new BizResultConstant(3004, "新密码两次输入不一致");
-    public static final BizResultConstant USER_NEW_OLD_ACCORD = new BizResultConstant(3005, "新密码与旧密码不能相同");
-    public static final BizResultConstant NO_USER = new BizResultConstant(3006, "该用户不存在");
-    public static final BizResultConstant USER_DISABLED = new BizResultConstant(3007, "用户被禁用！");
+    public static final BizResultConstant ID_BLANK = new BizResultConstant(50001, "缺少id!");
+    public static final BizResultConstant DB_MODIFY_ERROR = new BizResultConstant(50002, "数据库操作失败");
+    public static final BizResultConstant PASSWORD_ERROR = new BizResultConstant(50003, "密码不正确");
+    public static final BizResultConstant USER_NEW_PASSWORD_DISACCORD = new BizResultConstant(50004, "新密码两次输入不一致");
+    public static final BizResultConstant USER_NEW_OLD_ACCORD = new BizResultConstant(50005, "新密码与旧密码不能相同");
+    public static final BizResultConstant NO_USER = new BizResultConstant(50006, "该用户不存在");
+    public static final BizResultConstant USER_DISABLED = new BizResultConstant(50007, "用户被禁用！");
 
-    public static final BizResultConstant TOKEN_VERIFY = new BizResultConstant(3008, "Token验签失败!");
-    public static final BizResultConstant ERROR_USER_SESSION_EXPIRED = new BizResultConstant(3009, "请重新登录");
+    public static final BizResultConstant TOKEN_VERIFY = new BizResultConstant(50008, "Token验签失败!");
+    public static final BizResultConstant ERROR_USER_SESSION_EXPIRED = new BizResultConstant(50009, "请重新登录");
 
-    public static final BizResultConstant USER_NAME_EXIST = new BizResultConstant(3010, "该用户名已存在");
-    public static final BizResultConstant NO_CONTENT_DATA = new BizResultConstant(3011, "数据不存在");
-    public static final BizResultConstant ROLE_IS_EXIST = new BizResultConstant(3012, "角色已存在");
-    public static final BizResultConstant ROLE_IS_NOT_EXIST = new BizResultConstant(3012, "角色不存在");
-    public static final BizResultConstant PERMISSION_IS_NOT_SAME_LEVEL = new BizResultConstant(3013, "权限不同级");
-    public static final BizResultConstant ROLE_IS_NOT_EXIST_NO_AUTH = new BizResultConstant(3014, "角色不存在或未授权");
+    public static final BizResultConstant USER_NAME_EXIST = new BizResultConstant(50010, "该用户名已存在");
+    public static final BizResultConstant NO_CONTENT_DATA = new BizResultConstant(50011, "数据不存在");
+    public static final BizResultConstant ROLE_IS_EXIST = new BizResultConstant(50012, "角色已存在");
+    public static final BizResultConstant ROLE_IS_NOT_EXIST = new BizResultConstant(50012, "角色不存在");
+    public static final BizResultConstant PERMISSION_IS_NOT_SAME_LEVEL = new BizResultConstant(50013, "权限不同级");
+    public static final BizResultConstant ROLE_IS_NOT_EXIST_NO_AUTH = new BizResultConstant(50014, "角色不存在或未授权");
 
 }
 

@@ -1,7 +1,9 @@
 package com.startdt.modules.role.controller;
 
 import com.startdt.modules.common.pojo.Page;
+import com.startdt.modules.common.utils.page.PageResult;
 import com.startdt.modules.common.utils.result.BizResultConstant;
+import com.startdt.modules.common.utils.result.DataInfo;
 import com.startdt.modules.common.utils.result.Result;
 import com.startdt.modules.role.dal.pojo.domain.RolePermissionInfoExample;
 import com.startdt.modules.role.dal.pojo.dto.PermissionNodeDTO;
@@ -28,31 +30,31 @@ import java.util.List;
  * @Modified By:
  */
 @RestController
-@RequestMapping("/starter/role")
-@Api(value = "后台-角色权限管理", tags = "后台-角色权限管理")
-public class RolePermissionController {
+@RequestMapping("/starter")
+@Api(value = "后台-角色管理", tags = "后台-角色管理")
+public class RoleController {
 
     @Autowired
     private IRolePermissionInfoService rolePermissionInfoService;
 
 
-    @PostMapping("/addRole")
+    @PostMapping("/v1/roles")
     @ApiOperation(value = "添加角色")
-    public Result<Integer> registerUser(@RequestBody @Valid SaveRoleInfoReq saveRoleInfoReq) {
+    public Result<DataInfo<RoleInfoDTO>> registerUser(@RequestBody @Valid SaveRoleInfoReq saveRoleInfoReq) {
 
         //根据角色名称获取角色信息
         RoleInfoDTO roleInfoDTO = rolePermissionInfoService.getRoleByName(saveRoleInfoReq.getRoleName(),1);
         if(roleInfoDTO != null){
             return Result.ofErrorT(BizResultConstant.ROLE_IS_EXIST);
         }
-        int save = rolePermissionInfoService.insertRole(saveRoleInfoReq);
+        RoleInfoDTO infoDTO = rolePermissionInfoService.insertRole(saveRoleInfoReq);
 
-        return Result.ofSuccess(save);
+        return Result.ofSuccess(DataInfo.resultToData(infoDTO));
     }
 
-    @GetMapping("/deleteRole")
+    @DeleteMapping("/v1/roles/{id}")
     @ApiOperation(value =  "删除角色")
-    public Result<Integer> deleteRole(@RequestParam("id") Integer id) {
+    public Result deleteRole(@PathVariable("id") Integer id) {
 
         //根据角色id获取角色信息
         RolePermissionDTO roleInfoDTO = rolePermissionInfoService.getRoleById(id);
@@ -61,12 +63,15 @@ public class RolePermissionController {
         }
         int delete = rolePermissionInfoService.deleteRole(id);
 
-        return Result.ofSuccess(delete);
+        if(delete < 1){
+            return Result.ofErrorT(BizResultConstant.DB_MODIFY_ERROR);
+        }
+        return Result.ofSuccess();
     }
 
-    @PostMapping("/editRole")
+    @PatchMapping("/v1/roles")
     @ApiOperation(value =  "修改角色")
-    public Result<Integer> editRole(@RequestBody @Validated ModifyRoleInfoReq modifyRoleInfoReq) {
+    public Result<DataInfo<ModifyRoleInfoReq>> editRole(@RequestBody @Validated ModifyRoleInfoReq modifyRoleInfoReq) {
 
         //根据角色id获取角色信息
         RolePermissionDTO rolePermissionDTO = rolePermissionInfoService.getRoleById(modifyRoleInfoReq.getId());
@@ -79,22 +84,26 @@ public class RolePermissionController {
         if(!isSame && roleInfoDTO!=null){
             return Result.ofErrorT(BizResultConstant.ROLE_IS_EXIST);
         }
+        int edit = rolePermissionInfoService.editRole(modifyRoleInfoReq);
 
-        return Result.ofSuccess(rolePermissionInfoService.editRole(modifyRoleInfoReq));
+        if(edit < 1){
+            return Result.ofErrorT(BizResultConstant.DB_MODIFY_ERROR);
+        }
+        return Result.ofSuccess(DataInfo.resultToData(modifyRoleInfoReq));
     }
 
-    @GetMapping("/listRole")
+    @GetMapping("/v1/roles")
     @ApiOperation(value ="分页获取角色列表")
     @ApiImplicitParams({
             @ApiImplicitParam(value = "当前页", name = "currentPage", example = "1"),
             @ApiImplicitParam(value = "每页大小", name = "pageSize", example = "10")
     })
-    public Result<Page<RoleInfoDTO>> listRole(@RequestParam("currentPage") Integer currentPage,@RequestParam("pageSize") Integer pageSize) {
+    public Result<PageResult<RoleInfoDTO>> listRole(@RequestParam("currentPage") Integer currentPage, @RequestParam("pageSize") Integer pageSize) {
 
         RolePermissionInfoExample example = new RolePermissionInfoExample();
         example.or().andStatusEqualTo((byte)1);
 
-        Page<RoleInfoDTO> roleInfoDTOPage = rolePermissionInfoService.pageRole(example,currentPage,pageSize);
+        PageResult<RoleInfoDTO> roleInfoDTOPage = rolePermissionInfoService.pageRole(example,currentPage,pageSize);
 
         return Result.ofSuccess(roleInfoDTOPage);
     }

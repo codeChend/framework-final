@@ -20,7 +20,7 @@ import javax.validation.Valid;
  * @Modified By:
  */
 @RestController
-@RequestMapping("/starter/login")
+@RequestMapping("/starter")
 @Api(value = "后台-登录", tags = "后台-登录")
 public class LoginStarterController {
 
@@ -28,7 +28,7 @@ public class LoginStarterController {
     @Autowired
     private StarterLoginService loginService;
 
-    @PostMapping("/login")
+    @PostMapping("/v1/login")
     @ApiOperation(value = "用户登录")
     @Transactional(rollbackFor = Exception.class)
     public Result<UserLoginVO> login(@RequestBody @Valid LoginReq loginReq) {

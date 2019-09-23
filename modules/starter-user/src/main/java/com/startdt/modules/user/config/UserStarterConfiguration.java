@@ -1,6 +1,7 @@
 package com.startdt.modules.user.config;
 
 import com.github.pagehelper.PageHelper;
+import com.startdt.modules.common.utils.exception.GlobalExceptionHandler;
 import com.startdt.modules.user.controller.UserInfoController;
 import com.startdt.modules.user.service.encode.PasswordEncode;
 import com.startdt.modules.user.service.impl.TbUserInfoServiceImpl;
@@ -53,4 +54,9 @@ public class UserStarterConfiguration {
         return new ReadModulesJsonConfig();
     }
 
+    @Bean
+    @ConditionalOnMissingBean(GlobalExceptionHandler.class)
+    public GlobalExceptionHandler globalExceptionHandler(){
+        return new GlobalExceptionHandler();
+    }
 }

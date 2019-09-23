@@ -31,12 +31,11 @@ public class StarterLoginServiceImpl implements StarterLoginService{
     public UserLoginVO login(String userName, String password) {
 
         //密码需要客户端加密后传递
-        Result<TbUserInfo> result = tbUserInfoService.getByUserName(userName, null);
-        if (result == null || !result.isSuccess() || result.getValue() == null) {
+        TbUserInfo userInfo = tbUserInfoService.getByUserName(userName, null);
+        if (userInfo == null) {
             throw new FrameworkException(BizResultConstant.NO_USER);
         }
 
-        TbUserInfo userInfo = result.getValue();
         if (!passwordEncode.matches(password, userInfo.getPassword())) {
             throw new FrameworkException(BizResultConstant.PASSWORD_ERROR);
         }

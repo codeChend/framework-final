@@ -19,16 +19,16 @@ import java.util.List;
  */
 public class PageUtil{
 
-    public static <T> Page<T> convertPage(PageInfo pageInfo,Class<T> clz){
-        Page<T> page = new Page<>();
+    public static <T> PageResult<T> convertPage(PageInfo pageInfo,Class<T> clz){
+        com.startdt.modules.common.utils.page.PageInfo page = new com.startdt.modules.common.utils.page.PageInfo();
         page.setCurrentPage(pageInfo.getPageNum());
         page.setPageSize(pageInfo.getPageSize());
         page.setTotalCount(pageInfo.getTotal());
         page.setTotalPage(pageInfo.getPages());
 
-        page.setDataList(BeanConverter.mapList(pageInfo.getList(),clz));
+        List<T> dataList = BeanConverter.mapList(pageInfo.getList(),clz);
 
-        return page;
+        return new PageResult<>(dataList,page);
     }
 
 

@@ -1,12 +1,7 @@
 package com.startdt.modules.role.service;
 
 import com.github.pagehelper.PageHelper;
-import com.startdt.modules.role.controller.GrantPermissionController;
-import com.startdt.modules.role.controller.ResourcePermissionController;
-import com.startdt.modules.role.controller.RolePermissionController;
-import com.startdt.modules.role.service.impl.GrantPermissionServiceImpl;
-import com.startdt.modules.role.service.impl.ResourcePermissionServiceImpl;
-import com.startdt.modules.role.service.impl.RolePermissionInfoServiceImpl;
+import com.startdt.modules.common.utils.exception.GlobalExceptionHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -37,6 +32,12 @@ public class RoleStarterConfiguration {
         props.setProperty("params", "count=countSql");
         pageHelper.setProperties(props);
         return pageHelper;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(GlobalExceptionHandler.class)
+    public GlobalExceptionHandler globalExceptionHandler(){
+        return new GlobalExceptionHandler();
     }
 
 }

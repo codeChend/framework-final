@@ -2,6 +2,7 @@ package com.startdt.modules.role.service;
 
 
 import com.startdt.modules.common.pojo.Page;
+import com.startdt.modules.common.utils.page.PageResult;
 import com.startdt.modules.role.dal.pojo.domain.GrantPermissionExample;
 import com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfo;
 import com.startdt.modules.role.dal.pojo.dto.PermissionAccessDTO;
@@ -43,7 +44,7 @@ public interface IGrantPermissionService {
      * @param pageSize
      * @return
      */
-    Page<RoleInfoDTO> pageRoleByUserId(GrantPermissionExample example, int currentPage, int pageSize);
+    PageResult<RoleInfoDTO> pageRoleByUserId(GrantPermissionExample example, int currentPage, int pageSize);
 
     /**
      * 通过用户id获取角色列表

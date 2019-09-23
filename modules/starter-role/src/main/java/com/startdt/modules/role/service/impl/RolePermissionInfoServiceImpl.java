@@ -8,6 +8,7 @@ import com.google.common.collect.Lists;
 import com.startdt.modules.common.pojo.Page;
 import com.startdt.modules.common.utils.BeanConverter;
 import com.startdt.modules.common.utils.exception.FrameworkException;
+import com.startdt.modules.common.utils.page.PageResult;
 import com.startdt.modules.common.utils.page.PageUtil;
 import com.startdt.modules.common.utils.result.BizResultConstant;
 import com.startdt.modules.role.dal.mapper.RolePermissionInfoMapper;
@@ -23,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Role;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -51,10 +53,15 @@ public class RolePermissionInfoServiceImpl implements IRolePermissionInfoService
     private SqlSessionFactory sqlSessionFactory;
 
     @Override
-    public int insertRole(SaveRoleInfoReq rolePermissionDTO) {
+    public RoleInfoDTO insertRole(SaveRoleInfoReq rolePermissionDTO) {
         RolePermissionInfo rolePermissionInfo = BeanConverter.convert(rolePermissionDTO,RolePermissionInfo.class);
 
-        return rolePermissionInfoMapper.insertSelective(rolePermissionInfo);
+        int save = rolePermissionInfoMapper.insertSelective(rolePermissionInfo);
+
+        if(save < 1){
+            throw new FrameworkException(BizResultConstant.DB_MODIFY_ERROR);
+        }
+        return BeanConverter.convert(rolePermissionInfo, RoleInfoDTO.class);
     }
 
     @Override
@@ -79,7 +86,7 @@ public class RolePermissionInfoServiceImpl implements IRolePermissionInfoService
     }
 
     @Override
-    public Page<RoleInfoDTO> pageRole(RolePermissionInfoExample example,int currentPage,int pageSize) {
+    public PageResult<RoleInfoDTO> pageRole(RolePermissionInfoExample example, int currentPage, int pageSize) {
         if(currentPage <= 0) {
             currentPage = 1;
         }

@@ -82,12 +82,11 @@ public class BackLoginInterceptor extends HandlerInterceptorAdapter {
                 throw new FrameworkException(BizResultConstant.NO_USER);
             }
 
-            Result<TbUserInfo> userResult = userInfoService.getByUserName(subject,null);
+            TbUserInfo userInfo = userInfoService.getByUserName(subject,null);
 
-            if(!userResult.isSuccess() || userResult.getValue() == null ){
+            if(userInfo == null ){
                 throw new FrameworkException(BizResultConstant.NO_USER);
             }
-            TbUserInfo userInfo = userResult.getValue();
             if(userInfo.getStatus() == 0){
                 throw new FrameworkException(BizResultConstant.USER_DISABLED);
             }

@@ -1,6 +1,7 @@
 package com.startdt.modules.user.service;
 
 import com.startdt.modules.common.pojo.Page;
+import com.startdt.modules.common.utils.page.PageResult;
 import com.startdt.modules.common.utils.result.Result;
 import com.startdt.modules.user.dal.pojo.domain.TbUserInfo;
 import com.startdt.modules.user.dal.pojo.domain.TbUserInfoExample;
@@ -24,35 +25,35 @@ public interface ITbUserInfoService {
      * @param status    状态，是否启用
      * @return
      */
-    Result<TbUserInfo> getByUserName(String userName,Integer status);
+    TbUserInfo getByUserName(String userName,Integer status);
 
     /***
      * 添加用户
      * @param entity
      * @return
      */
-    Result<TbUserInfo> insertUser(TbUserInfo entity);
+    TbUserInfo insertUser(TbUserInfo entity);
 
     /**
      * 修改用户信息
      * @param userInfo
      * @return
      */
-    Result<Integer> modifyUser(TbUserInfo userInfo);
+    TbUserInfo modifyUser(TbUserInfo userInfo);
 
     /**
      * 通过id禁用用户
      * @param userId
      * @return
      */
-    Result<Integer> disableUser(Integer userId);
+    Integer disableUser(Integer userId);
 
     /**
      * 通过id获取用户信息
      * @param userId
      * @return
      */
-    Result<TbUserInfo> getUserById(Integer userId);
+    TbUserInfo getUserById(Integer userId);
 
     /**
      * 验证旧密码，更新新密码
@@ -61,7 +62,7 @@ public interface ITbUserInfoService {
      * @param newPwd 新密码
      * @return userId
      */
-    Result<Integer> editPwd(Integer userId, String oldPwd, String newPwd);
+    TbUserInfo editPwd(Integer userId, String oldPwd, String newPwd);
 
     /**
      * 验证旧密码，更新新密码
@@ -71,14 +72,14 @@ public interface ITbUserInfoService {
      * @param confirmNewPwd 确认新密码
      * @return userId
      */
-    Result<Integer> editPwd(Integer userId, String oldPwd, String newPwd, String confirmNewPwd);
+    TbUserInfo editPwd(Integer userId, String oldPwd, String newPwd, String confirmNewPwd);
 
 
     /**
      * 通过条件获取用户列表
      * @return
      */
-    Result<List<TbUserInfo>> listUsers(TbUserInfoExample example);
+    List<TbUserInfo> listUsers(TbUserInfoExample example);
 
     /**
      * 检查用户名是否存在
@@ -93,12 +94,12 @@ public interface ITbUserInfoService {
      * @param pageSize
      * @return
      */
-    Page<UserDetailVO> selectByExamplePaging(TbUserInfoExample example, int currentPage, int pageSize);
+    PageResult<UserDetailVO> selectByExamplePaging(TbUserInfoExample example, int currentPage, int pageSize);
 
     /**
      * 批量插入用户信息
      * @param userInfoList
      * @return
      */
-    Result<List<UserDetailVO>> batchInsertUser(List<TbUserInfo> userInfoList);
+    List<UserDetailVO> batchInsertUser(List<TbUserInfo> userInfoList);
 }

@@ -1,6 +1,7 @@
 package com.startdt.modules.role.service;
 
 import com.startdt.modules.common.pojo.Page;
+import com.startdt.modules.common.utils.page.PageResult;
 import com.startdt.modules.common.utils.result.Result;
 import com.startdt.modules.role.dal.pojo.domain.RolePermissionInfo;
 import com.startdt.modules.role.dal.pojo.domain.RolePermissionInfoExample;
@@ -29,7 +30,7 @@ public interface IRolePermissionInfoService{
      * @param saveRoleInfoReq
      * @return
      */
-    int insertRole(SaveRoleInfoReq saveRoleInfoReq);
+    RoleInfoDTO insertRole(SaveRoleInfoReq saveRoleInfoReq);
 
     /**
      * 删除角色信息
@@ -49,7 +50,7 @@ public interface IRolePermissionInfoService{
      * 获取角色列表
      * @returin
      */
-    Page<RoleInfoDTO> pageRole(RolePermissionInfoExample rolePermissionInfoExample,int currentPage,int pageSize);
+    PageResult<RoleInfoDTO> pageRole(RolePermissionInfoExample rolePermissionInfoExample, int currentPage, int pageSize);
 
 
     /**

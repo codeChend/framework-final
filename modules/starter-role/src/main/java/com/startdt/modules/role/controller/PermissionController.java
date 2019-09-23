@@ -22,43 +22,42 @@ import java.util.List;
  * @Modified By:
  */
 @RestController
-@RequestMapping("/starter/permission")
+@RequestMapping("/starter")
 @Api(value = "后台-权限管理", tags = "后台-权限管理")
-public class ResourcePermissionController {
+public class PermissionController {
 
     @Autowired
     private IResourcePermissionService resourcePermissionService;
 
-    @PostMapping("/saveResourcePermission")
+    @PostMapping("/v1/permissions")
     @ApiOperation(value = "保存新的模块资源权限信息")
     public Result<Integer> saveResourcePermission(@RequestBody @Valid PermissionNodeDTO permissionNodeDTO) {
 
         return Result.ofSuccess(resourcePermissionService.saveResourcePermission(permissionNodeDTO));
     }
 
-    @PostMapping("/modifyResourcePermission")
+    @PatchMapping("/v1/permissions")
     @ApiOperation(value = "修改模块资源权限信息")
     public Result<Integer> modifyResourcePermission(@RequestBody @Valid PermissionReq permissionReq) {
 
         return Result.ofSuccess(resourcePermissionService.modifyResourcePermission(permissionReq));
     }
 
-    @PostMapping("/sortPermission")
+    @PatchMapping("/v1/permissions/sort")
     @ApiOperation(value =  "修改同等级资源的排序")
     public Result<Integer> sortPermission(@RequestBody @Valid SortPermissionReq sortPermissionReq) {
 
         return Result.ofSuccess(resourcePermissionService.sortPermission(sortPermissionReq.getCodes()));
     }
 
-    @GetMapping("/deletePermission")
+    @DeleteMapping("/v1/permissions/{code}")
     @ApiOperation(value = "会删除所有子节点")
-    @ApiImplicitParam(value = "权限code",name = "permissionCode")
-    public Result<Integer> deletePermission(@RequestParam("permissionCode") String permissionCode) {
+    public Result<Integer> deletePermission(@PathVariable("code") String permissionCode) {
 
         return Result.ofSuccess(resourcePermissionService.deletePermission(permissionCode));
     }
 
-    @GetMapping("/PermissionNodeSelective")
+    @GetMapping("/v1/permissions")
     @ApiOperation(value = "根据条件查询权限资源列表")
     public Result<List<PermissionNodeDTO>> PermissionNodeSelective(@RequestBody QueryPermissionDTO queryPermissionDTO) {
 

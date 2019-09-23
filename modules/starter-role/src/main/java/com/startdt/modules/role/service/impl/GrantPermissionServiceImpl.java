@@ -8,6 +8,7 @@ import com.startdt.modules.common.utils.enums.PrincipalTypeEnum;
 import com.startdt.modules.common.utils.enums.ResourceTypeEnum;
 import com.startdt.modules.common.utils.enums.RolePermissionEnum;
 import com.startdt.modules.common.utils.exception.FrameworkException;
+import com.startdt.modules.common.utils.page.PageResult;
 import com.startdt.modules.common.utils.page.PageUtil;
 import com.startdt.modules.common.utils.result.BizResultConstant;
 import com.startdt.modules.role.dal.mapper.GrantPermissionMapper;
@@ -76,7 +77,7 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
     }
 
     @Override
-    public Page<RoleInfoDTO> pageRoleByUserId(GrantPermissionExample example, int currentPage, int pageSize) {
+    public PageResult<RoleInfoDTO> pageRoleByUserId(GrantPermissionExample example, int currentPage, int pageSize) {
         if(currentPage <= 0) {
             currentPage = 1;
         }
