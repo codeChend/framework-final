@@ -1,5 +1,6 @@
 package com.startdt.modules.login.controller;
 
+import com.startdt.modules.common.utils.result.DataInfo;
 import com.startdt.modules.common.utils.result.Result;
 import com.startdt.modules.login.pojo.LoginReq;
 import com.startdt.modules.login.pojo.LoginUnFilter;
@@ -31,7 +32,8 @@ public class LoginStarterController {
     @PostMapping("/v1/login")
     @ApiOperation(value = "用户登录")
     @Transactional(rollbackFor = Exception.class)
-    public Result<UserLoginVO> login(@RequestBody @Valid LoginReq loginReq) {
-        return Result.ofSuccess(loginService.login(loginReq.getUserName(),loginReq.getPassWord()));
+    public Result<DataInfo<UserLoginVO>> login(@RequestBody @Valid LoginReq loginReq) {
+
+        return Result.ofSuccess(DataInfo.resultToData(loginService.login(loginReq.getUserName(),loginReq.getPassWord())));
     }
 }

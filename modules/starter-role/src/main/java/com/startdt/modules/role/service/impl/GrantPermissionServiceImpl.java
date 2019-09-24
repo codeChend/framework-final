@@ -20,6 +20,7 @@ import com.startdt.modules.role.dal.pojo.request.grant.GrantUserRoleReq;
 import com.startdt.modules.role.service.IGrantPermissionService;
 import com.startdt.modules.role.service.IResourcePermissionService;
 import com.startdt.modules.role.service.IRolePermissionInfoService;
+import jdk.internal.org.objectweb.asm.tree.FrameNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.CollectionUtils;
@@ -51,8 +52,13 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
     @Override
     public int grantUserRole(GrantUserRoleReq grantUserRoleReq) {
         //角色是否重复授予
-
-
+        GrantPermissionExample example = new GrantPermissionExample();
+        example.or().andPrincipalPartTypeEqualTo(PrincipalTypeEnum.USER.getCode().byteValue()).andPrincipalPartEqualTo(grantUserRoleReq.getUserId().toString())
+                .andResourcesTypeEqualTo(ResourceTypeEnum.ROLE.getCode().byteValue()).andResourcesEqualTo(grantUserRoleReq.getRoleCode().toString()).andStatusEqualTo((byte)1);
+        List<GrantPermission> returnList = grantPermissionMapper.selectByExample(example);
+        if(!CollectionUtils.isEmpty(returnList)){
+            throw new FrameworkException(BizResultConstant.ROLE_IS_EXIST);
+        }
         //对应user赋予角色信息
         GrantPermission entity = new GrantPermission();
         entity.setPrincipalPart(grantUserRoleReq.getUserId().toString());

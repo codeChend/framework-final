@@ -1,5 +1,7 @@
 package com.startdt.modules.role.controller;
 
+import com.startdt.modules.common.utils.result.BizResultConstant;
+import com.startdt.modules.common.utils.result.DataInfo;
 import com.startdt.modules.common.utils.result.Result;
 import com.startdt.modules.role.dal.pojo.request.permission.PermissionReq;
 import com.startdt.modules.role.dal.pojo.dto.PermissionNodeDTO;
@@ -31,36 +33,55 @@ public class PermissionController {
 
     @PostMapping("/v1/permissions")
     @ApiOperation(value = "保存新的模块资源权限信息")
-    public Result<Integer> saveResourcePermission(@RequestBody @Valid PermissionNodeDTO permissionNodeDTO) {
+    public Result<DataInfo<PermissionNodeDTO>> saveResourcePermission(@RequestBody @Valid PermissionNodeDTO permissionNodeDTO) {
 
-        return Result.ofSuccess(resourcePermissionService.saveResourcePermission(permissionNodeDTO));
+        int save = resourcePermissionService.saveResourcePermission(permissionNodeDTO);
+        if(save < 1){
+            return Result.ofErrorT(BizResultConstant.DB_MODIFY_ERROR);
+        }
+
+        return Result.ofSuccess(DataInfo.resultToData(permissionNodeDTO));
     }
 
     @PatchMapping("/v1/permissions")
     @ApiOperation(value = "修改模块资源权限信息")
-    public Result<Integer> modifyResourcePermission(@RequestBody @Valid PermissionReq permissionReq) {
+    public Result<DataInfo<PermissionReq>> modifyResourcePermission(@RequestBody @Valid PermissionReq permissionReq) {
+        int update = resourcePermissionService.modifyResourcePermission(permissionReq);
 
-        return Result.ofSuccess(resourcePermissionService.modifyResourcePermission(permissionReq));
+        if(update < 1){
+            return Result.ofErrorT(BizResultConstant.DB_MODIFY_ERROR);
+        }
+
+        return Result.ofSuccess(DataInfo.resultToData(permissionReq));
     }
 
     @PatchMapping("/v1/permissions/sort")
     @ApiOperation(value =  "修改同等级资源的排序")
-    public Result<Integer> sortPermission(@RequestBody @Valid SortPermissionReq sortPermissionReq) {
+    public Result<DataInfo<List<String>>> sortPermission(@RequestBody @Valid SortPermissionReq sortPermissionReq) {
+        int update = resourcePermissionService.sortPermission(sortPermissionReq.getCodes());
 
-        return Result.ofSuccess(resourcePermissionService.sortPermission(sortPermissionReq.getCodes()));
+        if(update < 1){
+            return Result.ofErrorT(BizResultConstant.DB_MODIFY_ERROR);
+        }
+
+        return Result.ofSuccess(DataInfo.resultToData(sortPermissionReq.getCodes()));
     }
 
     @DeleteMapping("/v1/permissions/{code}")
     @ApiOperation(value = "会删除所有子节点")
-    public Result<Integer> deletePermission(@PathVariable("code") String permissionCode) {
+    public Result deletePermission(@PathVariable("code") String permissionCode) {
+        int delete = resourcePermissionService.deletePermission(permissionCode);
+        if(delete < 1){
+            return Result.ofErrorT(BizResultConstant.DB_MODIFY_ERROR);
+        }
 
-        return Result.ofSuccess(resourcePermissionService.deletePermission(permissionCode));
+        return Result.ofSuccess();
     }
 
     @GetMapping("/v1/permissions")
     @ApiOperation(value = "根据条件查询权限资源列表")
-    public Result<List<PermissionNodeDTO>> PermissionNodeSelective(@RequestBody QueryPermissionDTO queryPermissionDTO) {
+    public Result<DataInfo<List<PermissionNodeDTO>>> permissionNodeSelective(@RequestBody QueryPermissionDTO queryPermissionDTO) {
 
-        return Result.ofSuccess(resourcePermissionService.permissionNodeSelective(queryPermissionDTO));
+        return Result.ofSuccess(DataInfo.resultToData(resourcePermissionService.permissionNodeSelective(queryPermissionDTO)));
     }
 }
