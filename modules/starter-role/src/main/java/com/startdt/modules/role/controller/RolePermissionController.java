@@ -7,13 +7,10 @@ import com.startdt.modules.role.dal.pojo.dto.PermissionAccessDTO;
 import com.startdt.modules.role.dal.pojo.request.grant.RolePermissionReq;
 import com.startdt.modules.role.service.IGrantPermissionService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.xml.crypto.Data;
 import java.util.List;
 
 /**
@@ -32,9 +29,9 @@ public class RolePermissionController {
 
     @GetMapping("/v1/rolePermissions/{roleId}")
     @ApiOperation(value = "通过角色id获取内部系统权限树集合")
-    public Result<DataInfo<List<PermissionAccessDTO>>> getRolePermission(@PathVariable("roleId") Integer roleId) {
+    public Result<List<PermissionAccessDTO>> getRolePermission(@PathVariable("roleId") Integer roleId) {
 
-        return Result.ofSuccess(DataInfo.resultToData(grantPermissionService.getRolePermission(roleId)));
+        return Result.ofSuccess(grantPermissionService.getRolePermission(roleId));
     }
 
     @PostMapping("/v1/rolePermissions")

@@ -9,7 +9,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  * @Date: Create in 2019/9/17 下午8:46
  * @Modified By:
  */
-public class PermisionDTO {
+public class PermissionDTO {
     /** 权限code **/
     @ApiModelProperty(value = "权限code",name = "code")
     private String code;
@@ -93,5 +93,18 @@ public class PermisionDTO {
 
     public void setIcon(String icon) {
         this.icon = icon;
+    }
+
+    @Override
+    public String toString() {
+        return "PermissionDTO{" +
+                "code='" + code + '\'' +
+                ", parentCode='" + parentCode + '\'' +
+                ", name='" + name + '\'' +
+                ", value='" + value + '\'' +
+                ", resUrl='" + resUrl + '\'' +
+                ", type=" + type +
+                ", icon='" + icon + '\'' +
+                '}';
     }
 }

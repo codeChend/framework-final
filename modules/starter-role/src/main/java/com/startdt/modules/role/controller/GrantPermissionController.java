@@ -1,28 +1,17 @@
 package com.startdt.modules.role.controller;
 
-import com.startdt.modules.common.pojo.Page;
-import com.startdt.modules.common.utils.enums.PrincipalTypeEnum;
-import com.startdt.modules.common.utils.enums.ResourceTypeEnum;
-import com.startdt.modules.common.utils.page.PageInfo;
-import com.startdt.modules.common.utils.page.PageResult;
 import com.startdt.modules.common.utils.result.DataInfo;
 import com.startdt.modules.common.utils.result.Result;
-import com.startdt.modules.role.dal.pojo.domain.GrantPermissionExample;
-import com.startdt.modules.role.dal.pojo.dto.PermissionAccessDTO;
 import com.startdt.modules.role.dal.pojo.dto.PermissionNodeDTO;
-import com.startdt.modules.role.dal.pojo.dto.RoleInfoDTO;
-import com.startdt.modules.role.dal.pojo.request.grant.GrantUserRoleReq;
-import com.startdt.modules.role.dal.pojo.request.grant.RolePermissionReq;
 import com.startdt.modules.role.service.IGrantPermissionService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
-import javax.validation.Valid;
 import java.util.List;
 
 /**

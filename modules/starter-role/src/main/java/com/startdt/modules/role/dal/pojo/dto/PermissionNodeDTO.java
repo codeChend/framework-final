@@ -2,9 +2,7 @@ package com.startdt.modules.role.dal.pojo.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import org.hibernate.validator.constraints.NotEmpty;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -14,7 +12,7 @@ import java.util.List;
  * @Modified By:
  */
 @ApiModel(value = "权限节点实体")
-public class PermissionNodeDTO extends PermisionDTO{
+public class PermissionNodeDTO extends PermissionDTO {
 
     @ApiModelProperty(value = "子节点集",name = "permissionNodeSon")
     private List<PermissionNodeDTO> permissionNodeSon;

@@ -8,7 +8,7 @@ import java.util.List;
  * @Date: Create in 2019/9/17 下午8:36
  * @Modified By:
  */
-public class PermissionAccessDTO extends PermisionDTO{
+public class PermissionAccessDTO extends PermissionDTO {
 
     private Boolean isAccess;
 
@@ -32,5 +32,13 @@ public class PermissionAccessDTO extends PermisionDTO{
 
     public void setPermissionAccessSon(List<PermissionAccessDTO> permissionAccessSon) {
         this.permissionAccessSon = permissionAccessSon;
+    }
+
+    @Override
+    public String toString() {
+        return "PermissionAccessDTO{" +
+                "isAccess=" + isAccess +
+                ", permissionAccessSon=" + permissionAccessSon +
+                '}';
     }
 }
