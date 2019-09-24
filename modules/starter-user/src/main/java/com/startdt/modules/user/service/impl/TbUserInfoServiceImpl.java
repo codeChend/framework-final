@@ -85,6 +85,7 @@ public class TbUserInfoServiceImpl implements ITbUserInfoService{
         }else {
             TbUserInfoExample example = new TbUserInfoExample();
             example.or().andIdEqualTo(userInfo.getId()).andStatusEqualTo((byte)1);
+            userInfo.setPassword(passwordEncode.encode(userInfo.getPassword()));
             update = userInfoMapper.updateByExampleSelective(userInfo,example);
         }
         if(update<1){
@@ -105,7 +106,7 @@ public class TbUserInfoServiceImpl implements ITbUserInfoService{
     @Override
     public TbUserInfo getUserById(Integer userId) {
         TbUserInfo tbUserInfo = userInfoMapper.selectByPrimaryKey(userId);
-        if(tbUserInfo.getStatus() == 0){
+        if(tbUserInfo == null || tbUserInfo.getStatus() == 0){
             throw new FrameworkException(BizResultConstant.NO_USER);
         }
         return tbUserInfo;
@@ -202,6 +203,8 @@ public class TbUserInfoServiceImpl implements ITbUserInfoService{
             if (!CollectionUtils.isEmpty(selectUser)) {
                 sb.append("该").append(userName).append("账号在数据库已存在");
             }
+            //密码加密
+            userInfo.setPassword(passwordEncode.encode(userInfo.getPassword()));
             userInfoMap.put(userName, userInfo);
         });
 
