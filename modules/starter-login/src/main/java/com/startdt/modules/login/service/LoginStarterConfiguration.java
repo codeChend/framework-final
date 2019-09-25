@@ -23,6 +23,15 @@ public class LoginStarterConfiguration {
     }
 
     @Bean
+    public JwtConfig jwtConfig(){
+        return new JwtConfig();
+    }
+
+    @Bean JwtTokenUtil jwtTokenUtil(){
+        return new JwtTokenUtil();
+    }
+
+    @Bean
     public LoginUnFilter loginUnFilter(){
         return new LoginUnFilter();
     }
@@ -32,12 +41,10 @@ public class LoginStarterConfiguration {
         return new LoginStarterController();
     }
 
-//    @Bean
-//    public BackLoginInterceptor backLoginInterceptor(@Autowired LoginUnFilter loginUnFilter){
-//        ITbUserInfoService tbUserInfoService = new TbUserInfoServiceImpl();
-//        JwtConfig jwtConfig = new JwtConfig();
-//        return new BackLoginInterceptor(tbUserInfoService,jwtConfig,loginUnFilter);
-//    }
+    @Bean
+    public BackLoginInterceptor backLoginInterceptor(){
+        return new BackLoginInterceptor();
+    }
 
     @Bean
     public LoginMvcConfigure loginMvcConfigure(){

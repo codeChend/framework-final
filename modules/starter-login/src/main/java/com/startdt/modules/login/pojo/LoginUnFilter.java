@@ -31,10 +31,9 @@ public class LoginUnFilter {
             return LOGIN_MAP.get(KEY);
         }
         String[] filterArray = unFilter.split(",");
-        System.out.println("---------------------------"+Arrays.toString(filterArray));
         List<LoginUrlDTO> loginUrlDTOS = new ArrayList<>();
         if(filterArray.length>0){
-            for(int i=0;i<filterArray.length-1;i++){
+            for(int i = 0;i <= filterArray.length-1;i++){
                 String filter = filterArray[i];
                 LoginUrlDTO loginUrlDTO = new LoginUrlDTO();
                 if(filter.contains("(")){

@@ -27,6 +27,9 @@ public class StarterLoginServiceImpl implements StarterLoginService{
     @Autowired
     private PasswordEncode passwordEncode;
 
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
     @Override
     public UserLoginVO login(String userName, String password) {
 
@@ -44,7 +47,7 @@ public class StarterLoginServiceImpl implements StarterLoginService{
         }
         //创建返回实体
         UserLoginVO userLoginVO = new UserLoginVO();
-        String token = JwtTokenUtil.generateToken(userInfo.getUserName(), "login");
+        String token = jwtTokenUtil.generateToken(userInfo.getUserName(), "login");
         userLoginVO.setUserInfo(userInfo);
         userLoginVO.setToken(token);
         return userLoginVO;

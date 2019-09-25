@@ -9,8 +9,12 @@ import com.startdt.modules.login.service.JwtTokenUtil;
 import com.startdt.modules.user.dal.pojo.domain.TbUserInfo;
 import com.startdt.modules.user.service.ITbUserInfoService;
 import io.jsonwebtoken.Claims;
+import org.omg.CORBA.Current;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.util.StringUtils;
 import org.springframework.web.method.HandlerMethod;
@@ -28,20 +32,30 @@ import java.util.List;
  * @Date: Create in 2019/8/28 上午11:40
  * @Modified By:
  */
+@Configuration
 public class BackLoginInterceptor extends HandlerInterceptorAdapter {
     private static final Logger LOGGER = LoggerFactory.getLogger(BackLoginInterceptor.class);
 
+    @Autowired
     private ITbUserInfoService userInfoService;
 
+    @Autowired
     private JwtConfig jwtConfig;
 
+    @Autowired
     private LoginUnFilter loginUnFilter;
 
-    public BackLoginInterceptor(ITbUserInfoService userInfoService, JwtConfig jwtConfig, LoginUnFilter loginUnFilter){
-        this.userInfoService = userInfoService;
-        this.jwtConfig = jwtConfig;
-        this.loginUnFilter = loginUnFilter;
-    }
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
+    @Value("${starter.dev.enable:false}")
+    private boolean devEnable;
+
+    @Value("${starter.dev.userId:1}")
+    private Integer userId;
+
+    @Value("${starter.dev.userName:weilong}")
+    private String userName;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,Object handler) throws Exception{
@@ -84,10 +98,18 @@ public class BackLoginInterceptor extends HandlerInterceptorAdapter {
             //无需登录
             return super.preHandle(request,response,handler);
         }
+        if(devEnable){
+            TbUserInfo tbUserInfo = new TbUserInfo();
+            tbUserInfo.setId(userId);
+            tbUserInfo.setUserName(userName);
+
+            CurrentUser.set(tbUserInfo);
+            return super.preHandle(request,response,handler);
+        }
         String authHeader = request.getHeader(jwtConfig.getTokenHeader());
         if(authHeader != null && authHeader.startsWith(jwtConfig.getTokenHead())){
             String authToken = authHeader.substring(jwtConfig.getTokenHead().length());
-            Claims claimsFromToken = JwtTokenUtil.getClaimsFromToken(authToken);
+            Claims claimsFromToken = jwtTokenUtil.getClaimsFromToken(authToken);
             if(claimsFromToken == null){
                 throw new FrameworkException(BizResultConstant.TOKEN_VERIFY);
             }
