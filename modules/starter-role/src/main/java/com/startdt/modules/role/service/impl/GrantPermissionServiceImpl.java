@@ -269,9 +269,35 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
         }
         List<PermissionCodeDTO> permissionCodeDTOS = rolePermissionDTO.getPermissions();
 
-        //TODO 待完善
+        List<ResourcePermissionInfo> list = resourcePermissionService.permissionInfoByCodes(permissionCode);
 
-        return 0;
+        Map<String,PermissionCodeDTO> permissionCodeMap = new HashMap<>();
+        //释放父级权限会释放所有子集权限
+        permissionCodeDTOS.forEach(permissionCodeDTO -> permissionCodeMap.put(permissionCodeDTO.getCode(),permissionCodeDTO));
+
+        list.forEach(permissionInfo -> {
+            //查询是否已经释放权限，若已经释放则进入下一循环
+            if(permissionCodeMap.get(permissionInfo.getCode()) == null){
+                return;
+            }
+            //释放角色当前节点的权限
+            permissionCodeMap.remove(permissionInfo.getCode());
+
+            //获取当前节点所有子节点
+            List<ResourcePermissionInfo> sonList = resourcePermissionService.permissionInfoByParentCode(permissionInfo.getCode());
+
+            //释放已授权的子节点权限
+            sonList.forEach(permissionSon -> {
+                if(permissionCodeMap.get(permissionInfo.getCode()) != null){
+                    permissionCodeMap.remove(permissionInfo.getCode());
+                }
+            });
+        });
+        permissionCodeDTOS.clear();
+
+        permissionCodeMap.keySet().forEach(key -> permissionCodeDTOS.add(permissionCodeMap.get(key)));
+
+        return rolePermissionInfoService.modifyRolePermission(rolePermissionDTO);
     }
 
     private void recursionNode(List<PermissionNodeDTO> permissionNodeDTOS,List<String> permissionCodes){

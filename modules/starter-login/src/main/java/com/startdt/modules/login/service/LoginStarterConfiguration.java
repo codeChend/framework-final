@@ -2,6 +2,7 @@ package com.startdt.modules.login.service;
 
 import com.startdt.modules.login.controller.LoginStarterController;
 import com.startdt.modules.login.intercept.BackLoginInterceptor;
+import com.startdt.modules.login.intercept.LoginMvcConfigure;
 import com.startdt.modules.login.pojo.JwtConfig;
 import com.startdt.modules.login.pojo.LoginUnFilter;
 import com.startdt.modules.login.service.impl.StarterLoginServiceImpl;
@@ -31,10 +32,15 @@ public class LoginStarterConfiguration {
         return new LoginStarterController();
     }
 
+//    @Bean
+//    public BackLoginInterceptor backLoginInterceptor(@Autowired LoginUnFilter loginUnFilter){
+//        ITbUserInfoService tbUserInfoService = new TbUserInfoServiceImpl();
+//        JwtConfig jwtConfig = new JwtConfig();
+//        return new BackLoginInterceptor(tbUserInfoService,jwtConfig,loginUnFilter);
+//    }
+
     @Bean
-    public BackLoginInterceptor backLoginInterceptor(@Autowired LoginUnFilter loginUnFilter){
-        ITbUserInfoService tbUserInfoService = new TbUserInfoServiceImpl();
-        JwtConfig jwtConfig = new JwtConfig();
-        return new BackLoginInterceptor(tbUserInfoService,jwtConfig,loginUnFilter);
+    public LoginMvcConfigure loginMvcConfigure(){
+        return new LoginMvcConfigure();
     }
 }

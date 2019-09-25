@@ -2,9 +2,9 @@ package com.startdt.modules.login.intercept;
 
 import com.startdt.modules.common.utils.exception.FrameworkException;
 import com.startdt.modules.common.utils.result.BizResultConstant;
-import com.startdt.modules.common.utils.result.Result;
 import com.startdt.modules.login.pojo.JwtConfig;
 import com.startdt.modules.login.pojo.LoginUnFilter;
+import com.startdt.modules.login.pojo.LoginUrlDTO;
 import com.startdt.modules.login.service.JwtTokenUtil;
 import com.startdt.modules.user.dal.pojo.domain.TbUserInfo;
 import com.startdt.modules.user.service.ITbUserInfoService;
@@ -58,14 +58,28 @@ public class BackLoginInterceptor extends HandlerInterceptorAdapter {
         }
         HandlerMethod handlerMethod = (HandlerMethod) handler;
 //        LoginStarter loginStarter = handlerMethod.getMethod().getAnnotation(LoginStarter.class);
-        List<String> unFilter = loginUnFilter.unFilterList();
+        List<LoginUrlDTO> unFilter = loginUnFilter.unFilterList();
         boolean needLogin = false;
-        //TODO 登录拦截通配符
-        for(String s : unFilter){
-            if(requestURI.contains(s)){
-                needLogin = true;
+
+        for(LoginUrlDTO loginUrlDTO : unFilter){
+            String filterMethod = loginUrlDTO.getMethod();
+            String filterUrl = loginUrlDTO.getUrl();
+            if(StringUtils.isEmpty(filterMethod) || method.equalsIgnoreCase(filterMethod)){
+                if(filterUrl.contains("*")){
+                    String loginUlr = filterUrl.substring(0,filterUrl.indexOf("*")-1);
+                    if(requestURI.contains(loginUlr)){
+                        needLogin = true;
+                        break;
+                    }
+                }else{
+                    if(requestURI.matches(filterUrl)){
+                        needLogin = true;
+                        break;
+                    }
+                }
             }
         }
+
         if(!needLogin){
             //无需登录
             return super.preHandle(request,response,handler);
