@@ -49,9 +49,6 @@ public class RolePermissionInfoServiceImpl implements IRolePermissionInfoService
     @Autowired
     private RolePermissionInfoMapper rolePermissionInfoMapper;
 
-    @Autowired
-    private SqlSessionFactory sqlSessionFactory;
-
     @Override
     public RoleInfoDTO insertRole(SaveRoleInfoReq rolePermissionDTO) {
         RolePermissionInfo rolePermissionInfo = BeanConverter.convert(rolePermissionDTO,RolePermissionInfo.class);
