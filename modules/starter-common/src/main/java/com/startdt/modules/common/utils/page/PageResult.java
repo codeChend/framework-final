@@ -20,6 +20,10 @@ public class PageResult<T> implements Serializable{
         this.pageInfo = pageInfo;
     }
 
+    public PageResult(PageInfo pageInfo) {
+        this.pageInfo = pageInfo;
+    }
+
     public List<T> getData() {
         return this.data;
     }

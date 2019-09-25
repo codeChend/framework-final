@@ -60,6 +60,7 @@ public class BackLoginInterceptor extends HandlerInterceptorAdapter {
 //        LoginStarter loginStarter = handlerMethod.getMethod().getAnnotation(LoginStarter.class);
         List<String> unFilter = loginUnFilter.unFilterList();
         boolean needLogin = false;
+        //TODO 登录拦截通配符
         for(String s : unFilter){
             if(requestURI.contains(s)){
                 needLogin = true;

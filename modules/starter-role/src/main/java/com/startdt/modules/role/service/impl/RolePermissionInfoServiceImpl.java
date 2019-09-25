@@ -105,8 +105,17 @@ public class RolePermissionInfoServiceImpl implements IRolePermissionInfoService
 
 
         log.info("分页结果为{}",JSON.toJSONString(pageInfo));
+        PageResult<RoleInfoDTO> pageResult = PageUtil.convertPage(pageInfo);
 
-        return PageUtil.convertPage(pageInfo,RoleInfoDTO.class);
+        List<RoleInfoDTO> data = new ArrayList<>();
+        dataList.forEach(rolePermissionInfo -> {
+            RoleInfoDTO roleInfoDTO = BeanConverter.convert(rolePermissionInfo,RoleInfoDTO.class);
+            roleInfoDTO.setGmtCreate(rolePermissionInfo.getGmtCreate().getTime());
+            data.add(roleInfoDTO);
+        });
+        pageResult.setData(data);
+
+        return pageResult;
     }
 
     @Override

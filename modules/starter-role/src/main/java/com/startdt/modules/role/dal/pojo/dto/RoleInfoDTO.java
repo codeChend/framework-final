@@ -1,6 +1,5 @@
 package com.startdt.modules.role.dal.pojo.dto;
 
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -27,6 +26,9 @@ public class RoleInfoDTO {
     @ApiModelProperty(value = "描述",name = "note")
     private String note;
 
+    @ApiModelProperty(value = "创建时间",name = "gmtCreate")
+    private Long gmtCreate;
+
     public Integer getId() {
 
         return id;
@@ -50,5 +52,13 @@ public class RoleInfoDTO {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public Long getGmtCreate() {
+        return gmtCreate;
+    }
+
+    public void setGmtCreate(Long gmtCreate) {
+        this.gmtCreate = gmtCreate;
     }
 }
