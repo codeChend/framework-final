@@ -8,17 +8,13 @@ import com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfo;
 import com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfoExample;
 import com.startdt.modules.role.dal.pojo.request.permission.PermissionReq;
 import com.startdt.modules.role.dal.pojo.dto.PermissionNodeDTO;
-import com.startdt.modules.role.dal.pojo.dto.QueryPermissionDTO;
 import com.startdt.modules.role.service.IResourcePermissionService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Author: weilong
@@ -57,6 +53,9 @@ public class ResourcePermissionServiceImpl implements IResourcePermissionService
             if(!StringUtils.isEmpty(parent)){
                 mid = resourcePermissionInfo.getCode().substring(parent.length()+1);
                 parent += "_";
+            }else{
+                mid = resourcePermissionInfo.getCode();
+                parent = "";
             }
             code = parent + (Long.valueOf(mid) + 1) + "";
             sort = resourcePermissionInfo.getSort() + 1;
@@ -64,6 +63,28 @@ public class ResourcePermissionServiceImpl implements IResourcePermissionService
         permissionNodeDTOS.setCode(code);
         //递归拆分所有节点list
         recursionResource(permissionNodeDTOS,saveList,sort);
+
+        Map<String,ResourcePermissionInfo> permissionMap = new HashMap<>();
+        StringBuffer sb = new StringBuffer();
+        saveList.forEach(permissionInfo -> {
+            //遍历是否有重复的权限值
+            String value = permissionInfo.getValue();
+            if(permissionMap.get(value)!=null){
+                sb.append("该").append(value).append("权限值重复;");
+            }
+            ResourcePermissionInfoExample example1 = new ResourcePermissionInfoExample();
+            example1.or().andValueEqualTo(value).andIsDeleteEqualTo((byte)0);
+
+            ResourcePermissionInfo result = resourcePermissionInfoMapper.selectOneByExample(example1);
+            if(result != null){
+                sb.append("该").append(value).append("权限值已存在;");
+            }
+            permissionMap.put(value,permissionInfo);
+        });
+
+        if(StringUtils.isNotBlank(sb)){
+            throw new FrameworkException(40000,sb.toString());
+        }
 
         //批量保存资源信息
         return resourcePermissionInfoMapper.insertBatch(saveList);
@@ -81,7 +102,6 @@ public class ResourcePermissionServiceImpl implements IResourcePermissionService
             throw new FrameworkException(BizResultConstant.NO_CONTENT_DATA);
         }
         resourcePermissionInfo.setName(permissionReq.getName());
-        resourcePermissionInfo.setValue(permissionReq.getValue());
         resourcePermissionInfo.setIcon(permissionReq.getIcon());
 
         return resourcePermissionInfoMapper.updateByExampleSelective(resourcePermissionInfo,example);
@@ -100,9 +120,13 @@ public class ResourcePermissionServiceImpl implements IResourcePermissionService
             ResourcePermissionInfoExample example = new ResourcePermissionInfoExample();
             example.or().andCodeEqualTo(code).andIsDeleteEqualTo((byte)0);
             ResourcePermissionInfo resourcePermissionInfo = resourcePermissionInfoMapper.selectOneByExample(example);
+            if(resourcePermissionInfo == null){
+                throw new FrameworkException(BizResultConstant.PERMISSION_IS_NOT_EXIST);
+            }
+            String compareParentCode = StringUtils.isBlank(resourcePermissionInfo.getParentCode())?"":resourcePermissionInfo.getParentCode();
             if(sort == 0){
-                parentCode = resourcePermissionInfo.getParentCode();
-            }else if(!parentCode.equals(resourcePermissionInfo.getParentCode())){
+                parentCode = compareParentCode;
+            }else if(!parentCode.equals(compareParentCode)){
                 throw new FrameworkException(BizResultConstant.PERMISSION_IS_NOT_SAME_LEVEL);
             }
             resourcePermissionInfo.setSort(sort);
@@ -110,7 +134,13 @@ public class ResourcePermissionServiceImpl implements IResourcePermissionService
             list.add(resourcePermissionInfo);
         }
 
-        list.forEach(resourcePermissionInfo -> resourcePermissionInfoMapper.updateByPrimaryKey(resourcePermissionInfo));
+        list.forEach(resourcePermissionInfo -> {
+            ResourcePermissionInfo entity = new ResourcePermissionInfo();
+            entity.setSort(resourcePermissionInfo.getSort());
+            entity.setGmtModified(new Date());
+            entity.setId(resourcePermissionInfo.getId());
+            resourcePermissionInfoMapper.updateByPrimaryKeySelective(entity);
+        });
 
         return sort+1;
     }
@@ -130,17 +160,11 @@ public class ResourcePermissionServiceImpl implements IResourcePermissionService
     }
 
     @Override
-    public List<PermissionNodeDTO> permissionNodeSelective(QueryPermissionDTO queryPermissionDTO) {
+    public List<PermissionNodeDTO> permissionNodeSelective() {
         ResourcePermissionInfoExample example = new ResourcePermissionInfoExample();
-        ResourcePermissionInfoExample.Criteria criteria = example.or();
-        if(!StringUtils.isEmpty(queryPermissionDTO.getCode()) || !StringUtils.isEmpty(queryPermissionDTO.getName())){
-            criteria.andCodeEqualTo(queryPermissionDTO.getCode()).andNameLike(queryPermissionDTO.getName());
-        }else {
-            criteria.andParentCodeIsNull();
-        }
-        if(queryPermissionDTO.getType() != null){
-            criteria.andTypeEqualTo(queryPermissionDTO.getType());
-        }
+        example.or().andIsDeleteEqualTo((byte)0).andParentCodeIsNull();
+        example.setOrderByClause("sort ASC");
+
         List<ResourcePermissionInfo> list = resourcePermissionInfoMapper.selectByExample(example);
         List<PermissionNodeDTO> nodeDTOS = BeanConverter.mapList(list,PermissionNodeDTO.class);
         recursionPermissionSon(nodeDTOS);
@@ -153,13 +177,15 @@ public class ResourcePermissionServiceImpl implements IResourcePermissionService
         if(CollectionUtils.isEmpty(codes)){
             return Collections.emptyList();
         }
-        return resourcePermissionInfoMapper.selectByIds(codes);
+        return resourcePermissionInfoMapper.selectByCodes(codes);
     }
 
     @Override
     public List<ResourcePermissionInfo> permissionInfoByParentCode(String parentCode) {
         ResourcePermissionInfoExample example = new ResourcePermissionInfoExample();
         example.or().andParentCodeEqualTo(parentCode).andIsDeleteEqualTo((byte)0);
+
+        example.setOrderByClause("sort ASC");
 
         return resourcePermissionInfoMapper.selectByExample(example);
     }
@@ -183,7 +209,7 @@ public class ResourcePermissionServiceImpl implements IResourcePermissionService
 
                 permissionNodeSon.setParentCode(permissionNodeDTO.getCode());
                 permissionNodeSon.setCode(permissionNodeDTO.getCode() + "_" + (100 + sonSort));
-                recursionResource(permissionNodeSon,list,sort);
+                recursionResource(permissionNodeSon,list,sonSort);
                 sonSort++;
             }
         }
@@ -193,6 +219,7 @@ public class ResourcePermissionServiceImpl implements IResourcePermissionService
         list.forEach(permissionNodeDTO -> {
             ResourcePermissionInfoExample resourcePermissionInfoExample = new ResourcePermissionInfoExample();
             resourcePermissionInfoExample.or().andParentCodeEqualTo(permissionNodeDTO.getCode()).andIsDeleteEqualTo((byte)0);
+            resourcePermissionInfoExample.setOrderByClause("sort ASC");
             List<ResourcePermissionInfo> listSon = resourcePermissionInfoMapper.selectByExample(resourcePermissionInfoExample);
             List<PermissionNodeDTO> listNodeSon = BeanConverter.mapList(listSon,PermissionNodeDTO.class);
             if(!CollectionUtils.isEmpty(listNodeSon)){

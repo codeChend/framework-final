@@ -42,4 +42,11 @@ public class GrantPermissionController {
         return Result.ofSuccess(DataInfo.resultToData(grantPermissionService.getUrlPermission(userId)));
     }
 
+    @GetMapping("/v1/functionPermission/{userId}")
+    @ApiOperation(value = "通过userId分层获取所有菜单权限")
+    public Result<DataInfo<List<String>>> getFunctionPermission(@PathVariable("userId") Integer userId) {
+
+        return Result.ofSuccess(DataInfo.resultToData(grantPermissionService.getFunctionPermission(userId)));
+    }
+
 }

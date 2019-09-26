@@ -35,5 +35,5 @@ public interface ResourcePermissionInfoMapper {
 
     int updateByPrimaryKey(ResourcePermissionInfo record);
 
-    List<ResourcePermissionInfo> selectByIds(List<String> codes);
+    List<ResourcePermissionInfo> selectByCodes(List<String> codes);
 }

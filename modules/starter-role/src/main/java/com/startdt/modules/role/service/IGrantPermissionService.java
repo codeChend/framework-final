@@ -8,6 +8,7 @@ import com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfo;
 import com.startdt.modules.role.dal.pojo.dto.PermissionAccessDTO;
 import com.startdt.modules.role.dal.pojo.dto.PermissionNodeDTO;
 import com.startdt.modules.role.dal.pojo.dto.RoleInfoDTO;
+import com.startdt.modules.role.dal.pojo.dto.RolePermissionDTO;
 import com.startdt.modules.role.dal.pojo.request.grant.GrantUserRoleReq;
 
 import java.util.List;
@@ -47,11 +48,11 @@ public interface IGrantPermissionService {
     PageResult<RoleInfoDTO> pageRoleByUserId(GrantPermissionExample example, int currentPage, int pageSize);
 
     /**
-     * 通过用户id获取角色列表
+     * 通过用户id获取角色权限
      * @param userId
      * @return
      */
-    List<RoleInfoDTO> listByUserId(Integer userId);
+    List<RolePermissionDTO> listByUserId(Integer userId);
 
     /**
      * 根据用户获取系统级的全部权限list
@@ -66,6 +67,13 @@ public interface IGrantPermissionService {
      * @return
      */
     List<PermissionNodeDTO> getMenuPermission(Integer userId);
+
+    /**
+     * 通过userId获取功能权限值集合
+     * @param userId
+     * @return
+     */
+    List<String> getFunctionPermission(Integer userId);
 
     /**
      * 通过角色id获取权限树进行授权

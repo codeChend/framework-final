@@ -360,13 +360,13 @@
     limit ${offset},${limit}
   </select>
 
-  <select id="selectByIds" resultMap="BaseResultMap">
+  <select id="selectByCodes" resultMap="BaseResultMap">
     select
     distinct
     <include refid="Base_Column_List" />
     from resource_permission_info
     WHERE
-    id in
+    code in
     <foreach collection="list" index="index" item="item" open="(" separator="," close=")" >
       #{item}
     </foreach>

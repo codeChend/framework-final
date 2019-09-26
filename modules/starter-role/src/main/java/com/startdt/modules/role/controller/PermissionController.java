@@ -1,19 +1,23 @@
 package com.startdt.modules.role.controller;
 
+import com.startdt.modules.common.utils.BeanConverter;
 import com.startdt.modules.common.utils.result.BizResultConstant;
 import com.startdt.modules.common.utils.result.DataInfo;
 import com.startdt.modules.common.utils.result.Result;
 import com.startdt.modules.role.dal.pojo.dto.PermissionNodeDTO;
-import com.startdt.modules.role.dal.pojo.dto.QueryPermissionDTO;
+import com.startdt.modules.role.dal.pojo.request.permission.PermissionNodeReq;
 import com.startdt.modules.role.dal.pojo.request.permission.PermissionReq;
 import com.startdt.modules.role.dal.pojo.request.permission.SortPermissionReq;
 import com.startdt.modules.role.service.IResourcePermissionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,7 +36,16 @@ public class PermissionController {
 
     @PostMapping("/v1/permissions")
     @ApiOperation(value = "保存新的模块资源权限信息")
-    public Result<DataInfo<PermissionNodeDTO>> saveResourcePermission(@RequestBody @Valid PermissionNodeDTO permissionNodeDTO) {
+    public Result<DataInfo<PermissionNodeDTO>> saveResourcePermission(@RequestBody @Valid PermissionNodeReq permissionNodeReq) {
+
+        PermissionNodeDTO permissionNodeDTO = BeanConverter.convert(permissionNodeReq,PermissionNodeDTO.class);
+        List<PermissionNodeDTO> sonList = new ArrayList<>();
+
+        recusionConvert(permissionNodeReq,sonList);
+
+        if(!CollectionUtils.isEmpty(sonList)){
+            permissionNodeDTO.setPermissionNodeSon(sonList);
+        }
 
         int save = resourcePermissionService.saveResourcePermission(permissionNodeDTO);
         if(save < 1){
@@ -78,9 +91,18 @@ public class PermissionController {
     }
 
     @GetMapping("/v1/permissions")
-    @ApiOperation(value = "根据条件查询权限资源列表")
-    public Result<DataInfo<List<PermissionNodeDTO>>> permissionNodeSelective(@RequestBody QueryPermissionDTO queryPermissionDTO) {
+    @ApiOperation(value = "分层次捞出所有权限")
+    public Result<DataInfo<List<PermissionNodeDTO>>> permissionNodeSelective() {
 
-        return Result.ofSuccess(DataInfo.resultToData(resourcePermissionService.permissionNodeSelective(queryPermissionDTO)));
+        return Result.ofSuccess(DataInfo.resultToData(resourcePermissionService.permissionNodeSelective()));
+    }
+
+    private void recusionConvert(PermissionNodeReq permissionNodeReq,List<PermissionNodeDTO> sonList){
+        if(!CollectionUtils.isEmpty(permissionNodeReq.getPermissionNodeSon())){
+            permissionNodeReq.getPermissionNodeSon().forEach(permissionSonReq -> {
+                sonList.add(BeanConverter.convert(permissionSonReq,PermissionNodeDTO.class));
+                recusionConvert(permissionSonReq,sonList);
+            });
+        }
     }
 }

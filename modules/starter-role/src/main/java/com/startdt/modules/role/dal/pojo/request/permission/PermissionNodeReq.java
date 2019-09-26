@@ -1,19 +1,17 @@
-package com.startdt.modules.role.dal.pojo.dto;
+package com.startdt.modules.role.dal.pojo.request.permission;
 
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import java.util.List;
+
 /**
  * @Author: weilong
  * @Description:
- * @Date: Create in 2019/9/17 下午8:46
+ * @Date: Create in 2019/9/26 下午2:51
  * @Modified By:
  */
-public class PermissionDTO {
-    /** 权限code **/
-    @ApiModelProperty(value = "权限code",name = "code")
-    private String code;
-
+public class PermissionNodeReq{
     /** 权限code **/
     @ApiModelProperty(value = "父类权限code",name = "parentCode")
     private String parentCode;
@@ -40,13 +38,8 @@ public class PermissionDTO {
     @ApiModelProperty(value = "图标",name = "icon")
     private String icon;
 
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
+    @ApiModelProperty(value = "权限子类集合",name = "permissionNodeSon",dataType = "List")
+    private List<PermissionNodeReq> permissionNodeSon;
 
     public String getParentCode() {
         return parentCode;
@@ -96,16 +89,11 @@ public class PermissionDTO {
         this.icon = icon;
     }
 
-    @Override
-    public String toString() {
-        return "PermissionDTO{" +
-                "code='" + code + '\'' +
-                ", parentCode='" + parentCode + '\'' +
-                ", name='" + name + '\'' +
-                ", value='" + value + '\'' +
-                ", resUrl='" + resUrl + '\'' +
-                ", type=" + type +
-                ", icon='" + icon + '\'' +
-                '}';
+    public List<PermissionNodeReq> getPermissionNodeSon() {
+        return permissionNodeSon;
+    }
+
+    public void setPermissionNodeSon(List<PermissionNodeReq> permissionNodeSon) {
+        this.permissionNodeSon = permissionNodeSon;
     }
 }

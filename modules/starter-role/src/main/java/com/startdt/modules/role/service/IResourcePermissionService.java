@@ -3,7 +3,6 @@ package com.startdt.modules.role.service;
 import com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfo;
 import com.startdt.modules.role.dal.pojo.request.permission.PermissionReq;
 import com.startdt.modules.role.dal.pojo.dto.PermissionNodeDTO;
-import com.startdt.modules.role.dal.pojo.dto.QueryPermissionDTO;
 
 import java.util.List;
 
@@ -45,10 +44,9 @@ public interface IResourcePermissionService {
 
     /**
      * 根据条件查询权限资源列表
-     * @param queryPermissionDTO
      * @return
      */
-    List<PermissionNodeDTO> permissionNodeSelective(QueryPermissionDTO queryPermissionDTO);
+    List<PermissionNodeDTO> permissionNodeSelective();
 
     /**
      * 根据权限code批量获取权限列表

@@ -22,10 +22,6 @@ public class PermissionReq {
     @ApiModelProperty(value = "权限名称",name = "name")
     private String name;
 
-    /** 权限code **/
-    @ApiModelProperty(value = "value",name = "value")
-    private String value;
-
     /** 图标 **/
     @ApiModelProperty(value = "图标",name = "icon")
     private String icon;
@@ -52,13 +48,5 @@ public class PermissionReq {
 
     public void setIcon(String icon) {
         this.icon = icon;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
     }
 }
