@@ -3,6 +3,7 @@ package com.startdt.modules.role.controller;
 import com.startdt.modules.common.utils.result.DataInfo;
 import com.startdt.modules.common.utils.result.Result;
 import com.startdt.modules.role.dal.pojo.dto.PermissionNodeDTO;
+import com.startdt.modules.role.dal.pojo.dto.UrlMethodDTO;
 import com.startdt.modules.role.service.IGrantPermissionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,7 +22,7 @@ import java.util.List;
  * @Modified By:
  */
 @RestController
-@RequestMapping("/starter")
+@RequestMapping("/api/starter")
 @Api(value = "后台-用户授权管理", tags = "后台-用户授权管理")
 public class GrantPermissionController {
 
@@ -37,7 +38,7 @@ public class GrantPermissionController {
 
     @GetMapping("/v1/urlPermission/{userId}")
     @ApiOperation(value =  "通过userId获取所有的url权限集")
-    public Result<DataInfo<List<String>>> getUrlPermission(@PathVariable("userId") Integer userId) {
+    public Result<DataInfo<List<UrlMethodDTO>>> getUrlPermission(@PathVariable("userId") Integer userId) {
 
         return Result.ofSuccess(DataInfo.resultToData(grantPermissionService.getUrlPermission(userId)));
     }

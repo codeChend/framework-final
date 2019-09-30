@@ -28,9 +28,8 @@ public class PermissionDTO {
     @NotEmpty(message = "权限值不能为空")
     private String value;
 
-    /** 路径 **/
-    @ApiModelProperty(value = "路径",name = "resUrl")
-    private String resUrl;
+    @ApiModelProperty(value = "权限url与请求方法",name = "urlMethod")
+    private UrlMethodDTO urlMethod;
 
     /** 类型，0 菜单，1 按钮，2 资源 **/
     @ApiModelProperty(value = "类型，0 菜单，1 按钮，2 资源 ",name = "type",example = "0")
@@ -72,12 +71,12 @@ public class PermissionDTO {
         this.value = value;
     }
 
-    public String getResUrl() {
-        return resUrl;
+    public UrlMethodDTO getUrlMethod() {
+        return urlMethod;
     }
 
-    public void setResUrl(String resUrl) {
-        this.resUrl = resUrl;
+    public void setUrlMethod(UrlMethodDTO urlMethod) {
+        this.urlMethod = urlMethod;
     }
 
     public Byte getType() {
@@ -103,7 +102,7 @@ public class PermissionDTO {
                 ", parentCode='" + parentCode + '\'' +
                 ", name='" + name + '\'' +
                 ", value='" + value + '\'' +
-                ", resUrl='" + resUrl + '\'' +
+                ", urlMethod='" + urlMethod + '\'' +
                 ", type=" + type +
                 ", icon='" + icon + '\'' +
                 '}';

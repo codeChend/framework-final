@@ -154,7 +154,7 @@
     </logger>
 
     <!-- 日志输出级别 -->
-    <root level="DEBUG">
+    <root level="info">
       <!--  <appender-ref ref="CONSOLE"/>-->
         <appender-ref ref="dailyFile"></appender-ref>
         <appender-ref ref="PROJECT_ERR"></appender-ref>

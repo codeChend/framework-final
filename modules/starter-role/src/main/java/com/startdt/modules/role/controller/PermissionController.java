@@ -27,7 +27,7 @@ import java.util.List;
  * @Modified By:
  */
 @RestController
-@RequestMapping("/starter")
+@RequestMapping("/api/starter")
 @Api(value = "后台-权限管理", tags = "后台-权限管理")
 public class PermissionController {
 
@@ -40,6 +40,7 @@ public class PermissionController {
 
         PermissionNodeDTO permissionNodeDTO = BeanConverter.convert(permissionNodeReq,PermissionNodeDTO.class);
         List<PermissionNodeDTO> sonList = new ArrayList<>();
+
 
         recusionConvert(permissionNodeReq,sonList);
 

@@ -20,7 +20,7 @@ import java.util.List;
  * @Modified By:
  */
 @RestController
-@RequestMapping("/starter")
+@RequestMapping("/api/starter")
 @Api(value = "后台-角色绑定权限", tags = "后台-角色绑定权限")
 public class RolePermissionController {
 

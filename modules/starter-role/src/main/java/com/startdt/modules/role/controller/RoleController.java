@@ -30,7 +30,7 @@ import java.util.List;
  * @Modified By:
  */
 @RestController
-@RequestMapping("/starter")
+@RequestMapping("/api/starter")
 @Api(value = "后台-角色管理", tags = "后台-角色管理")
 public class RoleController {
 

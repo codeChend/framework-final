@@ -1,11 +1,14 @@
 package com.startdt.modules.role.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.startdt.modules.common.utils.BeanConverter;
+import com.startdt.modules.common.utils.enums.UrlMethodEnum;
 import com.startdt.modules.common.utils.exception.FrameworkException;
 import com.startdt.modules.common.utils.result.BizResultConstant;
 import com.startdt.modules.role.dal.mapper.ResourcePermissionInfoMapper;
 import com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfo;
 import com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfoExample;
+import com.startdt.modules.role.dal.pojo.dto.UrlMethodDTO;
 import com.startdt.modules.role.dal.pojo.request.permission.PermissionReq;
 import com.startdt.modules.role.dal.pojo.dto.PermissionNodeDTO;
 import com.startdt.modules.role.service.IResourcePermissionService;
@@ -166,7 +169,21 @@ public class ResourcePermissionServiceImpl implements IResourcePermissionService
         example.setOrderByClause("sort ASC");
 
         List<ResourcePermissionInfo> list = resourcePermissionInfoMapper.selectByExample(example);
-        List<PermissionNodeDTO> nodeDTOS = BeanConverter.mapList(list,PermissionNodeDTO.class);
+
+        List<PermissionNodeDTO> nodeDTOS = new ArrayList<>();
+
+        list.forEach(resourcePermissionInfo -> {
+            PermissionNodeDTO permissionNodeDTO = BeanConverter.convert(resourcePermissionInfo,PermissionNodeDTO.class);
+            nodeDTOS.add(permissionNodeDTO);
+            String resUrl = resourcePermissionInfo.getResUrl();
+            if(StringUtils.isNotBlank(resUrl)){
+                if(resUrl.contains(UrlMethodEnum.URL.getCode()) && resUrl.contains(UrlMethodEnum.METHOD.getCode())){
+                    UrlMethodDTO urlMethodDTO = JSON.parseObject(resUrl,UrlMethodDTO.class);
+                    permissionNodeDTO.setUrlMethod(urlMethodDTO);
+                }
+            }
+        });
+
         recursionPermissionSon(nodeDTOS);
 
         return nodeDTOS;
@@ -201,6 +218,9 @@ public class ResourcePermissionServiceImpl implements IResourcePermissionService
 
         ResourcePermissionInfo resourcePermissionInfo = BeanConverter.convert(permissionNodeDTO,ResourcePermissionInfo.class);
         resourcePermissionInfo.setSort(sort);
+        if(permissionNodeDTO.getUrlMethod() != null){
+            resourcePermissionInfo.setResUrl(JSON.toJSONString(permissionNodeDTO.getUrlMethod()));
+        }
         list.add(resourcePermissionInfo);
 
         if(!CollectionUtils.isEmpty(permissionNodeDTO.getPermissionNodeSon())){

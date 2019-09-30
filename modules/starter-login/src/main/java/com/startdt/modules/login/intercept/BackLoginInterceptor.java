@@ -1,5 +1,6 @@
 package com.startdt.modules.login.intercept;
 
+import com.startdt.modules.common.utils.RegexUtil;
 import com.startdt.modules.common.utils.exception.FrameworkException;
 import com.startdt.modules.common.utils.result.BizResultConstant;
 import com.startdt.modules.login.pojo.JwtConfig;
@@ -9,6 +10,7 @@ import com.startdt.modules.login.service.JwtTokenUtil;
 import com.startdt.modules.user.dal.pojo.domain.TbUserInfo;
 import com.startdt.modules.user.service.ITbUserInfoService;
 import io.jsonwebtoken.Claims;
+import org.apache.commons.lang3.StringUtils;
 import org.omg.CORBA.Current;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,15 +18,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.util.StringUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * @Author: weilong
@@ -75,21 +78,29 @@ public class BackLoginInterceptor extends HandlerInterceptorAdapter {
         List<LoginUrlDTO> unFilter = loginUnFilter.unFilterList();
         boolean needLogin = false;
 
+        String loginUrl = request.getRequestURI();
+
         for(LoginUrlDTO loginUrlDTO : unFilter){
             String filterMethod = loginUrlDTO.getMethod();
             String filterUrl = loginUrlDTO.getUrl();
-            if(StringUtils.isEmpty(filterMethod) || method.equalsIgnoreCase(filterMethod)){
-                if(filterUrl.contains("*")){
-                    String loginUlr = filterUrl.substring(0,filterUrl.indexOf("*")-1);
-                    if(requestURI.contains(loginUlr)){
-                        needLogin = true;
+
+            boolean methodFix = false;
+
+            if(StringUtils.isBlank(filterMethod)){
+                methodFix = true;
+            }else{
+                String[] filterMethodArray = filterMethod.split(":");
+                for (String forMethod : filterMethodArray) {
+                    if (forMethod.equalsIgnoreCase(method)) {
+                        methodFix = true;
                         break;
                     }
-                }else{
-                    if(requestURI.matches(filterUrl)){
-                        needLogin = true;
-                        break;
-                    }
+                }
+            }
+            if(methodFix){
+                String regexUrl = RegexUtil.wildToRegex(filterUrl).replaceAll("\\{\\w+}","([^/]+)");
+                if(Pattern.compile(regexUrl).matcher(loginUrl).matches()){
+                    needLogin = true;
                 }
             }
         }

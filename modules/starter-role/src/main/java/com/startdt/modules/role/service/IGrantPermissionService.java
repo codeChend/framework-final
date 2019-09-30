@@ -5,12 +5,11 @@ import com.startdt.modules.common.pojo.Page;
 import com.startdt.modules.common.utils.page.PageResult;
 import com.startdt.modules.role.dal.pojo.domain.GrantPermissionExample;
 import com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfo;
-import com.startdt.modules.role.dal.pojo.dto.PermissionAccessDTO;
-import com.startdt.modules.role.dal.pojo.dto.PermissionNodeDTO;
-import com.startdt.modules.role.dal.pojo.dto.RoleInfoDTO;
-import com.startdt.modules.role.dal.pojo.dto.RolePermissionDTO;
+import com.startdt.modules.role.dal.pojo.dto.*;
 import com.startdt.modules.role.dal.pojo.request.grant.GrantUserRoleReq;
+import org.springframework.http.HttpMethod;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -87,7 +86,7 @@ public interface IGrantPermissionService {
      * @param userId
      * @return
      */
-    List<String> getUrlPermission(Integer userId);
+    List<UrlMethodDTO> getUrlPermission(Integer userId);
 
     /**
      * 获取业务权限code集合
@@ -111,4 +110,13 @@ public interface IGrantPermissionService {
      * @return
      */
     int releaseRolePermission(Integer roleId,List<String> permissionCode);
+
+    /**
+     * 根据用户id判断当前接口是否有权限访问
+     * @param userId        用户userId
+     * @param url           接口请求url，采取/*和/?的适配方式
+     * @param httpMethod    接口请求方法{@link HttpMethod}
+     * @return
+     */
+    boolean checkAuth(Integer userId, String url, String httpMethod);
 }

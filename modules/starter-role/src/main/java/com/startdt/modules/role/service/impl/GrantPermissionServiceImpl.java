@@ -1,12 +1,11 @@
 package com.startdt.modules.role.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.startdt.modules.common.utils.BeanConverter;
-import com.startdt.modules.common.utils.enums.PermissionTypeEnum;
-import com.startdt.modules.common.utils.enums.PrincipalTypeEnum;
-import com.startdt.modules.common.utils.enums.ResourceTypeEnum;
-import com.startdt.modules.common.utils.enums.RolePermissionEnum;
+import com.startdt.modules.common.utils.RegexUtil;
+import com.startdt.modules.common.utils.enums.*;
 import com.startdt.modules.common.utils.exception.FrameworkException;
 import com.startdt.modules.common.utils.page.PageResult;
 import com.startdt.modules.common.utils.page.PageUtil;
@@ -20,12 +19,13 @@ import com.startdt.modules.role.dal.pojo.request.grant.GrantUserRoleReq;
 import com.startdt.modules.role.service.IGrantPermissionService;
 import com.startdt.modules.role.service.IResourcePermissionService;
 import com.startdt.modules.role.service.IRolePermissionInfoService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 import java.util.*;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -154,7 +154,15 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
                 .filter(permissionInfo -> permissionInfo.getType()== PermissionTypeEnum.MENU_PERMISSION.getCode().byteValue())
                 .collect(Collectors.toList());
 
-        List<PermissionNodeDTO> resultList = BeanConverter.mapList(parentPermission,PermissionNodeDTO.class);
+        List<PermissionNodeDTO> resultList = new ArrayList<>();
+        parentPermission.forEach(resourcePermission -> {
+            PermissionNodeDTO permissionNodeDTO = BeanConverter.convert(resourcePermission,PermissionNodeDTO.class);
+            if(StringUtils.isNotBlank(resourcePermission.getResUrl())){
+                permissionNodeDTO.setUrlMethod(JSON.parseObject(resourcePermission.getResUrl(),UrlMethodDTO.class));
+            }
+
+            resultList.add(permissionNodeDTO);
+        });
 
         List<String> permissionCodes = permissionNodeDTOS.parallelStream().map(ResourcePermissionInfo::getCode).collect(Collectors.toList());
 
@@ -211,11 +219,22 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
     }
 
     @Override
-    public List<String> getUrlPermission(Integer userId) {
+    public List<UrlMethodDTO> getUrlPermission(Integer userId) {
         //根据userId获取系统级所有权限集
         List<ResourcePermissionInfo> permissionInfoList = permissionAllByUserId(userId);
 
-        return permissionInfoList.parallelStream().map(ResourcePermissionInfo::getResUrl).collect(Collectors.toList());
+        List<String> resUrls = permissionInfoList.parallelStream().map(ResourcePermissionInfo::getResUrl).collect(Collectors.toList());
+
+        List<UrlMethodDTO> urlMethodDTOS = new ArrayList<>();
+
+        resUrls.forEach(resUrl -> {
+            if(resUrl.contains(UrlMethodEnum.URL.getCode()) && resUrl.contains(UrlMethodEnum.METHOD.getCode())){
+                UrlMethodDTO urlMethodDTO = JSON.parseObject(resUrl,UrlMethodDTO.class);
+                urlMethodDTOS.add(urlMethodDTO);
+            }
+        });
+
+        return urlMethodDTOS;
     }
 
     @Override
@@ -308,6 +327,29 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
         return rolePermissionInfoService.modifyRolePermission(rolePermissionDTO);
     }
 
+    @Override
+    public boolean checkAuth(Integer userId, String url,String httpMethod) {
+        //通过userId获取所有权限url路径
+        boolean check = false;
+        List<UrlMethodDTO> permissionUrls = getUrlPermission(userId);
+        for(UrlMethodDTO urlMethodDTO : permissionUrls) {
+            String perUrl = urlMethodDTO.getUrl();
+            String perMethod = urlMethodDTO.getMethod();
+            if(!perMethod.equalsIgnoreCase(httpMethod)){
+                continue;
+            }
+            //匹配url路径
+            String regexUrl = RegexUtil.wildToRegex(perUrl).replaceAll("\\{\\w+}","([^/]+)");
+            if(Pattern.compile(regexUrl).matcher(url).matches()){
+                check = true;
+                break;
+            }
+        }
+
+        return check;
+    }
+
+
     private void recursionNode(List<PermissionNodeDTO> permissionNodeDTOS,List<String> permissionCodes){
         permissionNodeDTOS.forEach(permissionNodeDTO -> {
             List<ResourcePermissionInfo> resourcePermissionInfos1 = resourcePermissionService.permissionInfoByParentCode(permissionNodeDTO.getCode());
@@ -315,7 +357,11 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
             if(!CollectionUtils.isEmpty(resourcePermissionInfos1)){
                 resourcePermissionInfos1.forEach(resourcePermissionInfo -> {
                     if(permissionCodes.contains(resourcePermissionInfo.getCode())){
-                        permissionSon.add(BeanConverter.convert(resourcePermissionInfo,PermissionNodeDTO.class));
+                        PermissionNodeDTO permissionSonNode = BeanConverter.convert(resourcePermissionInfo,PermissionNodeDTO.class);
+                        if(StringUtils.isNotBlank(resourcePermissionInfo.getResUrl())){
+                            permissionSonNode.setUrlMethod(JSON.parseObject(resourcePermissionInfo.getResUrl(),UrlMethodDTO.class));
+                        }
+                        permissionSon.add(permissionSonNode);
                     }
                 });
                 recursionNode(permissionSon,permissionCodes);
@@ -377,4 +423,6 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
 
         }
     }
+
+
 }

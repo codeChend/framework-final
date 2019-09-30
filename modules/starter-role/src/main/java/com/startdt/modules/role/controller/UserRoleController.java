@@ -26,7 +26,7 @@ import javax.validation.Valid;
  * @Modified By:
  */
 @RestController
-@RequestMapping("/starter")
+@RequestMapping("/api/starter")
 @Api(value = "后台-用户绑定角色", tags = "后台-用户绑定角色")
 public class UserRoleController {
 
