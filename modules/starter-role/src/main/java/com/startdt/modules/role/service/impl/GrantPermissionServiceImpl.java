@@ -196,9 +196,6 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
         if(rolePermissionDTO == null){
             throw new FrameworkException(BizResultConstant.ROLE_IS_NOT_EXIST);
         }
-        if(CollectionUtils.isEmpty(rolePermissionDTO.getPermissions())){
-            throw new FrameworkException(BizResultConstant.ROLE_NO_AUTH);
-        }
 
         List<PermissionCodeDTO> permissionCodeDTOS = rolePermissionDTO.getPermissions();
 
