@@ -17,6 +17,9 @@ public class GrantPermission {
     /** 资源类型，1角色，2权限 **/
     private Byte resourcesType;
 
+    /** 空间code **/
+    private String spaceCode;
+
     /** 描述 **/
     private String note;
 
@@ -115,5 +118,13 @@ public class GrantPermission {
     /** 更新时间 **/
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getSpaceCode() {
+        return spaceCode;
+    }
+
+    public void setSpaceCode(String spaceCode) {
+        this.spaceCode = spaceCode;
     }
 }

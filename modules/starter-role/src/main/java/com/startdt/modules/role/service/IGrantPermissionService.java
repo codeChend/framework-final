@@ -1,7 +1,6 @@
 package com.startdt.modules.role.service;
 
 
-import com.startdt.modules.common.pojo.Page;
 import com.startdt.modules.common.utils.page.PageResult;
 import com.startdt.modules.role.dal.pojo.domain.GrantPermissionExample;
 import com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfo;
@@ -9,7 +8,6 @@ import com.startdt.modules.role.dal.pojo.dto.*;
 import com.startdt.modules.role.dal.pojo.request.grant.GrantUserRoleReq;
 import org.springframework.http.HttpMethod;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -38,6 +36,15 @@ public interface IGrantPermissionService {
     int deleteUserRole(Integer userId,Integer roleId);
 
     /**
+     * 禁用用户某个空间的某个角色
+     * @param userId
+     * @param roleId
+     * @param spaceCode
+     * @return
+     */
+    int deleteUserRole(Integer userId,Integer roleId,String spaceCode);
+
+    /**
      * 获取用户所有的角色
      * @param example
      * @param currentPage
@@ -54,25 +61,33 @@ public interface IGrantPermissionService {
     List<RolePermissionDTO> listByUserId(Integer userId);
 
     /**
+     * 通过用户id + spaceCode获取角色权限
+     * @param userId
+     * @param spaceCode
+     * @return
+     */
+    List<RolePermissionDTO> listByUserId(Integer userId,String spaceCode);
+
+    /**
      * 根据用户获取系统级的全部权限list
      * @param userId
      * @return
      */
-    List<ResourcePermissionInfo> permissionAllByUserId(Integer userId);
+    List<ResourcePermissionInfo> permissionAllByUserId(Integer userId,String spaceCode);
 
     /**
      * 通过userId获取所有菜单权限
      * @param userId
      * @return
      */
-    List<PermissionNodeDTO> getMenuPermission(Integer userId);
+    List<PermissionNodeDTO> getMenuPermission(Integer userId,String spaceCode);
 
     /**
      * 通过userId获取功能权限值集合
      * @param userId
      * @return
      */
-    List<String> getFunctionPermission(Integer userId);
+    List<String> getFunctionPermission(Integer userId,String spaceCode);
 
     /**
      * 通过角色id获取权限树进行授权
@@ -86,14 +101,14 @@ public interface IGrantPermissionService {
      * @param userId
      * @return
      */
-    List<UrlMethodDTO> getUrlPermission(Integer userId);
+    List<UrlMethodDTO> getUrlPermission(Integer userId,String spaceCode);
 
     /**
      * 获取业务权限code集合
      * @param userId
      * @return
      */
-    List<String> getBusinessPermission(Integer userId);
+    List<String> getBusinessPermission(Integer userId,String spaceCode);
 
     /**
      * 给角色授权，若是子节点会附带上根节点的权限

@@ -415,6 +415,76 @@ public class GrantPermissionExample {
             return (Criteria) this;
         }
 
+        public Criteria andSpaceCodeIsNull() {
+            addCriterion("space_code is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpaceCodeIsNotNull() {
+            addCriterion("space_code is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpaceCodeEqualTo(String value) {
+            addCriterion("space_code =", value);
+            return (Criteria) this;
+        }
+
+        public Criteria andSpaceCodeNotEqualTo(String value) {
+            addCriterion("space_code <>", value);
+            return (Criteria) this;
+        }
+
+        public Criteria andSpaceCodeGreaterThan(String value) {
+            addCriterion("space_code >", value);
+            return (Criteria) this;
+        }
+
+        public Criteria andSpaceCodeGreaterThanOrEqualTo(String value) {
+            addCriterion("space_code >=", value);
+            return (Criteria) this;
+        }
+
+        public Criteria andSpaceCodeLessThan(String value) {
+            addCriterion("space_code <", value);
+            return (Criteria) this;
+        }
+
+        public Criteria andSpaceCodeLessThanOrEqualTo(String value) {
+            addCriterion("space_code <=", value);
+            return (Criteria) this;
+        }
+
+        public Criteria andSpaceCodeLike(String value) {
+            addCriterion("space_code like", value);
+            return (Criteria) this;
+        }
+
+        public Criteria andSpaceCodeNotLike(String value) {
+            addCriterion("space_code not like", value);
+            return (Criteria) this;
+        }
+
+        public Criteria andSpaceCodeIn(List<String> values) {
+            addCriterion("space_code in", values);
+            return (Criteria) this;
+        }
+
+        public Criteria andSpaceCodeNotIn(List<String> values) {
+            addCriterion("space_code not in", values);
+            return (Criteria) this;
+        }
+
+        public Criteria andSpaceCodeBetween(String value1, String value2) {
+            addCriterion("space_code between", value1, value2);
+            return (Criteria) this;
+        }
+
+        public Criteria andSpaceCodeNotBetween(String value1, String value2) {
+            addCriterion("space_code not between", value1, value2);
+            return (Criteria) this;
+        }
+
         public Criteria andNoteIsNull() {
             addCriterion("note is null");
             return (Criteria) this;

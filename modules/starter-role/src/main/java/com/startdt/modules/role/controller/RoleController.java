@@ -1,12 +1,10 @@
 package com.startdt.modules.role.controller;
 
-import com.startdt.modules.common.pojo.Page;
 import com.startdt.modules.common.utils.page.PageResult;
 import com.startdt.modules.common.utils.result.BizResultConstant;
 import com.startdt.modules.common.utils.result.DataInfo;
 import com.startdt.modules.common.utils.result.Result;
 import com.startdt.modules.role.dal.pojo.domain.RolePermissionInfoExample;
-import com.startdt.modules.role.dal.pojo.dto.PermissionNodeDTO;
 import com.startdt.modules.role.dal.pojo.dto.RoleInfoDTO;
 import com.startdt.modules.role.dal.pojo.dto.RolePermissionDTO;
 import com.startdt.modules.role.dal.pojo.request.role.ModifyRoleInfoReq;
@@ -21,7 +19,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 /**
  * @Author: weilong
@@ -96,14 +93,18 @@ public class RoleController {
     @ApiOperation(value ="分页获取角色列表")
     @ApiImplicitParams({
             @ApiImplicitParam(value = "当前页", name = "currentPage", example = "1"),
-            @ApiImplicitParam(value = "每页大小", name = "pageSize", example = "10")
+            @ApiImplicitParam(value = "每页大小", name = "pageSize", example = "10"),
+            @ApiImplicitParam(value = "平台code可为空", name = "platformCode", example = "10")
     })
-    public Result<PageResult<RoleInfoDTO>> listRole(@RequestParam("currentPage") Integer currentPage, @RequestParam("pageSize") Integer pageSize) {
+    public Result<PageResult<RoleInfoDTO>> listRole(@RequestParam("currentPage") Integer currentPage,
+                                                    @RequestParam("pageSize") Integer pageSize,
+                                                    @RequestParam(value = "platformCode",required = false) String platformCode) {
 
         RolePermissionInfoExample example = new RolePermissionInfoExample();
         example.or().andStatusEqualTo((byte)1);
 
-        PageResult<RoleInfoDTO> roleInfoDTOPage = rolePermissionInfoService.pageRole(example,currentPage,pageSize);
+
+        PageResult<RoleInfoDTO> roleInfoDTOPage = rolePermissionInfoService.pageRole(platformCode,currentPage,pageSize);
 
         return Result.ofSuccess(roleInfoDTOPage);
     }

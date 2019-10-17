@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 public class RolePermissionInfoExample {
+
     protected String orderByClause;
 
     protected boolean distinct;
@@ -292,6 +293,76 @@ public class RolePermissionInfoExample {
 
         public Criteria andNoteNotBetween(String value1, String value2) {
             addCriterion("note not between", value1, value2);
+            return (Criteria) this;
+        }
+
+        public Criteria andPlatformCodeIsNull() {
+            addCriterion("platform_code is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlatformCodeIsNotNull() {
+            addCriterion("platform_code is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlatformCodeEqualTo(String value) {
+            addCriterion("platform_code =", value);
+            return (Criteria) this;
+        }
+
+        public Criteria andPlatformCodeNotEqualTo(String value) {
+            addCriterion("platform_code <>", value);
+            return (Criteria) this;
+        }
+
+        public Criteria andPlatformCodeGreaterThan(String value) {
+            addCriterion("platform_code >", value);
+            return (Criteria) this;
+        }
+
+        public Criteria andPlatformCodeGreaterThanOrEqualTo(String value) {
+            addCriterion("platform_code >=", value);
+            return (Criteria) this;
+        }
+
+        public Criteria andPlatformCodeLessThan(String value) {
+            addCriterion("platform_code <", value);
+            return (Criteria) this;
+        }
+
+        public Criteria andPlatformCodeLessThanOrEqualTo(String value) {
+            addCriterion("platform_code <=", value);
+            return (Criteria) this;
+        }
+
+        public Criteria andPlatformCodeLike(String value) {
+            addCriterion("platform_code like", value);
+            return (Criteria) this;
+        }
+
+        public Criteria andPlatformCodeNotLike(String value) {
+            addCriterion("platform_code not like", value);
+            return (Criteria) this;
+        }
+
+        public Criteria andPlatformCodeIn(List<String> values) {
+            addCriterion("platform_code in", values);
+            return (Criteria) this;
+        }
+
+        public Criteria andPlatformCodeNotIn(List<String> values) {
+            addCriterion("platform_code not in", values);
+            return (Criteria) this;
+        }
+
+        public Criteria andPlatformCodeBetween(String value1, String value2) {
+            addCriterion("platform_code between", value1, value2);
+            return (Criteria) this;
+        }
+
+        public Criteria andPlatformCodeNotBetween(String value1, String value2) {
+            addCriterion("platform_code not between", value1, value2);
             return (Criteria) this;
         }
 

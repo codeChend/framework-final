@@ -30,7 +30,7 @@ import javax.websocket.server.PathParam;
  * @Modified By:
  */
 @RestController
-@RequestMapping("/starter")
+@RequestMapping("/api/starter")
 @Api(value = "后台-用户管理", tags = "后台-用户管理")
 public class UserInfoController {
 

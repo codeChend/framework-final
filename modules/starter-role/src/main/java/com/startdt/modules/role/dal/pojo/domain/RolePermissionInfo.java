@@ -11,6 +11,9 @@ public class RolePermissionInfo {
     /** 描述 **/
     private String note;
 
+    /** 平台code **/
+    private String platformCode;
+
     /** 角色启用状态：0->禁用；1->启用 **/
     private Byte status;
 
@@ -89,5 +92,13 @@ public class RolePermissionInfo {
     /** 权限list，json格式 **/
     public void setPermission(String permission) {
         this.permission = permission;
+    }
+
+    public String getPlatformCode() {
+        return platformCode;
+    }
+
+    public void setPlatformCode(String platformCode) {
+        this.platformCode = platformCode;
     }
 }

@@ -29,6 +29,9 @@ public class RoleInfoDTO {
     @ApiModelProperty(value = "创建时间",name = "gmtCreate")
     private Long gmtCreate;
 
+    @ApiModelProperty(value = "空间code",name = "spaceCode")
+    private String spaceCode;
+
     public Integer getId() {
 
         return id;
@@ -40,6 +43,14 @@ public class RoleInfoDTO {
 
     public String getRoleName() {
         return roleName;
+    }
+
+    public String getSpaceCode() {
+        return spaceCode;
+    }
+
+    public void setSpaceCode(String spaceCode) {
+        this.spaceCode = spaceCode;
     }
 
     public void setRoleName(String roleName) {

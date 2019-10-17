@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
-import com.startdt.modules.common.pojo.Page;
 import com.startdt.modules.common.utils.BeanConverter;
 import com.startdt.modules.common.utils.exception.FrameworkException;
 import com.startdt.modules.common.utils.page.PageResult;
@@ -21,12 +20,10 @@ import com.startdt.modules.role.dal.pojo.request.role.ModifyRoleInfoReq;
 import com.startdt.modules.role.dal.pojo.request.role.SaveRoleInfoReq;
 import com.startdt.modules.role.service.IRolePermissionInfoService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Role;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -83,15 +80,18 @@ public class RolePermissionInfoServiceImpl implements IRolePermissionInfoService
     }
 
     @Override
-    public PageResult<RoleInfoDTO> pageRole(RolePermissionInfoExample example, int currentPage, int pageSize) {
+    public PageResult<RoleInfoDTO> pageRole(String platformCode, int currentPage, int pageSize) {
         if(currentPage <= 0) {
             currentPage = 1;
         }
         if(pageSize <= 0) {
             pageSize = 10;
         }
-        if(example == null){
-            example = new RolePermissionInfoExample();
+        RolePermissionInfoExample example = new RolePermissionInfoExample();
+        RolePermissionInfoExample.Criteria criteria = example.or();
+        criteria.andStatusEqualTo((byte)1);
+        if(StringUtils.isNotBlank(platformCode)){
+            criteria.andPlatformCodeEqualTo(platformCode);
         }
 
         PageHelper.startPage(currentPage, pageSize);

@@ -21,7 +21,7 @@ import javax.validation.Valid;
  * @Modified By:
  */
 @RestController
-@RequestMapping("/starter")
+@RequestMapping("/api/starter")
 @Api(value = "后台-登录", tags = "后台-登录")
 public class LoginStarterController {
 

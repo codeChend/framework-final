@@ -1,12 +1,9 @@
 package com.startdt.modules.role.dal.pojo.request.role;
 
-import com.startdt.modules.role.dal.pojo.dto.PermissionCodeDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * @Author: weilong
@@ -15,6 +12,7 @@ import java.util.List;
  * @Modified By:
  */
 @ApiModel(value =  "添加角色请求实体")
+@Data
 public class SaveRoleInfoReq {
 
     /**
@@ -24,25 +22,12 @@ public class SaveRoleInfoReq {
     @NotEmpty(message = "角色名称不能为空")
     private String roleName;
 
+    @ApiModelProperty(value = "平台code",name = "platformCode")
+    private String platformCode;
+
     /**
      * 描述
      */
     @ApiModelProperty(value = "角色描述",name = "note")
     private String note;
-
-    public String getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
-    }
 }

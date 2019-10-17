@@ -1,17 +1,11 @@
 package com.startdt.modules.role.service;
 
-import com.startdt.modules.common.pojo.Page;
 import com.startdt.modules.common.utils.page.PageResult;
-import com.startdt.modules.common.utils.result.Result;
-import com.startdt.modules.role.dal.pojo.domain.RolePermissionInfo;
-import com.startdt.modules.role.dal.pojo.domain.RolePermissionInfoExample;
-import com.startdt.modules.role.dal.pojo.dto.PermissionNodeDTO;
 import com.startdt.modules.role.dal.pojo.dto.RoleInfoDTO;
 import com.startdt.modules.role.dal.pojo.dto.RolePermissionDTO;
 import com.startdt.modules.role.dal.pojo.request.role.ModifyRoleInfoReq;
 import com.startdt.modules.role.dal.pojo.request.role.SaveRoleInfoReq;
 
-import javax.management.relation.RoleInfo;
 import java.util.List;
 
 
@@ -47,10 +41,10 @@ public interface IRolePermissionInfoService{
     Integer editRole(ModifyRoleInfoReq roleInfo);
 
     /**
-     * 获取角色列表
+     * 分页获取角色列表
      * @returin
      */
-    PageResult<RoleInfoDTO> pageRole(RolePermissionInfoExample rolePermissionInfoExample, int currentPage, int pageSize);
+    PageResult<RoleInfoDTO> pageRole(String platformCode, int currentPage, int pageSize);
 
 
     /**
@@ -81,5 +75,4 @@ public interface IRolePermissionInfoService{
      * @return
      */
     int modifyRolePermission(RolePermissionDTO permissionDTO);
-
 }

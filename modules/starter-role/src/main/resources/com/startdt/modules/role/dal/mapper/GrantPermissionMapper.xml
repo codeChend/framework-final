@@ -7,6 +7,7 @@
     <result column="principal_part_type" jdbcType="TINYINT" property="principalPartType" />
     <result column="resources" jdbcType="VARCHAR" property="resources" />
     <result column="resources_type" jdbcType="TINYINT" property="resourcesType" />
+    <result column="space_code" jdbcType="VARCHAR" property="spaceCode" />
     <result column="note" jdbcType="VARCHAR" property="note" />
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
@@ -71,8 +72,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, principal_part, principal_part_type, resources, resources_type, note, status, 
-    gmt_create, gmt_modified
+    id, principal_part, principal_part_type, resources, resources_type, space_code, note, 
+    status, gmt_create, gmt_modified
   </sql>
   <select id="selectByExample" parameterType="com.startdt.modules.role.dal.pojo.domain.GrantPermissionExample" resultMap="BaseResultMap">
     select
@@ -104,17 +105,23 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.startdt.modules.role.dal.pojo.domain.GrantPermission" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insert" parameterType="com.startdt.modules.role.dal.pojo.domain.GrantPermission">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into grant_permission (principal_part, principal_part_type, 
-      resources, resources_type, note, 
-      status, gmt_create, gmt_modified
-      )
+      resources, resources_type, space_code, 
+      note, status, gmt_create, 
+      gmt_modified)
     values (#{principalPart,jdbcType=VARCHAR}, #{principalPartType,jdbcType=TINYINT}, 
-      #{resources,jdbcType=VARCHAR}, #{resourcesType,jdbcType=TINYINT}, #{note,jdbcType=VARCHAR}, 
-      #{status,jdbcType=TINYINT}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{resources,jdbcType=VARCHAR}, #{resourcesType,jdbcType=TINYINT}, #{spaceCode,jdbcType=VARCHAR}, 
+      #{note,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{gmtCreate,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.startdt.modules.role.dal.pojo.domain.GrantPermission" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insertSelective" parameterType="com.startdt.modules.role.dal.pojo.domain.GrantPermission">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into grant_permission
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="principalPart != null">
@@ -128,6 +135,9 @@
       </if>
       <if test="resourcesType != null">
         resources_type,
+      </if>
+      <if test="spaceCode != null">
+        space_code,
       </if>
       <if test="note != null">
         note,
@@ -154,6 +164,9 @@
       </if>
       <if test="resourcesType != null">
         #{resourcesType,jdbcType=TINYINT},
+      </if>
+      <if test="spaceCode != null">
+        #{spaceCode,jdbcType=VARCHAR},
       </if>
       <if test="note != null">
         #{note,jdbcType=VARCHAR},
@@ -193,6 +206,9 @@
       <if test="record.resourcesType != null">
         resources_type = #{record.resourcesType,jdbcType=TINYINT},
       </if>
+      <if test="record.spaceCode != null">
+        space_code = #{record.spaceCode,jdbcType=VARCHAR},
+      </if>
       <if test="record.note != null">
         note = #{record.note,jdbcType=VARCHAR},
       </if>
@@ -217,6 +233,7 @@
       principal_part_type = #{record.principalPartType,jdbcType=TINYINT},
       resources = #{record.resources,jdbcType=VARCHAR},
       resources_type = #{record.resourcesType,jdbcType=TINYINT},
+      space_code = #{record.spaceCode,jdbcType=VARCHAR},
       note = #{record.note,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=TINYINT},
       gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
@@ -240,6 +257,9 @@
       <if test="resourcesType != null">
         resources_type = #{resourcesType,jdbcType=TINYINT},
       </if>
+      <if test="spaceCode != null">
+        space_code = #{spaceCode,jdbcType=VARCHAR},
+      </if>
       <if test="note != null">
         note = #{note,jdbcType=VARCHAR},
       </if>
@@ -261,6 +281,7 @@
       principal_part_type = #{principalPartType,jdbcType=TINYINT},
       resources = #{resources,jdbcType=VARCHAR},
       resources_type = #{resourcesType,jdbcType=TINYINT},
+      space_code = #{spaceCode,jdbcType=VARCHAR},
       note = #{note,jdbcType=VARCHAR},
       status = #{status,jdbcType=TINYINT},
       gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
@@ -280,21 +301,23 @@
     <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
-    limit 1
+    limit 0,1
   </select>
-  <insert id="insertBatch" parameterType="com.startdt.modules.role.dal.pojo.domain.GrantPermission" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insertBatch" parameterType="com.startdt.modules.role.dal.pojo.domain.GrantPermission">
     insert into grant_permission (principal_part, 
       principal_part_type, resources, 
-      resources_type, note, status, 
-      gmt_create, gmt_modified)
+      resources_type, space_code, note, 
+      status, gmt_create, gmt_modified
+      )
     values 
 <foreach collection="list" index="index" item="item" separator="," >
 (
 <trim suffixOverrides="," >
 #{item.principalPart,jdbcType=VARCHAR}, 
       #{item.principalPartType,jdbcType=TINYINT}, #{item.resources,jdbcType=VARCHAR}, 
-      #{item.resourcesType,jdbcType=TINYINT}, #{item.note,jdbcType=VARCHAR}, #{item.status,jdbcType=TINYINT}, 
-      #{item.gmtCreate,jdbcType=TIMESTAMP}, #{item.gmtModified,jdbcType=TIMESTAMP}
+      #{item.resourcesType,jdbcType=TINYINT}, #{item.spaceCode,jdbcType=VARCHAR}, #{item.note,jdbcType=VARCHAR}, 
+      #{item.status,jdbcType=TINYINT}, #{item.gmtCreate,jdbcType=TIMESTAMP}, #{item.gmtModified,jdbcType=TIMESTAMP}
+      
 </trim>
 )</foreach>
 
