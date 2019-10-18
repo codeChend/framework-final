@@ -22,6 +22,7 @@ import com.startdt.modules.role.service.IRolePermissionInfoService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Role;
 import org.springframework.util.CollectionUtils;
 
 import java.util.*;
@@ -99,7 +100,14 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
 
         PageInfo<GrantPermission> pageInfo = new PageInfo<>(dataList);
 
-        return PageUtil.convertPage(pageInfo,RoleInfoDTO.class);
+
+        List<String> roleIds = dataList.parallelStream().map(GrantPermission::getPrincipalPart).collect(Collectors.toList());
+
+        List<RolePermissionDTO> rolePermissionDTOS = rolePermissionInfoService.listRole(roleIds);
+
+        List<RoleInfoDTO> roleInfoDTOS = BeanConverter.mapList(rolePermissionDTOS, RoleInfoDTO.class);
+
+        return PageUtil.convertPage(pageInfo,roleInfoDTOS);
     }
 
     @Override
