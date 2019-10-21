@@ -1,6 +1,7 @@
 package com.startdt.modules.role.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Lists;
 import com.startdt.modules.common.utils.BeanConverter;
 import com.startdt.modules.common.utils.enums.UrlMethodEnum;
 import com.startdt.modules.common.utils.exception.FrameworkException;
@@ -241,8 +242,19 @@ public class ResourcePermissionServiceImpl implements IResourcePermissionService
             resourcePermissionInfoExample.or().andParentCodeEqualTo(permissionNodeDTO.getCode()).andIsDeleteEqualTo((byte)0);
             resourcePermissionInfoExample.setOrderByClause("sort ASC");
             List<ResourcePermissionInfo> listSon = resourcePermissionInfoMapper.selectByExample(resourcePermissionInfoExample);
-            List<PermissionNodeDTO> listNodeSon = BeanConverter.mapList(listSon,PermissionNodeDTO.class);
-            if(!CollectionUtils.isEmpty(listNodeSon)){
+            List<PermissionNodeDTO> listNodeSon = Lists.newArrayListWithCapacity(listSon.size());
+            if(!CollectionUtils.isEmpty(listSon)){
+                listSon.forEach(resourcePermissionInfo -> {
+                    PermissionNodeDTO permissionNode = BeanConverter.convert(resourcePermissionInfo,PermissionNodeDTO.class);
+                    listNodeSon.add(permissionNode);
+                    String resUrl = resourcePermissionInfo.getResUrl();
+                    if(StringUtils.isNotBlank(resUrl)){
+                        if(resUrl.contains(UrlMethodEnum.URL.getCode()) && resUrl.contains(UrlMethodEnum.METHOD.getCode())){
+                            UrlMethodDTO urlMethodDTO = JSON.parseObject(resUrl,UrlMethodDTO.class);
+                            permissionNode.setUrlMethod(urlMethodDTO);
+                        }
+                    }
+                });
                 permissionNodeDTO.setPermissionNodeSon(listNodeSon);
                 recursionPermissionSon(listNodeSon);
             }
