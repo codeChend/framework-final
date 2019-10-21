@@ -18,7 +18,7 @@ public class GrantUserRoleReq {
 
     @ApiModelProperty(value = "用户id",name = "userId",example = "1")
     @NotNull(message = "用户id不能为空")
-    private Integer userId;
+    private String userId;
 
     @ApiModelProperty(value = "角色code",name = "roleCode",example = "2")
     @NotNull(message = "角色code不能为空")

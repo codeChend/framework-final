@@ -60,11 +60,11 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
         }
         List<GrantPermission> returnList = grantPermissionMapper.selectByExample(example);
         if(!CollectionUtils.isEmpty(returnList)){
-            throw new FrameworkException(BizResultConstant.ROLE_IS_EXIST);
+            return 1;
         }
         //对应user赋予角色信息
         GrantPermission entity = new GrantPermission();
-        entity.setPrincipalPart(grantUserRoleReq.getUserId().toString());
+        entity.setPrincipalPart(grantUserRoleReq.getUserId());
         entity.setPrincipalPartType(PrincipalTypeEnum.USER.getCode().byteValue());
         entity.setResources(grantUserRoleReq.getRoleCode().toString());
         entity.setResourcesType(ResourceTypeEnum.ROLE.getCode().byteValue());
@@ -77,12 +77,40 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
     }
 
     @Override
-    public int deleteUserRole(Integer userId, Integer roleId) {
+    public int grantUserRoleBatch(String userId, List<String> roleIds, String spaceCode) {
+        //解绑原有的所有用户角色
+        if(StringUtils.isBlank(userId) || StringUtils.isBlank(spaceCode) || CollectionUtils.isEmpty(roleIds)){
+            throw new FrameworkException(BizResultConstant.PARAM_ERROR);
+        }
+        GrantPermissionExample example = new GrantPermissionExample();
+        GrantPermissionExample.Criteria criteria = example.or();
+        criteria.andPrincipalPartTypeEqualTo(PrincipalTypeEnum.USER.getCode().byteValue())
+                .andPrincipalPartEqualTo(userId).andSpaceCodeEqualTo(spaceCode);
+
+        int delete = grantPermissionMapper.deleteByExample(example);
+        //批量绑定角色
+        List<GrantPermission> entityS = new ArrayList<>();
+        roleIds.forEach(roleId -> {
+            GrantPermission entity = new GrantPermission();
+            entity.setSpaceCode(spaceCode);
+            entity.setResourcesType(ResourceTypeEnum.ROLE.getCode().byteValue());
+            entity.setResources(roleId);
+            entity.setPrincipalPartType(PrincipalTypeEnum.USER.getCode().byteValue());
+            entity.setPrincipalPart(userId);
+
+            entityS.add(entity);
+        });
+
+        return grantPermissionMapper.insertBatch(entityS);
+    }
+
+    @Override
+    public int deleteUserRole(String userId, Integer roleId) {
         return deleteUserRole(userId,roleId,null);
     }
 
     @Override
-    public int deleteUserRole(Integer userId, Integer roleId, String spaceCode) {
+    public int deleteUserRole(String userId, Integer roleId, String spaceCode) {
         GrantPermission entity = new GrantPermission();
         entity.setStatus((byte)0);
 
@@ -98,15 +126,21 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
     }
 
     @Override
-    public PageResult<RoleInfoDTO> pageRoleByUserId(GrantPermissionExample example, int currentPage, int pageSize) {
+    public PageResult<RoleInfoDTO> pageRoleByUserId(String userId,String spaceCode, int currentPage, int pageSize) {
         if(currentPage <= 0) {
             currentPage = 1;
         }
         if(pageSize <= 0) {
             pageSize = 10;
         }
-        if(example == null){
-            example = new GrantPermissionExample();
+
+        GrantPermissionExample example = new GrantPermissionExample();
+        GrantPermissionExample.Criteria criteria = example.or();
+        criteria.andPrincipalPartEqualTo(userId).andPrincipalPartTypeEqualTo(PrincipalTypeEnum.USER.getCode().byteValue())
+                .andResourcesTypeEqualTo(ResourceTypeEnum.ROLE.getCode().byteValue()).andStatusEqualTo((byte)1);
+
+        if(StringUtils.isNotBlank(spaceCode)){
+            criteria.andSpaceCodeEqualTo(spaceCode);
         }
 
         PageHelper.startPage(currentPage, pageSize);
@@ -128,12 +162,12 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
     }
 
     @Override
-    public List<RolePermissionDTO> listByUserId(Integer userId) {
+    public List<RolePermissionDTO> listByUserId(String userId) {
         return listByUserId(userId,null);
     }
 
     @Override
-    public List<RolePermissionDTO> listByUserId(Integer userId, String spaceCode) {
+    public List<RolePermissionDTO> listByUserId(String userId, String spaceCode) {
         if(userId == null){
             return Collections.emptyList();
         }
@@ -153,34 +187,15 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
     }
 
     @Override
-    public List<ResourcePermissionInfo> permissionAllByUserId(Integer userId,String spaceCode){
+    public List<ResourcePermissionInfo> permissionAllByUserId(String userId,String spaceCode){
         //通过userId获取所有角色信息
         List<RolePermissionDTO> roleInfoDTOS = listByUserId(userId,spaceCode);
 
-        //过滤出系统级权限
-        List<PermissionCodeDTO> systemPermission = new ArrayList<>();
-        roleInfoDTOS.forEach(rolePermissionDTO -> {
-            if(!CollectionUtils.isEmpty(rolePermissionDTO.getPermissions())){
-                List<PermissionCodeDTO> permissionCodeDTOs = rolePermissionDTO.getPermissions()
-                        .parallelStream().filter(permissionCode -> RolePermissionEnum.SYSTEM_PERMISSION.getCode() == permissionCode.getType())
-                        .collect(Collectors.toList());
-
-                systemPermission.addAll(permissionCodeDTOs);
-            }
-        });
-        //去重
-        Set h = new HashSet(systemPermission);
-        systemPermission.clear();
-        systemPermission.addAll(h);
-        //根据权限code获取权限信息
-        List<String> permissionCodes = systemPermission.parallelStream().map(PermissionCodeDTO::getCode).collect(Collectors.toList());
-
-        return resourcePermissionService.permissionInfoByCodes(permissionCodes);
-
+        return getPermissionByRoleIds(roleInfoDTOS);
     }
 
     @Override
-    public List<PermissionNodeDTO> getMenuPermission(Integer userId,String spaceCode) {
+    public List<PermissionNodeDTO> getMenuPermission(String userId,String spaceCode) {
         List<ResourcePermissionInfo> permissionNodeDTOS = permissionAllByUserId(userId,spaceCode);
 
         //过滤菜单级父节点的权限集
@@ -208,7 +223,7 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
     }
 
     @Override
-    public List<String> getFunctionPermission(Integer userId,String spaceCode) {
+    public List<String> getFunctionPermission(String userId,String spaceCode) {
         List<ResourcePermissionInfo> permissionNodeDTOS = permissionAllByUserId(userId,spaceCode);
 
         //过滤功能权限集合
@@ -251,7 +266,7 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
     }
 
     @Override
-    public List<UrlMethodDTO> getUrlPermission(Integer userId,String spaceCode) {
+    public List<UrlMethodDTO> getUrlPermission(String userId,String spaceCode) {
         //根据userId获取系统级所有权限集
         List<ResourcePermissionInfo> permissionInfoList = permissionAllByUserId(userId,spaceCode);
 
@@ -270,7 +285,7 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
     }
 
     @Override
-    public List<String> getBusinessPermission(Integer userId,String spaceCode) {
+    public List<String> getBusinessPermission(String userId,String spaceCode) {
         //通过userId获取所有角色信息
         List<RolePermissionDTO> roleInfoDTOS = listByUserId(userId,spaceCode);
 
@@ -360,7 +375,7 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
     }
 
     @Override
-    public boolean checkAuth(Integer userId, String url,String httpMethod) {
+    public boolean checkAuth(String userId, String url,String httpMethod) {
         //通过userId获取所有权限url路径
         boolean check = false;
         List<UrlMethodDTO> permissionUrls = getUrlPermission(userId,null);
@@ -379,6 +394,38 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
         }
 
         return check;
+    }
+
+    @Override
+    public List<PermissionNodeDTO> getPermissionByRole(Integer roleId) {
+        RolePermissionDTO rolePermissionDTO = rolePermissionInfoService.getRoleById(roleId);
+
+        List<RolePermissionDTO> list = new ArrayList<>();
+        list.add(rolePermissionDTO);
+        List<ResourcePermissionInfo> permissionNodeDTOS = getPermissionByRoleIds(list);
+
+        //过滤父节点的权限集
+        List<ResourcePermissionInfo> parentPermission = permissionNodeDTOS
+                .parallelStream().filter(permission -> StringUtils.isEmpty(permission.getParentCode()))
+//                .filter(permissionInfo -> permissionInfo.getType()== PermissionTypeEnum.MENU_PERMISSION.getCode().byteValue())
+                .collect(Collectors.toList());
+
+        List<PermissionNodeDTO> resultList = new ArrayList<>();
+        parentPermission.forEach(resourcePermission -> {
+            PermissionNodeDTO permissionNodeDTO = BeanConverter.convert(resourcePermission,PermissionNodeDTO.class);
+            if(StringUtils.isNotBlank(resourcePermission.getResUrl())){
+                permissionNodeDTO.setUrlMethod(JSON.parseObject(resourcePermission.getResUrl(),UrlMethodDTO.class));
+            }
+
+            resultList.add(permissionNodeDTO);
+        });
+
+        List<String> permissionCodes = permissionNodeDTOS.parallelStream().map(ResourcePermissionInfo::getCode).collect(Collectors.toList());
+
+        //递归所有有权限的点
+        recursionNode(resultList,permissionCodes);
+
+        return resultList;
     }
 
 
@@ -454,6 +501,29 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
             }
 
         }
+    }
+
+    private List<ResourcePermissionInfo> getPermissionByRoleIds(List<RolePermissionDTO> roleInfoDTOS){
+
+        //过滤出系统级权限
+        List<PermissionCodeDTO> systemPermission = new ArrayList<>();
+        roleInfoDTOS.forEach(rolePermissionDTO -> {
+            if(!CollectionUtils.isEmpty(rolePermissionDTO.getPermissions())){
+                List<PermissionCodeDTO> permissionCodeDTOs = rolePermissionDTO.getPermissions()
+                        .parallelStream().filter(permissionCode -> RolePermissionEnum.SYSTEM_PERMISSION.getCode() == permissionCode.getType())
+                        .collect(Collectors.toList());
+
+                systemPermission.addAll(permissionCodeDTOs);
+            }
+        });
+        //去重
+        Set h = new HashSet(systemPermission);
+        systemPermission.clear();
+        systemPermission.addAll(h);
+        //根据权限code获取权限信息
+        List<String> permissionCodes = systemPermission.parallelStream().map(PermissionCodeDTO::getCode).collect(Collectors.toList());
+
+        return resourcePermissionService.permissionInfoByCodes(permissionCodes);
     }
 
 
