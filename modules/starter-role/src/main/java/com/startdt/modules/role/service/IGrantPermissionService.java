@@ -60,9 +60,10 @@ public interface IGrantPermissionService {
 
     /**
      * 获取用户所有的角色
-     *
-     * @param currentPage
-     * @param pageSize
+     * @param userId            用户账号id
+     * @param spaceCode         项目code
+     * @param currentPage       当前页
+     * @param pageSize          每页大小
      * @return
      */
     PageResult<RoleInfoDTO> pageRoleByUserId(String userId, String spaceCode, int currentPage, int pageSize);
@@ -95,7 +96,8 @@ public interface IGrantPermissionService {
     /**
      * 通过userId获取所有菜单权限
      *
-     * @param userId
+     * @param userId            用户账号id
+     * @param spaceCode         项目code
      * @return
      */
     List<PermissionNodeDTO> getMenuPermission(String userId, String spaceCode);

@@ -42,6 +42,9 @@ public interface IRolePermissionInfoService{
 
     /**
      * 分页获取角色列表
+     * @param platformCode      平台code
+     * @param currentPage       当前页
+     * @param pageSize          每页大小
      * @returin
      */
     PageResult<RoleInfoDTO> pageRole(String platformCode, int currentPage, int pageSize);
