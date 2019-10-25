@@ -152,7 +152,7 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
         List<RoleInfoDTO> returnList = new ArrayList<>();
 
         pageInfo.getList().forEach(grantPermission -> {
-            RolePermissionDTO rolePermissionDTO = rolePermissionInfoService.getRoleById(Integer.valueOf(grantPermission.getPrincipalPart()));
+            RolePermissionDTO rolePermissionDTO = rolePermissionInfoService.getRoleById(Integer.valueOf(grantPermission.getResources()));
             RoleInfoDTO roleInfoDTO = BeanConverter.convert(rolePermissionDTO,RoleInfoDTO.class);
 
             returnList.add(roleInfoDTO);
