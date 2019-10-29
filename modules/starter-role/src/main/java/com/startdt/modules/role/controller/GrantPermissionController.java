@@ -51,4 +51,12 @@ public class GrantPermissionController {
         return Result.ofSuccess(DataInfo.resultToData(grantPermissionService.getFunctionPermission(userId,spaceCode)));
     }
 
+    @GetMapping("/v1/checkUrl")
+    @ApiOperation(value = "检查权限")
+    public Result checkUrl(@RequestParam(value = "userId") String userId,
+                           @RequestParam(value = "url") String url,
+                           @RequestParam(value = "method") String method){
+        return Result.ofSuccess(grantPermissionService.checkAuth(userId,url,method));
+    }
+
 }

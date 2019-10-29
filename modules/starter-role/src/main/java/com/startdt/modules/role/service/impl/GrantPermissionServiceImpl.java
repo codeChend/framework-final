@@ -97,6 +97,10 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
             entity.setResources(roleId);
             entity.setPrincipalPartType(PrincipalTypeEnum.USER.getCode().byteValue());
             entity.setPrincipalPart(userId);
+            entity.setStatus((byte)1);
+            entity.setGmtCreate(new Date());
+            entity.setGmtModified(new Date());
+            entity.setNote("授予角色");
 
             entityS.add(entity);
         });
@@ -116,13 +120,27 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
 
         GrantPermissionExample example = new GrantPermissionExample();
         GrantPermissionExample.Criteria criteria = example.or();
-        criteria.andPrincipalPartTypeEqualTo(PrincipalTypeEnum.USER.getCode().byteValue()).andPrincipalPartEqualTo(userId.toString())
+        criteria.andPrincipalPartTypeEqualTo(PrincipalTypeEnum.USER.getCode().byteValue()).andPrincipalPartEqualTo(userId)
                 .andResourcesEqualTo(roleId.toString()).andResourcesTypeEqualTo(ResourceTypeEnum.ROLE.getCode().byteValue());
         if(StringUtils.isNotBlank(spaceCode)){
             criteria.andSpaceCodeEqualTo(spaceCode);
         }
 
         return grantPermissionMapper.updateByExampleSelective(entity,example);
+    }
+
+    @Override
+    public int deleteUserRoleBatch(List<String> userId, String spaceCode) {
+
+        if(CollectionUtils.isEmpty(userId)){
+            return 0;
+        }
+
+        if(StringUtils.isBlank(spaceCode)){
+            spaceCode = null;
+        }
+
+        return grantPermissionMapper.updateBatchUserStatus(1,userId,spaceCode);
     }
 
     @Override
@@ -270,7 +288,9 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
         //根据userId获取系统级所有权限集
         List<ResourcePermissionInfo> permissionInfoList = permissionAllByUserId(userId,spaceCode);
 
-        List<String> resUrls = permissionInfoList.parallelStream().map(ResourcePermissionInfo::getResUrl).collect(Collectors.toList());
+        List<String> resUrls = permissionInfoList.parallelStream().filter(permissionInfo -> StringUtils.isNotBlank(permissionInfo.getResUrl()))
+                .map(ResourcePermissionInfo::getResUrl)
+                .collect(Collectors.toList());
 
         List<UrlMethodDTO> urlMethodDTOS = new ArrayList<>();
 

@@ -337,4 +337,17 @@
     </if>
     limit ${offset},${limit}
   </select>
+
+  <update id="updateBatchUserStatus" parameterType="com.startdt.modules.role.dal.pojo.domain.GrantPermission">
+    update grant_permission
+    set  status = 0
+    where  principal_part_type = #{type}
+    <if test="spaceCode!=null">
+      AND space_code = #{spaceCode}
+    </if>
+    and principal_part in
+    <foreach collection="principals" index="index" item="item" open="(" separator="," close=")" >
+      #{item}
+    </foreach>
+  </update>
 </mapper>

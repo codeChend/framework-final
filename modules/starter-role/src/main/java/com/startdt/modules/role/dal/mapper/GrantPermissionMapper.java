@@ -34,4 +34,6 @@ public interface GrantPermissionMapper {
     int updateByPrimaryKeySelective(GrantPermission record);
 
     int updateByPrimaryKey(GrantPermission record);
+
+    int updateBatchUserStatus(@Param("type") Integer type,@Param("principals") List<String> principals,@Param("spaceCode") String spaceCode);
 }

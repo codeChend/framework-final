@@ -104,4 +104,6 @@ public class UserInfoController {
 
         return Result.ofSuccess(userInfoService.selectByExamplePaging(null,pageNum,pageSize));
     }
+
+    
 }

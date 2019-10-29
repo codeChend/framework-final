@@ -30,6 +30,7 @@ public interface IGrantPermissionService {
 
     /**
      * 用户批量绑定角色
+     *
      * @param userId    用户id
      * @param roleIds   角色id列表
      * @param spaceCode 空间id
@@ -59,11 +60,22 @@ public interface IGrantPermissionService {
     int deleteUserRole(String userId, Integer roleId, String spaceCode);
 
     /**
+     * 批量禁用某个空间的用户角色
+     * @param userId        用户id
+     * @param spaceCode     空间id
+     * @return int
+     * @author weilong
+     * @since 2019/10/25 下午4:59
+     */
+    int deleteUserRoleBatch(List<String> userId, String spaceCode);
+
+    /**
      * 获取用户所有的角色
-     * @param userId            用户账号id
-     * @param spaceCode         项目code
-     * @param currentPage       当前页
-     * @param pageSize          每页大小
+     *
+     * @param userId      用户账号id
+     * @param spaceCode   项目code
+     * @param currentPage 当前页
+     * @param pageSize    每页大小
      * @return
      */
     PageResult<RoleInfoDTO> pageRoleByUserId(String userId, String spaceCode, int currentPage, int pageSize);
@@ -96,8 +108,8 @@ public interface IGrantPermissionService {
     /**
      * 通过userId获取所有菜单权限
      *
-     * @param userId            用户账号id
-     * @param spaceCode         项目code
+     * @param userId    用户账号id
+     * @param spaceCode 项目code
      * @return
      */
     List<PermissionNodeDTO> getMenuPermission(String userId, String spaceCode);
@@ -164,10 +176,11 @@ public interface IGrantPermissionService {
 
     /**
      * 角色id分层捞出所有权限集合
-     * @param roleId     角色id
+     *
+     * @param roleId 角色id
      * @return java.util.List<com.startdt.modules.role.dal.pojo.dto.PermissionNodeDTO>
      * @author weilong
-     * @since  2019/10/21 下午6:13
+     * @since 2019/10/21 下午6:13
      */
     List<PermissionNodeDTO> getPermissionByRole(Integer roleId);
 
