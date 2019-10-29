@@ -42,7 +42,7 @@ public class UserStarterConfiguration {
         PageHelper pageHelper = new PageHelper();
         Properties props = new Properties();
         props.setProperty("reasonable", "false");
-        props.setProperty("supportMethodsArguments", "true");
+        props.setProperty("supportMethodsArguments", "false");
         props.setProperty("returnPageInfo", "check");
         props.setProperty("params", "count=countSql");
         pageHelper.setProperties(props);

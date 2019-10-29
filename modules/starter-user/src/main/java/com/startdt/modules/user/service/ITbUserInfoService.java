@@ -89,12 +89,11 @@ public interface ITbUserInfoService {
 
     /**
      * 分页根据条件查找用户信息
-     * @param example
      * @param currentPage
      * @param pageSize
      * @return
      */
-    PageResult<UserDetailVO> selectByExamplePaging(TbUserInfoExample example, int currentPage, int pageSize);
+    PageResult<UserDetailVO> selectByExamplePaging(int currentPage, int pageSize);
 
     /**
      * 批量插入用户信息

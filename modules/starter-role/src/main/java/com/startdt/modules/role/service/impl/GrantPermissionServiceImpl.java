@@ -101,7 +101,7 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
         PageInfo<GrantPermission> pageInfo = new PageInfo<>(dataList);
 
 
-        List<String> roleIds = dataList.parallelStream().map(GrantPermission::getPrincipalPart).collect(Collectors.toList());
+        List<String> roleIds = dataList.parallelStream().map(GrantPermission::getResources).collect(Collectors.toList());
 
         List<RolePermissionDTO> rolePermissionDTOS = rolePermissionInfoService.listRole(roleIds);
 
@@ -228,7 +228,8 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
         //根据userId获取系统级所有权限集
         List<ResourcePermissionInfo> permissionInfoList = permissionAllByUserId(userId);
 
-        List<String> resUrls = permissionInfoList.parallelStream().map(ResourcePermissionInfo::getResUrl).collect(Collectors.toList());
+        List<String> resUrls = permissionInfoList.parallelStream().filter(permissionInfo -> StringUtils.isNotBlank(permissionInfo.getResUrl()))
+                .map(ResourcePermissionInfo::getResUrl).collect(Collectors.toList());
 
         List<UrlMethodDTO> urlMethodDTOS = new ArrayList<>();
 

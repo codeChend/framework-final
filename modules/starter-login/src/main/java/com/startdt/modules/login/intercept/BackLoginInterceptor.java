@@ -118,6 +118,9 @@ public class BackLoginInterceptor extends HandlerInterceptorAdapter {
             return super.preHandle(request,response,handler);
         }
         String authHeader = request.getHeader(jwtConfig.getTokenHeader());
+        if(StringUtils.isBlank(authHeader)){
+            authHeader = request.getParameter(jwtConfig.getTokenHeader());
+        }
         if(authHeader != null && authHeader.startsWith(jwtConfig.getTokenHead())){
             String authToken = authHeader.substring(jwtConfig.getTokenHead().length());
             Claims claimsFromToken = jwtTokenUtil.getClaimsFromToken(authToken);

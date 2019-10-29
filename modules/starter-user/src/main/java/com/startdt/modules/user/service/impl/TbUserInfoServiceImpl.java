@@ -171,14 +171,13 @@ public class TbUserInfoServiceImpl implements ITbUserInfoService{
     }
 
     @Override
-    public PageResult<UserDetailVO> selectByExamplePaging(TbUserInfoExample example, int currentPage, int pageSize) {
+    public PageResult<UserDetailVO> selectByExamplePaging(int currentPage, int pageSize) {
 
-        PageHelper.startPage(currentPage, pageSize,true,true);
+        PageHelper.startPage(currentPage,pageSize);
 
-        if(example == null){
-            example = new TbUserInfoExample();
-            example.or().andStatusEqualTo((byte)1);
-        }
+        TbUserInfoExample example = new TbUserInfoExample();
+        example.or().andStatusEqualTo((byte)1);
+
         List<TbUserInfo> dataList = userInfoMapper.selectByExample(example);
         PageInfo<TbUserInfo> pageInfo = new PageInfo<>(dataList);
 

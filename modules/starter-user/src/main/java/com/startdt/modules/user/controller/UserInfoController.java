@@ -102,6 +102,13 @@ public class UserInfoController {
     public Result<PageResult<UserDetailVO>> pageUser(@RequestParam(value = "pageNum",defaultValue = "1") Integer pageNum,
                                                      @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize) {
 
-        return Result.ofSuccess(userInfoService.selectByExamplePaging(null,pageNum,pageSize));
+        return Result.ofSuccess(userInfoService.selectByExamplePaging(pageNum,pageSize));
+    }
+
+    @GetMapping("/v1/getUserByName")
+    @ApiOperation(value = "分页获取用户列表")
+    public Result<TbUserInfo> pageUser(@RequestParam(value = "name",defaultValue = "1") String  name){
+
+        return Result.ofSuccess(userInfoService.getByUserName(name,1));
     }
 }
