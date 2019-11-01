@@ -181,11 +181,20 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
 
     @Override
     public List<RolePermissionDTO> listByUserId(String userId) {
-        return listByUserId(userId,null);
+        return listByUserId(userId,"");
     }
 
     @Override
     public List<RolePermissionDTO> listByUserId(String userId, String spaceCode) {
+        List<String> list = new ArrayList<>();
+        if(StringUtils.isNotEmpty(spaceCode)){
+            list.add(spaceCode);
+        }
+        return listByUserId(userId,list);
+    }
+
+    @Override
+    public List<RolePermissionDTO> listByUserId(String userId, List<String> spaceCode) {
         if(userId == null){
             return Collections.emptyList();
         }
@@ -193,8 +202,8 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
         GrantPermissionExample.Criteria criteria = example.or();
         criteria.andPrincipalPartEqualTo(String.valueOf(userId)).andPrincipalPartTypeEqualTo(PrincipalTypeEnum.USER.getCode().byteValue());
 
-        if(StringUtils.isNotBlank(spaceCode)){
-            criteria.andSpaceCodeEqualTo(spaceCode);
+        if(!CollectionUtils.isEmpty(spaceCode)){
+            criteria.andSpaceCodeIn(spaceCode);
         }
 
         List<GrantPermission> grantPermissions = grantPermissionMapper.selectByExample(example);
@@ -213,8 +222,11 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
     }
 
     @Override
-    public List<PermissionNodeDTO> getMenuPermission(String userId,String spaceCode) {
-        List<ResourcePermissionInfo> permissionNodeDTOS = permissionAllByUserId(userId,spaceCode);
+    public List<PermissionNodeDTO> getMenuPermission(String userId,List<String> spaceCode) {
+
+        List<RolePermissionDTO> roleInfoDTOS = listByUserId(userId,spaceCode);
+
+        List<ResourcePermissionInfo> permissionNodeDTOS = getPermissionByRoleIds(roleInfoDTOS);
 
         //过滤菜单级父节点的权限集
         List<ResourcePermissionInfo> parentPermission = permissionNodeDTOS

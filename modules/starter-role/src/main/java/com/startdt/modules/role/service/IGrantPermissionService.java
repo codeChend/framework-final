@@ -95,7 +95,16 @@ public interface IGrantPermissionService {
      * @param spaceCode
      * @return
      */
-    List<RolePermissionDTO> listByUserId(String userId, String spaceCode);
+    List<RolePermissionDTO> listByUserId(String userId,String spaceCode);
+
+    /**
+     * 通过用户id + spaceCode获取角色权限
+     *
+     * @param userId
+     * @param spaceCode
+     * @return
+     */
+    List<RolePermissionDTO> listByUserId(String userId, List<String> spaceCode);
 
     /**
      * 根据用户获取系统级的全部权限list
@@ -112,7 +121,7 @@ public interface IGrantPermissionService {
      * @param spaceCode 项目code
      * @return
      */
-    List<PermissionNodeDTO> getMenuPermission(String userId, String spaceCode);
+    List<PermissionNodeDTO> getMenuPermission(String userId, List<String> spaceCode);
 
     /**
      * 通过userId获取功能权限值集合
