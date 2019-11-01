@@ -1,11 +1,13 @@
 package com.startdt.modules.login.intercept;
 
+import com.startdt.modules.common.utils.BeanConverter;
 import com.startdt.modules.common.utils.RegexUtil;
 import com.startdt.modules.common.utils.exception.FrameworkException;
 import com.startdt.modules.common.utils.result.BizResultConstant;
 import com.startdt.modules.login.pojo.JwtConfig;
 import com.startdt.modules.login.pojo.LoginUnFilter;
 import com.startdt.modules.login.pojo.LoginUrlDTO;
+import com.startdt.modules.login.pojo.UserInfoCache;
 import com.startdt.modules.login.service.JwtTokenUtil;
 import com.startdt.modules.user.dal.pojo.domain.TbUserInfo;
 import com.startdt.modules.user.service.ITbUserInfoService;
@@ -110,7 +112,7 @@ public class BackLoginInterceptor extends HandlerInterceptorAdapter {
             return super.preHandle(request,response,handler);
         }
         if(devEnable){
-            TbUserInfo tbUserInfo = new TbUserInfo();
+            UserInfoCache tbUserInfo = new UserInfoCache();
             tbUserInfo.setId(userId);
             tbUserInfo.setUserName(userName);
 
@@ -145,8 +147,11 @@ public class BackLoginInterceptor extends HandlerInterceptorAdapter {
             if(expiration.getTime() < System.currentTimeMillis()){
                 throw new FrameworkException(BizResultConstant.ERROR_USER_SESSION_EXPIRED);
             }
+            UserInfoCache userInfoCache = BeanConverter.convert(userInfo,UserInfoCache.class);
+
+            userInfoCache.setToken(authToken);
             //存储用户账号信息
-            CurrentUser.set(userInfo);
+            CurrentUser.set(userInfoCache);
 
             return super.preHandle(request,response,handler);
         }else{

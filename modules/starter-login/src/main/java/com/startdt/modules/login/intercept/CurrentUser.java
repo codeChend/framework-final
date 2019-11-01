@@ -1,5 +1,6 @@
 package com.startdt.modules.login.intercept;
 
+import com.startdt.modules.login.pojo.UserInfoCache;
 import com.startdt.modules.user.dal.pojo.domain.TbUserInfo;
 
 /**
@@ -9,12 +10,12 @@ import com.startdt.modules.user.dal.pojo.domain.TbUserInfo;
  * @Modified By:
  */
 public class CurrentUser {
-    private static ThreadLocal<TbUserInfo> threadLocal = new ThreadLocal<>();
+    private static ThreadLocal<UserInfoCache> threadLocal = new ThreadLocal<>();
 
-    public static void set(TbUserInfo info){threadLocal.set(info);}
+    public static void set(UserInfoCache info){threadLocal.set(info);}
 
     public static Integer getUserId(){
-        TbUserInfo info = threadLocal.get();
+        UserInfoCache info = threadLocal.get();
         if(null == info){
             return null;
         }
@@ -22,14 +23,22 @@ public class CurrentUser {
     }
 
     public static String getUserName(){
-        TbUserInfo info = threadLocal.get();
+        UserInfoCache info = threadLocal.get();
         if(null == info){
             return null;
         }
         return info.getUserName();
     }
 
-    public static TbUserInfo getUserInfo(){ return threadLocal.get(); }
+    public static String getUserToken(){
+        UserInfoCache infoCache = threadLocal.get();
+        if(null == infoCache){
+            return null;
+        }
+        return infoCache.getToken();
+    }
+
+    public static UserInfoCache getUserInfo(){ return threadLocal.get(); }
 
     public static void remove() { threadLocal.remove();}
 }
