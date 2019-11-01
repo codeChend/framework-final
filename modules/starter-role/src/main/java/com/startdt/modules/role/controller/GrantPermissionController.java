@@ -29,7 +29,7 @@ public class GrantPermissionController {
     @GetMapping("/v1/menuPermission/{userId}")
     @ApiOperation(value = "通过userId分层获取所有菜单权限")
     public Result<DataInfo<List<PermissionNodeDTO>>> getMenuPermission(@PathVariable("userId") String userId,
-                                                                       @RequestParam(value = "spaceCode",required = false) String spaceCode) {
+                                                                       @RequestParam(value = "spaceCode",required = false) List<String> spaceCode) {
 
         return Result.ofSuccess(DataInfo.resultToData(grantPermissionService.getMenuPermission(userId,spaceCode)));
     }
