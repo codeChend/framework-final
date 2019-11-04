@@ -13,10 +13,15 @@ import java.util.List;
  */
 @ApiModel(value = "批量赋予角色请求参数")
 @Data
-public class BatchGrantReq extends GrantBaseReq{
+public class BatchGrantReq{
+
+    @ApiModelProperty(value = "用户id",name = "userId",example = "1")
+    @NotNull(message = "用户id不能为空")
+    private Integer userId;
 
     @ApiModelProperty(value = "角色list",name = "roleIds")
     @NotNull
     private List<GrantUserRoleReq> roleIds;
+
 
 }
