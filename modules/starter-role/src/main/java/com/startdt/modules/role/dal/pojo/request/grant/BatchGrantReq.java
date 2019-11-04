@@ -21,7 +21,6 @@ public class BatchGrantReq{
 
     @ApiModelProperty(value = "角色list",name = "roleIds")
     @NotNull
-    private List<GrantUserRoleReq> roleIds;
-
+    private List<RoleIdsReq> roleIds;
 
 }
