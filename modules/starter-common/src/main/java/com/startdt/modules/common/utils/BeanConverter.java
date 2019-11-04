@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * Created on 2018/4/10.
- * @author weilong
+ * @author  weilong
  */
 
 public class BeanConverter {

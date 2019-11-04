@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * @Author: weilong
+ * @author : weilong
  * @Description:
  * @Date: Create in 2019/8/28 上午11:40
  * @Modified By:

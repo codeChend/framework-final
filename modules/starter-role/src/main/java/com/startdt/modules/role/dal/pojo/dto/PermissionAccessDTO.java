@@ -3,7 +3,7 @@ package com.startdt.modules.role.dal.pojo.dto;
 import java.util.List;
 
 /**
- * @Author: weilong
+ * @author : weilong
  * @Description:
  * @Date: Create in 2019/9/17 下午8:36
  * @Modified By:

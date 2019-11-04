@@ -1,7 +1,7 @@
 package com.startdt.modules.common.utils.enums;
 
 /**
- * @Author: weilong
+ * @author : weilong
  * @Description:
  * @Date: Create in 2019/9/29 下午5:36
  * @Modified By:

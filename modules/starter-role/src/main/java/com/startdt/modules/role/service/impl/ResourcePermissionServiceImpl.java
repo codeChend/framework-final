@@ -21,7 +21,7 @@ import org.springframework.util.CollectionUtils;
 import java.util.*;
 
 /**
- * @Author: weilong
+ * @author : weilong
  * @Description:
  * @Date: Create in 2019/9/6 下午3:02
  * @Modified By:

@@ -5,7 +5,7 @@ import com.startdt.modules.common.utils.result.BizResultConstant;
 import java.io.Serializable;
 
 /**
- * @Author: weilong
+ * @author : weilong
  * @Description:
  * @Date: Create in 2019/8/28 下午4:21
  * @Modified By:

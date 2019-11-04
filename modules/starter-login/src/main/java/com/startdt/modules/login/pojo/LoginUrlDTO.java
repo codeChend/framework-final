@@ -1,7 +1,7 @@
 package com.startdt.modules.login.pojo;
 
 /**
- * @Author: weilong
+ * @author : weilong
  * @Description:
  * @Date: Create in 2019/9/25 上午11:29
  * @Modified By:

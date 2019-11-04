@@ -4,7 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import org.springframework.http.HttpMethod;
 
 /**
- * @Author: weilong
+ * @author : weilong
  * @Description:
  * @Date: Create in 2019/9/29 下午12:00
  * @Modified By:

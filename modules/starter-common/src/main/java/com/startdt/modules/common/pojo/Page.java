@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * 由Mybatis Generator增强版生成，不要手动修改
  * @see <a href="https://github.com/pocketdigi/mybatis-generator">https://github.com/pocketdigi/mybatis-generator</a>
- * @author Exception
+ * @author  Exception
  */
 public final class Page<T> {
     private Integer currentPage;

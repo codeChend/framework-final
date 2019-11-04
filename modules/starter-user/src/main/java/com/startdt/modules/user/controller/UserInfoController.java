@@ -24,7 +24,7 @@ import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 
 /**
- * @Author: weilong
+ * @author : weilong
  * @Description:
  * @Date: Create in 2019/8/30 上午10:01
  * @Modified By:

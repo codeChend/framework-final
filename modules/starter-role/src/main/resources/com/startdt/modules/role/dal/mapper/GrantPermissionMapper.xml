@@ -285,16 +285,14 @@
   <insert id="insertBatch" parameterType="com.startdt.modules.role.dal.pojo.domain.GrantPermission" useGeneratedKeys="true" keyProperty="id">
     insert into grant_permission (principal_part, 
       principal_part_type, resources, 
-      resources_type, note, status, 
-      gmt_create, gmt_modified)
+      resources_type, note)
     values 
 <foreach collection="list" index="index" item="item" separator="," >
 (
 <trim suffixOverrides="," >
 #{item.principalPart,jdbcType=VARCHAR}, 
       #{item.principalPartType,jdbcType=TINYINT}, #{item.resources,jdbcType=VARCHAR}, 
-      #{item.resourcesType,jdbcType=TINYINT}, #{item.note,jdbcType=VARCHAR}, #{item.status,jdbcType=TINYINT}, 
-      #{item.gmtCreate,jdbcType=TIMESTAMP}, #{item.gmtModified,jdbcType=TIMESTAMP}
+      #{item.resourcesType,jdbcType=TINYINT}, #{item.note,jdbcType=VARCHAR}
 </trim>
 )</foreach>
 

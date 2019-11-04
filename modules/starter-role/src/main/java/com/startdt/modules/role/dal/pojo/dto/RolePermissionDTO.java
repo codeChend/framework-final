@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * @Author: weilong
+ * @author : weilong
  * @Description:
  * @Date: Create in 2019/8/29 下午12:02
  * @Modified By:

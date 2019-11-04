@@ -6,6 +6,7 @@ import com.startdt.modules.common.utils.page.PageResult;
 import com.startdt.modules.role.dal.pojo.domain.GrantPermissionExample;
 import com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfo;
 import com.startdt.modules.role.dal.pojo.dto.*;
+import com.startdt.modules.role.dal.pojo.request.grant.BatchGrantReq;
 import com.startdt.modules.role.dal.pojo.request.grant.GrantUserRoleReq;
 import org.springframework.http.HttpMethod;
 
@@ -17,7 +18,7 @@ import java.util.List;
  *  服务类
  * </p>
  *
- * @author weilong
+ * @author  weilong
  * @since 2019-08-28
  */
 public interface IGrantPermissionService {
@@ -119,4 +120,13 @@ public interface IGrantPermissionService {
      * @return
      */
     boolean checkAuth(Integer userId, String url, String httpMethod);
+
+    /**
+     * 批量授予用户角色
+     * @param batchGrantReq 请求实体
+     * @return int          成功条数
+     * @author  chendong
+     * @since  2019/11/4 下午7:27
+     */
+    int batchGrantUserRole(BatchGrantReq batchGrantReq);
 }

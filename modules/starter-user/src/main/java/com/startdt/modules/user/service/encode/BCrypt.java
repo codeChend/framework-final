@@ -54,7 +54,7 @@ import java.security.SecureRandom;
  * The amount of work increases exponentially (2**log_rounds), so each increment is twice
  * as much work. The default log_rounds is 10, and the valid range is 4 to 31.
  *
- * @author Damien Miller
+ * @author  Damien Miller
  */
 public class BCrypt {
     // BCrypt parameters

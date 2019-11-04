@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * @author weilong
+ * @author  weilong
  */
 public interface RolePermissionInfoMapper {
     long countByExample(RolePermissionInfoExample example);

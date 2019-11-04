@@ -8,7 +8,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import java.util.List;
 
 /**
- * @Author: weilong
+ * @author : weilong
  * @Description:
  * @Date: Create in 2019/9/26 下午2:51
  * @Modified By:

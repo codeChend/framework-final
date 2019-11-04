@@ -8,6 +8,7 @@ import com.startdt.modules.common.utils.result.DataInfo;
 import com.startdt.modules.common.utils.result.Result;
 import com.startdt.modules.role.dal.pojo.domain.GrantPermissionExample;
 import com.startdt.modules.role.dal.pojo.dto.RoleInfoDTO;
+import com.startdt.modules.role.dal.pojo.request.grant.BatchGrantReq;
 import com.startdt.modules.role.dal.pojo.request.grant.GrantUserRoleReq;
 import com.startdt.modules.role.service.IGrantPermissionService;
 import io.swagger.annotations.Api;
@@ -15,12 +16,13 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 /**
- * @Author: weilong
+ * @author : weilong
  * @Description:
  * @Date: Create in 2019/9/24 上午10:24
  * @Modified By:
@@ -41,6 +43,13 @@ public class UserRoleController {
             return Result.ofErrorT(BizResultConstant.DB_MODIFY_ERROR);
         }
         return Result.ofSuccess(DataInfo.resultToData(permissionNodeDTO));
+    }
+
+    @PostMapping("/v1/batchUserRoles")
+    @ApiOperation(value = "用户批量赋予角色")
+    public Result<DataInfo<Integer>> batchUserRoles(@RequestBody @Validated BatchGrantReq batchGrantReq){
+
+        return Result.ofSuccess(DataInfo.resultToData(grantPermissionService.batchGrantUserRole(batchGrantReq)));
     }
 
     @DeleteMapping("/v1/userRoles")

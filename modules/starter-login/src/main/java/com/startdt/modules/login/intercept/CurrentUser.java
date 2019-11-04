@@ -4,7 +4,7 @@ import com.startdt.modules.login.pojo.UserInfoCache;
 import com.startdt.modules.user.dal.pojo.domain.TbUserInfo;
 
 /**
- * @Author: weilong
+ * @author : weilong
  * @Description:
  * @Date: Create in 2019/8/28 下午3:42
  * @Modified By:

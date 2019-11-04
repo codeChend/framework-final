@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * @Author: weilong
+ * @author : weilong
  * @Description:
  * @DataUtil: Create in 2019/8/30 下午3:10
  * @Modified By:

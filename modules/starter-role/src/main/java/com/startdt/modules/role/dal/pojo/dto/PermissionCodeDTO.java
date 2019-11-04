@@ -3,7 +3,7 @@ package com.startdt.modules.role.dal.pojo.dto;
 import java.io.Serializable;
 
 /**
- * @Author: weilong
+ * @author : weilong
  * @Description:
  * @Date: Create in 2019/9/9 上午10:18
  * @Modified By:

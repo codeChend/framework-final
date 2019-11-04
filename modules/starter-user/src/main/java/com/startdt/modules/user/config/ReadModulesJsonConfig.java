@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import java.io.InputStream;
 
 /**
- * @Author: weilong
+ * @author : weilong
  * @Description:
  * @Date: Create in 2019/9/3 下午4:48
  * @Modified By:

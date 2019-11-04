@@ -8,7 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * @author hourui 2017/10/10 16:48
+ * @author  hourui 2017/10/10 16:48
  */
 @SpringBootApplication
 //演示开启自定义注解的能力

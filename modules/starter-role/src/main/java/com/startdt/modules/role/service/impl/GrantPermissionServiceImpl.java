@@ -3,6 +3,7 @@ package com.startdt.modules.role.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import com.startdt.modules.common.utils.BeanConverter;
 import com.startdt.modules.common.utils.RegexUtil;
 import com.startdt.modules.common.utils.enums.*;
@@ -15,6 +16,7 @@ import com.startdt.modules.role.dal.pojo.domain.GrantPermission;
 import com.startdt.modules.role.dal.pojo.domain.GrantPermissionExample;
 import com.startdt.modules.role.dal.pojo.domain.ResourcePermissionInfo;
 import com.startdt.modules.role.dal.pojo.dto.*;
+import com.startdt.modules.role.dal.pojo.request.grant.BatchGrantReq;
 import com.startdt.modules.role.dal.pojo.request.grant.GrantUserRoleReq;
 import com.startdt.modules.role.service.IGrantPermissionService;
 import com.startdt.modules.role.service.IResourcePermissionService;
@@ -22,7 +24,6 @@ import com.startdt.modules.role.service.IRolePermissionInfoService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Role;
 import org.springframework.util.CollectionUtils;
 
 import java.util.*;
@@ -34,7 +35,7 @@ import java.util.stream.Collectors;
  *  服务实现类
  * </p>
  *
- * @author weilong
+ * @author  weilong
  * @since 2019-08-28
  */
 @Configuration
@@ -355,6 +356,47 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
         return check;
     }
 
+    @Override
+    public int batchGrantUserRole(BatchGrantReq batchGrantReq) {
+        //过滤id的重复
+        Map<String,GrantPermission> map = new HashMap<>();
+        batchGrantReq.getRoleIds().forEach(roleId -> {
+            GrantPermission grantPermission = new GrantPermission();
+            grantPermission.setNote(roleId.getNote());
+            grantPermission.setPrincipalPart(batchGrantReq.getUserId().toString());
+            grantPermission.setPrincipalPartType(PrincipalTypeEnum.USER.getCode().byteValue());
+            grantPermission.setResources(String.valueOf(roleId.getRoleCode()));
+            grantPermission.setResourcesType(ResourceTypeEnum.ROLE.getCode().byteValue());
+            map.put(roleId.getNote(),grantPermission);
+        });
+
+        //获取当钱用户已绑定哪些角色
+        GrantPermissionExample example = new GrantPermissionExample();
+        example.or().andPrincipalPartTypeEqualTo(PrincipalTypeEnum.USER.getCode().byteValue())
+                .andResourcesTypeEqualTo(ResourceTypeEnum.ROLE.getCode().byteValue())
+                .andPrincipalPartEqualTo(batchGrantReq.getUserId().toString()).andStatusEqualTo((byte)1);
+
+        List<GrantPermission> returnList = grantPermissionMapper.selectByExample(example);
+
+        returnList.forEach(grantPermission -> {
+            if(map.get(grantPermission.getResources()) != null){
+                map.remove(grantPermission.getResources());
+            }
+        });
+
+        //批量赋予角色
+        List<GrantPermission> entitys = Lists.newArrayListWithCapacity(map.size());
+
+        for(String key : map.keySet()){
+            entitys.add(map.get(key));
+        }
+
+        if(CollectionUtils.isEmpty(entitys)){
+            return 0;
+        }
+
+        return grantPermissionMapper.insertBatch(entitys);
+    }
 
     private void recursionNode(List<PermissionNodeDTO> permissionNodeDTOS,List<String> permissionCodes){
         permissionNodeDTOS.forEach(permissionNodeDTO -> {

@@ -20,7 +20,7 @@ import java.util.List;
  *  服务类
  * </p>
  *
- * @author weilong
+ * @author  weilong
  * @since 2019-08-28
  */
 public interface IRolePermissionInfoService{

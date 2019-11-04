@@ -1,7 +1,7 @@
 package com.startdt.modules.common.utils;
 
 /**
- * @Author: weilong
+ * @author : weilong
  * @Description:
  * @Date: Create in 2019/9/30 上午11:00
  * @Modified By:

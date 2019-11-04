@@ -7,7 +7,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 /**
  * desc
  *
- * @author weilong
+ * @author  weilong
  * @Date 2019/7/11
  **/
 @ApiModel(value="修改用户请求对象")

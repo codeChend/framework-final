@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 /**
- * @Author: weilong
+ * @author : weilong
  * @Description:    加载菜单到缓存
  * @Date: Create in 2019/8/29 下午8:01
  * @Modified By:

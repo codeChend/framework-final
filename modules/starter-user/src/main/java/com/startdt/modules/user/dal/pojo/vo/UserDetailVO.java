@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * desc
  *
- * @author xutianzhe
+ * @author  xutianzhe
  * @Date 2019/7/11
  **/
 @ApiModel(value="用户详情返回对象")

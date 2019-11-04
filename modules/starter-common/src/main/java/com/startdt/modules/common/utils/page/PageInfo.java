@@ -3,7 +3,7 @@ package com.startdt.modules.common.utils.page;
 import java.io.Serializable;
 
 /**
- * @Author: weilong
+ * @author : weilong
  * @Description:
  * @DataUtil: Create in 2019/8/30 下午3:11
  * @Modified By:

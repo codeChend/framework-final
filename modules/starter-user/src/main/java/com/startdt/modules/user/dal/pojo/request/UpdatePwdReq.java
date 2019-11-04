@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 /**
  * desc
  *
- * @author xutianzhe
+ * @author  xutianzhe
  * @Date 2019/7/11
  **/
 @ApiModel(value = "用户修改密码请求对象")
