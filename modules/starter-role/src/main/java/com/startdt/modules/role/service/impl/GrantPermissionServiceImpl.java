@@ -21,6 +21,7 @@ import com.startdt.modules.role.dal.pojo.request.grant.GrantUserRoleReq;
 import com.startdt.modules.role.service.IGrantPermissionService;
 import com.startdt.modules.role.service.IResourcePermissionService;
 import com.startdt.modules.role.service.IRolePermissionInfoService;
+import io.swagger.models.auth.In;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -359,15 +360,17 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
     @Override
     public int batchGrantUserRole(BatchGrantReq batchGrantReq) {
         //过滤id的重复
-        Map<String,GrantPermission> map = new HashMap<>();
-        batchGrantReq.getRoleIds().forEach(roleId -> {
+        Map<Integer,GrantPermission> map = new HashMap<>();
+
+        batchGrantReq.getRoleIds().forEach(roleIdsReq -> {
             GrantPermission grantPermission = new GrantPermission();
-            grantPermission.setNote(roleId.getNote());
+            grantPermission.setNote(roleIdsReq.getNote());
             grantPermission.setPrincipalPart(batchGrantReq.getUserId().toString());
             grantPermission.setPrincipalPartType(PrincipalTypeEnum.USER.getCode().byteValue());
-            grantPermission.setResources(String.valueOf(roleId.getRoleCode()));
+            grantPermission.setResources(String.valueOf(roleIdsReq.getRoleCode()));
             grantPermission.setResourcesType(ResourceTypeEnum.ROLE.getCode().byteValue());
-            map.put(roleId.getNote(),grantPermission);
+
+            map.put(roleIdsReq.getRoleCode(),grantPermission);
         });
 
         //获取当钱用户已绑定哪些角色
@@ -376,18 +379,12 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
                 .andResourcesTypeEqualTo(ResourceTypeEnum.ROLE.getCode().byteValue())
                 .andPrincipalPartEqualTo(batchGrantReq.getUserId().toString()).andStatusEqualTo((byte)1);
 
-        List<GrantPermission> returnList = grantPermissionMapper.selectByExample(example);
-
-        returnList.forEach(grantPermission -> {
-            if(map.get(grantPermission.getResources()) != null){
-                map.remove(grantPermission.getResources());
-            }
-        });
+        grantPermissionMapper.deleteByExample(example);
 
         //批量赋予角色
         List<GrantPermission> entitys = Lists.newArrayListWithCapacity(map.size());
 
-        for(String key : map.keySet()){
+        for(Integer key : map.keySet()){
             entitys.add(map.get(key));
         }
 
