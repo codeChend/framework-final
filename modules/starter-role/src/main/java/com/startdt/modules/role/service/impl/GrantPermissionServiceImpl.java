@@ -282,16 +282,55 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
 
         Map<String,ResourcePermissionInfo> map = new HashMap<>();
 
+        Map<String,PermissionCodeDTO> codeDTOMap = new HashMap<>();
+
         list.forEach(resourcePermissionInfo -> {
             map.put(resourcePermissionInfo.getCode(),resourcePermissionInfo);
         });
 
+        permissionCodeDTOS.forEach(permissionCodeDTO -> codeDTOMap.put(permissionCodeDTO.getCode(),permissionCodeDTO));
+
         permissionCode.forEach(permission -> {
             ResourcePermissionInfo resourcePermissionInfo = map.get(permission);
             if(resourcePermissionInfo != null){
-                recursionGrantNode(permissionCodeDTOS,map,resourcePermissionInfo);
+                recursionGrantNode(codeDTOMap,map,resourcePermissionInfo);
             }
         });
+
+        return rolePermissionInfoService.modifyRolePermission(rolePermissionDTO);
+    }
+
+    @Override
+    public int rolePermissionsCover(Integer roleId, List<String> permissionCode) {
+
+        RolePermissionDTO rolePermissionDTO = rolePermissionInfoService.getRoleById(roleId);
+        if(rolePermissionDTO == null){
+            throw new FrameworkException(BizResultConstant.ROLE_IS_NOT_EXIST);
+        }
+
+        List<ResourcePermissionInfo> list = resourcePermissionService.permissionInfoByCodes(permissionCode);
+
+        Map<String,ResourcePermissionInfo> map = new HashMap<>();
+
+        Map<String,PermissionCodeDTO> codeDTOMap = new HashMap<>();
+
+        list.forEach(resourcePermissionInfo -> map.put(resourcePermissionInfo.getCode(),resourcePermissionInfo));
+
+        permissionCode.forEach(permission -> {
+            ResourcePermissionInfo resourcePermissionInfo = map.get(permission);
+            if(resourcePermissionInfo != null){
+                recursionGrantNode(codeDTOMap,map,resourcePermissionInfo);
+            }
+        });
+
+        if(codeDTOMap.size() != 0){
+            List<PermissionCodeDTO> permissionCodeDTOS = Lists.newArrayListWithExpectedSize(codeDTOMap.size());
+            for(String key : codeDTOMap.keySet()){
+                permissionCodeDTOS.add(codeDTOMap.get(key));
+            }
+
+            rolePermissionDTO.setPermissions(permissionCodeDTOS);
+        }
 
         return rolePermissionInfoService.modifyRolePermission(rolePermissionDTO);
     }
@@ -442,32 +481,30 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
 
     /**
      * 递归给父节点授权
-     * @param permissionCodeDTOS
+     * @param codeDTOMap
      * @param map
      * @param resourcePermissionInfo
      */
-    private void recursionGrantNode(List<PermissionCodeDTO> permissionCodeDTOS,Map<String,ResourcePermissionInfo> map,ResourcePermissionInfo resourcePermissionInfo){
+    private void recursionGrantNode(Map<String,PermissionCodeDTO> codeDTOMap,Map<String,ResourcePermissionInfo> map,ResourcePermissionInfo resourcePermissionInfo){
+        String code = resourcePermissionInfo.getCode();
         PermissionCodeDTO permissionCodeDTO = new PermissionCodeDTO();
-        permissionCodeDTO.setCode(resourcePermissionInfo.getCode());
+        permissionCodeDTO.setCode(code);
         permissionCodeDTO.setType(RolePermissionEnum.SYSTEM_PERMISSION.getCode());
 
-        if(!permissionCodeDTOS.contains(permissionCodeDTO)){
-            permissionCodeDTOS.add(permissionCodeDTO);
-        }
+        codeDTOMap.putIfAbsent(code,permissionCodeDTO);
+
         String parentCode = resourcePermissionInfo.getParentCode();
         if(!StringUtils.isEmpty(parentCode)){
             ResourcePermissionInfo parentResource = map.get(parentCode);
             if(parentResource == null){
                 parentResource = resourcePermissionService.permissionInfoByCode(parentCode);
+                map.putIfAbsent(parentCode,parentResource);
             }
-            if(parentResource != null){
-                map.remove(parentCode);
-
-                recursionGrantNode(permissionCodeDTOS,map,parentResource);
+            if(parentResource != null && codeDTOMap.get(parentCode) == null){
+                recursionGrantNode(codeDTOMap,map,parentResource);
             }
 
         }
     }
-
 
 }

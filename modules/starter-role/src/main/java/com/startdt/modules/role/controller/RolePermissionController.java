@@ -35,9 +35,21 @@ public class RolePermissionController {
     }
 
     @PostMapping("/v1/rolePermissions")
-    @ApiOperation(value = "给角色授权,授予权限如果是子节点权限会附带上父节点的权限")
+    @ApiOperation(value = "给角色叠加授权",notes = "授予权限如果是子节点权限会附带上父节点的权限")
     public Result<DataInfo<RolePermissionReq>> grantRolePermission(@RequestBody RolePermissionReq rolePermissionReq){
         int grant = grantPermissionService.grantRolePermission(rolePermissionReq.getRoleId(),rolePermissionReq.getPermissionCodes());
+        if(grant < 1){
+            return Result.ofErrorT(BizResultConstant.DB_MODIFY_ERROR);
+        }
+
+        return Result.ofSuccess(DataInfo.resultToData(rolePermissionReq));
+    }
+
+    @PostMapping("/v1/rolePermissionsCover")
+    @ApiOperation(value = "给角色覆盖授权",notes = "授予权限如果是子节点权限会附带上父节点的权限")
+    public Result<DataInfo<RolePermissionReq>> rolePermissionsCover(@RequestBody RolePermissionReq rolePermissionReq){
+        int grant = grantPermissionService.rolePermissionsCover(rolePermissionReq.getRoleId(),rolePermissionReq.getPermissionCodes());
+
         if(grant < 1){
             return Result.ofErrorT(BizResultConstant.DB_MODIFY_ERROR);
         }

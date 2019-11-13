@@ -105,6 +105,14 @@ public interface IGrantPermissionService {
     int grantRolePermission(Integer roleId,List<String> permissionCode);
 
     /**
+     * 覆盖授权
+     * @param roleId            角色id
+     * @param permissionCode    权限code
+     * @return
+     */
+    int rolePermissionsCover(Integer roleId,List<String> permissionCode);
+
+    /**
      * 释放权限，若是父节点会释放所有子节点权限
      * @param roleId
      * @param permissionCode
