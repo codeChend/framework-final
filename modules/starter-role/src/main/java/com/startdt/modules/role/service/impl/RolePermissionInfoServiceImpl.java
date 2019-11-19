@@ -7,11 +7,15 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.startdt.modules.common.pojo.Page;
 import com.startdt.modules.common.utils.BeanConverter;
+import com.startdt.modules.common.utils.enums.ResourceTypeEnum;
 import com.startdt.modules.common.utils.exception.FrameworkException;
 import com.startdt.modules.common.utils.page.PageResult;
 import com.startdt.modules.common.utils.page.PageUtil;
 import com.startdt.modules.common.utils.result.BizResultConstant;
+import com.startdt.modules.role.dal.mapper.GrantPermissionMapper;
 import com.startdt.modules.role.dal.mapper.RolePermissionInfoMapper;
+import com.startdt.modules.role.dal.pojo.domain.GrantPermission;
+import com.startdt.modules.role.dal.pojo.domain.GrantPermissionExample;
 import com.startdt.modules.role.dal.pojo.domain.RolePermissionInfo;
 import com.startdt.modules.role.dal.pojo.domain.RolePermissionInfoExample;
 import com.startdt.modules.role.dal.pojo.dto.PermissionCodeDTO;
@@ -49,6 +53,9 @@ public class RolePermissionInfoServiceImpl implements IRolePermissionInfoService
     @Autowired
     private RolePermissionInfoMapper rolePermissionInfoMapper;
 
+    @Autowired
+    private GrantPermissionMapper grantPermissionMapper;
+
     @Override
     public RoleInfoDTO insertRole(SaveRoleInfoReq rolePermissionDTO) {
         RolePermissionInfo rolePermissionInfo = BeanConverter.convert(rolePermissionDTO,RolePermissionInfo.class);
@@ -63,6 +70,17 @@ public class RolePermissionInfoServiceImpl implements IRolePermissionInfoService
 
     @Override
     public int deleteRole(Integer id) {
+        //查看角色是否被使用，正在被使用 不能删除
+        GrantPermissionExample grantPermission = new GrantPermissionExample();
+        grantPermission.or().andResourcesEqualTo(id.toString()).andResourcesTypeEqualTo(ResourceTypeEnum.ROLE.getCode().byteValue()).
+                andStatusEqualTo((byte)1);
+
+        Long count = grantPermissionMapper.countByExample(grantPermission);
+
+        if(count > 0){
+            throw new FrameworkException(BizResultConstant.ROLE_USER_IS_EXIST);
+        }
+
         RolePermissionInfo rolePermissionInfo = new RolePermissionInfo();
         rolePermissionInfo.setId(id);
         rolePermissionInfo.setStatus((byte)0);

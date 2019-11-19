@@ -48,6 +48,8 @@ public class BizResultConstant {
     public static final BizResultConstant PERMISSION_IS_NOT_SAME_LEVEL = new BizResultConstant(50013, "权限不同级");
     public static final BizResultConstant PERMISSION_IS_NOT_EXIST = new BizResultConstant(50014, "权限不存在");
     public static final BizResultConstant ROLE_NO_AUTH = new BizResultConstant(50015, "角色未授权");
+    public static final BizResultConstant ROLE_USER_IS_EXIST = new BizResultConstant(50016, "该角色存在用户绑定，不能删除");
+
 
 }
 
