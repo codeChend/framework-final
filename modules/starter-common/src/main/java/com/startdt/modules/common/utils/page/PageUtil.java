@@ -1,14 +1,7 @@
 package com.startdt.modules.common.utils.page;
 
 import com.github.pagehelper.PageInfo;
-import com.google.common.collect.Lists;
-import com.startdt.modules.common.pojo.Page;
 import com.startdt.modules.common.utils.BeanConverter;
-import org.springframework.cglib.beans.BeanCopier;
-import org.springframework.context.annotation.Bean;
-
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**

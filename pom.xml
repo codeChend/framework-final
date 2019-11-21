@@ -1,307 +1,242 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.startdt.platform</groupId>
-	<artifactId>framework-final-project</artifactId>
-	<version>1.2.0-SNAPSHOT</version>
-	<packaging>pom</packaging>
-	<name>FrameworkFinal</name>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <!-- Maven Info -->
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.startdt.platform</groupId>
+    <artifactId>framework-final-project</artifactId>
+    <version>1.2.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.5.1.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
-	</parent>
+    <!-- Project Info -->
+    <name>FrameworkFinal</name>
+    <description>framework-final is a Basic Framework based on Springboot.</description>
+    <url>http://git.startdt.net/businessplatform/framework-final.git</url>
+    <inceptionYear>2019</inceptionYear>
 
-	<modules>
-		<module>examples</module>
+    <modules>
+        <module>examples</module>
         <module>modules/starter-user</module>
-		<module>modules/starter-role</module>
-		<module>modules/starter-common</module>
-		<module>modules/starter-login</module>
-		<module>modules/framework-modules</module>
-	</modules>
-	<description>framework-final is a Basic Framework based on Springboot. </description>
-	<url>http://git.startdt.net/businessplatform/framework-final.git</url>
-	<inceptionYear>2019</inceptionYear>
-	<developers>
-		<developer>
-			<id>00173</id>
-			<name>zhengfengshi</name>
-			<email>zhengfengshi@stardt.com</email>
-			<roles>
-				<role>Developer</role>
-			</roles>
-		</developer>
-		<developer>
-			<id>00117</id>
-			<name>chendong</name>
-			<email>chendong@stardt.com</email>
-			<roles>
-				<role>Developer</role>
-			</roles>
-		</developer>
-	</developers>
+        <module>modules/starter-role</module>
+        <module>modules/starter-common</module>
+        <module>modules/starter-login</module>
+    </modules>
 
-	<!--所有版本定义包括二方包各个version定义在这里-->
-	<properties>
-		<revision>1.2.0-SNAPSHOT</revision>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>1.8</java.version>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
-		<module.version>1.0.0-SNAPSHOT</module.version>
-		<merchant-admin-common-service.version>1.2.0-SNAPSHOT</merchant-admin-common-service.version>
-		<junit.version>4.12</junit.version>
-		<junit.jupiter.version>5.0.0</junit.jupiter.version>
-		<junit.vintage.version>${junit.version}.0</junit.vintage.version>
-		<junit.platform.version>1.0.0</junit.platform.version>
-		<!-- 编译时的编码 -->
-		<druid.version>1.1.5</druid.version>
-		<fastjson.version>1.2.47</fastjson.version>
-		<guava.version>20.0</guava.version>
-		<mybatis-spring-boot-starter.version>2.1.0</mybatis-spring-boot-starter.version>
-		<mybatisplus.version>3.0.5</mybatisplus.version>
-		<commons-beanutils.version>1.8.0</commons-beanutils.version>
-		<commons-lang3.version>3.6</commons-lang3.version>
-		<config-center-client.version>0.0.1-SNAPSHOT</config-center-client.version>
-		<config-spring-boot-starter>1.1-SPRINGBOOT-1.5.X-SNAPSHOT</config-spring-boot-starter>
-		<zookeeper.version>3.4.8</zookeeper.version>
-		<zkclient.version>0.3</zkclient.version>
-		<maven-compiler.version>3.6.1</maven-compiler.version>
-		<httpmime.version>4.5.2</httpmime.version>
-		<dubbo.version>2.8.4</dubbo.version>
-		<spring-boot-starter-dubbo.version>1.0.0</spring-boot-starter-dubbo.version>
-		<trace.version>0.0.2-SNAPSHOT</trace.version>
-		<spring-boot.version>1.5.1.RELEASE</spring-boot.version>
-		<lombok.version>1.16.12</lombok.version>
-		<druid.version>1.1.5</druid.version>
-		<pagehelper.version>4.1.1</pagehelper.version>
+    <developers>
+        <developer>
+            <id>00173</id>
+            <name>zhengfengshi</name>
+            <email>zhengfengshi@stardt.com</email>
+            <roles>
+                <role>Developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>00117</id>
+            <name>chendong</name>
+            <email>chendong@stardt.com</email>
+            <roles>
+                <role>Developer</role>
+            </roles>
+        </developer>
+    </developers>
 
+    <!-- 仓库配置 -->
+    <repositories>
+        <repository>
+            <id>public</id>  <!--这个ID需要与你的组group ID一致-->
+            <name>Public Repository</name>
+            <url>http://118.31.10.136:8081/nexus/content/groups/public</url>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>public</id>
+            <name>public Repository</name>
+            <url>http://118.31.10.136:8081/nexus/content/groups/public</url>
+        </pluginRepository>
+    </pluginRepositories>
+    <distributionManagement>
+        <repository>
+            <id>releases</id><!--这个ID需要与你的release仓库的Repository ID一致 -->
+            <url>http://118.31.10.136:8081/nexus/content/repositories/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id><!--这个ID需要与你的snapshots仓库的Repository ID一致 -->
+            <url>http://118.31.10.136:8081/nexus/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 
-	</properties>
+    <!-- 配置属性 -->
+    <properties>
+        <wtpversion>2.0</wtpversion>
+        <downloadSources>true</downloadSources>
+        <downloadJavadocs>true</downloadJavadocs>
+        <maven.test.skip>true</maven.test.skip>
+        <spring.boot.version>2.2.1.RELEASE</spring.boot.version>
+        <spring.version>5.2.1.RELEASE</spring.version>
+        <powermock.version>2.0.2</powermock.version>
+    </properties>
 
-	<dependencyManagement>
-		<dependencies>
+    <!-- 构建描述 -->
+    <build>
+        <plugins>
+            <!-- Compile -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.5.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF8</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
+    <dependencies>
+        <!-- spring -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
 
-			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-starter-web</artifactId>
-				<version>${spring-boot.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.projectlombok</groupId>
-				<artifactId>lombok</artifactId>
-				<version>${lombok.version}</version>
-				<optional>true</optional>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-starter-test</artifactId>
-				<version>${spring-boot.version}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>com.startdt.platform</groupId>
-				<artifactId>starter-user</artifactId>
-				<version>${revision}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.startdt.platform</groupId>
-				<artifactId>starter-common</artifactId>
-				<version>${revision}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.startdt.platform</groupId>
-				<artifactId>starter-login</artifactId>
-				<version>${revision}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.startdt.platform</groupId>
-				<artifactId>starter-role</artifactId>
-				<version>${revision}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.startdt.platform</groupId>
-				<artifactId>framework-modules</artifactId>
-				<version>${revision}</version>
-			</dependency>
+        <!-- swagger2 -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+        </dependency>
 
-			<dependency>
-				<groupId>com.startdt.platform</groupId>
-				<artifactId>examples</artifactId>
-				<version>${revision}</version>
-			</dependency>
+        <!-- lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
-			<dependency>
-				<groupId>org.mybatis.spring.boot</groupId>
-				<artifactId>mybatis-spring-boot-starter</artifactId>
-				<version>${mybatis-spring-boot-starter.version}</version>
-			</dependency>
+        <!-- test -->
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-module-junit4</artifactId>
+            <version>${powermock.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-api-mockito2</artifactId>
+            <version>${powermock.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
-			<!--mybatis-plus-->
-			<dependency>
-				<groupId>com.baomidou</groupId>
-				<artifactId>mybatis-plus-boot-starter</artifactId>
-				<version>${mybatisplus.version}</version>
-			</dependency>
+    <dependencyManagement>
+        <dependencies>
+            <!-- self -->
+            <dependency>
+                <groupId>com.startdt.platform</groupId>
+                <artifactId>starter-user</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.startdt.platform</groupId>
+                <artifactId>starter-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.startdt.platform</groupId>
+                <artifactId>starter-login</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.startdt.platform</groupId>
+                <artifactId>starter-role</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-context-support</artifactId>
-				<version>3.2.4.RELEASE</version>
-			</dependency>
+            <!-- Swagger2 -->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>2.9.2</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>2.9.2</version>
+            </dependency>
 
-			<dependency>
-				<groupId>org.freemarker</groupId>
-				<artifactId>freemarker-gae</artifactId>
-				<version>2.3.18</version>
-			</dependency>
+            <!-- pagehelper -->
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper</artifactId>
+                <version>4.1.1</version>
+            </dependency>
 
-			<dependency>
-				<groupId>com.alibaba</groupId>
-				<artifactId>fastjson</artifactId>
-				<version>${fastjson.version}</version>
-			</dependency>
+            <!-- json -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>1.2.47</version>
+            </dependency>
 
-			<dependency>
-				<groupId>io.springfox</groupId>
-				<artifactId>springfox-swagger2</artifactId>
-				<version>2.9.2</version>
-			</dependency>
+            <!-- db -->
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>2.1.0</version>
+            </dependency>
 
-			<dependency>
-				<groupId>io.springfox</groupId>
-				<artifactId>springfox-swagger-ui</artifactId>
-				<version>2.9.2</version>
-			</dependency>
+            <!-- apache -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.5</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-beanutils</groupId>
+                <artifactId>commons-beanutils</artifactId>
+                <version>1.9.3</version>
+            </dependency>
 
-			<dependency>
-				<groupId>com.alibaba</groupId>
-				<artifactId>druid</artifactId>
-				<version>${druid.version}</version>
-			</dependency>
+            <!-- Test -->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.12</version>
+                <scope>test</scope>
+            </dependency>
 
-			<dependency>
-				<groupId>com.github.pagehelper</groupId>
-				<artifactId>pagehelper</artifactId>
-				<version>${pagehelper.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.apache.commons</groupId>
-				<artifactId>commons-lang3</artifactId>
-				<version>${commons-lang3.version}</version>
-			</dependency>
-		</dependencies>
-
-
-
-	</dependencyManagement>
-	<dependencies>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-dependencies</artifactId>
-			<version>${spring-boot.version}</version>
-			<type>pom</type>
-			<scope>import</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
-			<version>${spring-boot.version}</version>
-
-		</dependency>
-
-		<dependency>
-			<groupId>org.json</groupId>
-			<artifactId>json</artifactId>
-			<version>20160810</version>
-		</dependency>
-
-	</dependencies>
-
-	<!-- 私有仓库 -->
-	<repositories>
-		<repository>
-			<id>public</id>  <!--这个ID需要与你的组group ID一致-->
-			<name>Public Repository</name>
-			<url>http://118.31.10.136:8081/nexus/content/groups/public</url>
-		</repository>
-	</repositories>
-
-	<!-- Nexus插件仓库 -->
-	<pluginRepositories>
-		<pluginRepository>
-			<id>public</id>
-			<name>public Repository</name>
-			<url>http://118.31.10.136:8081/nexus/content/groups/public</url>
-		</pluginRepository>
-	</pluginRepositories>
-
-	<!-- 打包发布 -->
-	<distributionManagement>
-		<repository>
-			<id>releases</id><!--这个ID需要与你的release仓库的Repository ID一致 -->
-			<url>http://118.31.10.136:8081/nexus/content/repositories/releases</url>
-		</repository>
-
-		<snapshotRepository>
-			<id>snapshots</id><!--这个ID需要与你的snapshots仓库的Repository ID一致 -->
-			<url>http://118.31.10.136:8081/nexus/content/repositories/snapshots</url>
-		</snapshotRepository>
-	</distributionManagement>
-
-	<!--配置编译JDK1.8版本-->
-	<profiles>
-		<profile>
-			<id>jdk-1.8</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-				<jdk>1.8</jdk>
-			</activation>
-			<properties>
-				<maven.compiler.source>1.8</maven.compiler.source>
-				<maven.compiler.target>1.8</maven.compiler.target>
-				<maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>
-			</properties>
-		</profile>
-	</profiles>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.5.1</version>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-					<encoding>UTF-8</encoding>
-				</configuration>
-			</plugin>
-			<!-- 要将源码放上去，需要加入这个插件 -->
-			<plugin>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>3.0.1</version>
-				<configuration>
-					<attach>true</attach>
-				</configuration>
-				<executions>
-					<execution>
-						<phase>compile</phase>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
-
+            <!-- spring -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context-support</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <!-- Import dependency management from Spring Boot -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring.boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- Override Spring Data release train provided by Spring Boot -->
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-releasetrain</artifactId>
+                <version>Moore-SR1</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>

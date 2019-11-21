@@ -2,7 +2,6 @@ package com.startdt.modules.login.service.impl;
 
 import com.startdt.modules.common.utils.exception.FrameworkException;
 import com.startdt.modules.common.utils.result.BizResultConstant;
-import com.startdt.modules.common.utils.result.Result;
 import com.startdt.modules.login.pojo.UserLoginVO;
 import com.startdt.modules.login.service.JwtTokenUtil;
 import com.startdt.modules.login.service.StarterLoginService;

@@ -1,7 +1,6 @@
 package com.startdt.modules.login.service;
 
 import com.startdt.modules.login.pojo.JwtConfig;
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.slf4j.Logger;

@@ -45,7 +45,6 @@ public class UserInfoController {
     @Transactional(rollbackFor = Exception.class)
     public Result<DataInfo<TbUserInfo>> registerUser(@RequestBody @Valid UserInfoReq userInfoReq) {
         TbUserInfo userInfo = BeanConverter.convert(userInfoReq, TbUserInfo.class);
-
         return Result.ofSuccess(DataInfo.resultToData(userInfoService.insertUser(userInfo)));
     }
 
@@ -81,17 +80,8 @@ public class UserInfoController {
         if(delete<1){
             return Result.ofErrorT(BizResultConstant.DB_MODIFY_ERROR);
         }
-
         return Result.ofSuccess();
     }
-
-//    @PatchMapping("/v1/users")
-//    @ApiOperation(value = "修改用户密码")
-//    public Result<DataInfo<TbUserInfo>> updatePwd(@Valid @RequestBody UpdatePwdReq updatePwdReq) {
-//        TbUserInfo tbUserInfo = userInfoService.editPwd(updatePwdReq.getId(), updatePwdReq.getOldPwd(), updatePwdReq.getNewPwd(), updatePwdReq.getConfirmNewPwd());
-//
-//        return Result.ofSuccess(DataInfo.resultToData(tbUserInfo));
-//    }
 
     @GetMapping("/v1/users")
     @ApiOperation(value = "分页获取用户列表")

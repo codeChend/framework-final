@@ -11,7 +11,6 @@ import com.startdt.modules.user.dal.pojo.domain.TbUserInfo;
 import com.startdt.modules.user.service.ITbUserInfoService;
 import io.jsonwebtoken.Claims;
 import org.apache.commons.lang3.StringUtils;
-import org.omg.CORBA.Current;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,6 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
