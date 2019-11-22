@@ -6,7 +6,7 @@
         <groupId>com.startdt.platform</groupId>
         <artifactId>framework-final-project</artifactId>
         <version>1.2.1-SNAPSHOT</version>
-        <relativePath>../../pom.xml</relativePath>
+        <relativePath>../../</relativePath>
     </parent>
     <artifactId>starter-common</artifactId>
     <packaging>jar</packaging>
