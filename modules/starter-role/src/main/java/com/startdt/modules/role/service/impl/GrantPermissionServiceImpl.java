@@ -21,7 +21,6 @@ import com.startdt.modules.role.dal.pojo.request.grant.GrantUserRoleReq;
 import com.startdt.modules.role.service.IGrantPermissionService;
 import com.startdt.modules.role.service.IResourcePermissionService;
 import com.startdt.modules.role.service.IRolePermissionInfoService;
-import io.swagger.models.auth.In;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -284,9 +283,7 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
 
         Map<String,PermissionCodeDTO> codeDTOMap = new HashMap<>();
 
-        list.forEach(resourcePermissionInfo -> {
-            map.put(resourcePermissionInfo.getCode(),resourcePermissionInfo);
-        });
+        list.forEach(resourcePermissionInfo -> map.put(resourcePermissionInfo.getCode(),resourcePermissionInfo));
 
         permissionCodeDTOS.forEach(permissionCodeDTO -> codeDTOMap.put(permissionCodeDTO.getCode(),permissionCodeDTO));
 
@@ -296,6 +293,15 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
                 recursionGrantNode(codeDTOMap,map,resourcePermissionInfo);
             }
         });
+
+        if(codeDTOMap.size() != 0){
+            List<PermissionCodeDTO> permissionCodes = Lists.newArrayListWithExpectedSize(codeDTOMap.size());
+            for(String key : codeDTOMap.keySet()){
+                permissionCodeDTOS.add(codeDTOMap.get(key));
+            }
+
+            rolePermissionDTO.setPermissions(permissionCodes);
+        }
 
         return rolePermissionInfoService.modifyRolePermission(rolePermissionDTO);
     }
