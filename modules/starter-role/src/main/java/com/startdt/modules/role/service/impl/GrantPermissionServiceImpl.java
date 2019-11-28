@@ -562,7 +562,7 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
         systemPermission.addAll(h);
         //根据权限code获取权限信息
         List<String> permissionCodes = systemPermission.stream().map(PermissionCodeDTO::getCode).collect(Collectors.toList());
-
+        log.info("permissionCodes:[]", JSONArray.toJSONString(permissionCodes));
         return resourcePermissionService.permissionInfoByCodes(permissionCodes);
     }
 
