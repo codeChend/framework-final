@@ -230,7 +230,7 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
 
         //过滤菜单级父节点的权限集
         List<ResourcePermissionInfo> parentPermission = permissionNodeDTOS
-                .parallelStream().filter(permission -> StringUtils.isEmpty(permission.getParentCode()))
+                .stream().filter(permission -> StringUtils.isEmpty(permission.getParentCode()))
                 .filter(permissionInfo -> permissionInfo.getType()== PermissionTypeEnum.MENU_PERMISSION.getCode().byteValue())
                 .collect(Collectors.toList());
 
@@ -244,7 +244,7 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
             resultList.add(permissionNodeDTO);
         });
 
-        List<String> permissionCodes = permissionNodeDTOS.parallelStream().map(ResourcePermissionInfo::getCode).collect(Collectors.toList());
+        List<String> permissionCodes = permissionNodeDTOS.stream().map(ResourcePermissionInfo::getCode).collect(Collectors.toList());
 
         //递归所有有权限的点
         recursionNode(resultList,permissionCodes);
