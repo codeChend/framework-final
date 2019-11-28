@@ -208,7 +208,7 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
 
         List<GrantPermission> grantPermissions = grantPermissionMapper.selectByExample(example);
 
-        List<String> roleIds = grantPermissions.parallelStream().map(GrantPermission::getResources).collect(Collectors.toList());
+        List<String> roleIds = grantPermissions.stream().map(GrantPermission::getResources).collect(Collectors.toList());
 
         return rolePermissionInfoService.listRole(roleIds);
     }
