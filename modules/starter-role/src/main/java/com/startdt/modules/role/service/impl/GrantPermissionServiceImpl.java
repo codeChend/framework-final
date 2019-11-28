@@ -542,7 +542,7 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
         roleInfoDTOS.forEach(rolePermissionDTO -> {
             if(!CollectionUtils.isEmpty(rolePermissionDTO.getPermissions())){
                 List<PermissionCodeDTO> permissionCodeDTOs = rolePermissionDTO.getPermissions()
-                        .parallelStream().filter(permissionCode -> RolePermissionEnum.SYSTEM_PERMISSION.getCode() == permissionCode.getType())
+                        .stream().filter(permissionCode -> RolePermissionEnum.SYSTEM_PERMISSION.getCode() == permissionCode.getType())
                         .collect(Collectors.toList());
 
                 systemPermission.addAll(permissionCodeDTOs);
@@ -553,7 +553,7 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
         systemPermission.clear();
         systemPermission.addAll(h);
         //根据权限code获取权限信息
-        List<String> permissionCodes = systemPermission.parallelStream().map(PermissionCodeDTO::getCode).collect(Collectors.toList());
+        List<String> permissionCodes = systemPermission.stream().map(PermissionCodeDTO::getCode).collect(Collectors.toList());
 
         return resourcePermissionService.permissionInfoByCodes(permissionCodes);
     }
