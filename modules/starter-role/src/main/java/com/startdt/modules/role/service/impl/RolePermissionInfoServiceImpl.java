@@ -145,7 +145,7 @@ public class RolePermissionInfoServiceImpl implements IRolePermissionInfoService
         if(CollectionUtils.isEmpty(roleIds)){
             return Collections.emptyList();
         }
-        List<Integer> ids = roleIds.parallelStream().map(s -> Integer.valueOf(s)).collect(Collectors.toList());
+        List<Integer> ids = roleIds.stream().map(s -> Integer.valueOf(s)).collect(Collectors.toList());
         List<RolePermissionInfo> rolePermissionInfos = rolePermissionInfoMapper.selectByIds(ids);
 
         List<RolePermissionDTO> resultList = Lists.newArrayList();
