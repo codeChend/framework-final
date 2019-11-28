@@ -1,6 +1,7 @@
 package com.startdt.modules.role.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.startdt.modules.common.utils.BeanConverter;
@@ -19,12 +20,14 @@ import com.startdt.modules.role.dal.pojo.request.grant.GrantUserRoleReq;
 import com.startdt.modules.role.service.IGrantPermissionService;
 import com.startdt.modules.role.service.IResourcePermissionService;
 import com.startdt.modules.role.service.IRolePermissionInfoService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.CollectionUtils;
 
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -36,6 +39,7 @@ import java.util.stream.Collectors;
  * @author weilong
  * @since 2019-08-28
  */
+@Slf4j
 @Configuration
 public class GrantPermissionServiceImpl implements IGrantPermissionService {
 
@@ -226,7 +230,11 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
 
         List<RolePermissionDTO> roleInfoDTOS = listByUserId(userId,spaceCode);
 
+        log.info("listByUserId roleInfoDTOS:{}", JSONArray.toJSONString(roleInfoDTOS));
+
         List<ResourcePermissionInfo> permissionNodeDTOS = getPermissionByRoleIds(roleInfoDTOS);
+
+        log.info("getPermissionByRoleIds permissionNodeDTOS:{}", JSONArray.toJSONString(roleInfoDTOS));
 
         //过滤菜单级父节点的权限集
         List<ResourcePermissionInfo> parentPermission = permissionNodeDTOS
