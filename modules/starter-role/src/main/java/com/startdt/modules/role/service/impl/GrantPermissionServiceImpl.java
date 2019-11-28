@@ -234,7 +234,7 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
 
         List<ResourcePermissionInfo> permissionNodeDTOS = getPermissionByRoleIds(roleInfoDTOS);
 
-        log.info("getPermissionByRoleIds permissionNodeDTOS:{}", JSONArray.toJSONString(roleInfoDTOS));
+        log.info("getPermissionByRoleIds permissionNodeDTOS:{}", JSONArray.toJSONString(permissionNodeDTOS));
 
         //过滤菜单级父节点的权限集
         List<ResourcePermissionInfo> parentPermission = permissionNodeDTOS
