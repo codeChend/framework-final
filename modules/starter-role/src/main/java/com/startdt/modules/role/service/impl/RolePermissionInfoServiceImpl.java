@@ -205,7 +205,7 @@ public class RolePermissionInfoServiceImpl implements IRolePermissionInfoService
         }
 
         List<RolePermissionInfo> rolePermissionInfos = rolePermissionInfoMapper.selectByExampleWithBLOBs(example);
-        log.info("rolePermissionInfos:{}", JSONArray.toJSONString(rolePermissionInfos));
+        log.debug("rolePermissionInfos:{}", JSONArray.toJSONString(rolePermissionInfos));
         List<RolePermissionDTO> data = new ArrayList<>();
         rolePermissionInfos.forEach(rolePermissionInfo -> {
             RolePermissionDTO rolePermissionDTO = BeanConverter.convert(rolePermissionInfo, RolePermissionDTO.class);

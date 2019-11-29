@@ -618,7 +618,7 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
                 systemPermission.addAll(permissionCodeDTOs);
             }
         });
-        log.info("systemPermission:[]", JSONArray.toJSONString(systemPermission));
+        log.debug("systemPermission:[]", JSONArray.toJSONString(systemPermission));
 
         //去重
         Set h = new HashSet(systemPermission);
@@ -626,7 +626,7 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
         systemPermission.addAll(h);
         //根据权限code获取权限信息
         List<String> permissionCodes = systemPermission.parallelStream().map(PermissionCodeDTO::getCode).collect(Collectors.toList());
-        log.info("permissionCodes:[]", JSONArray.toJSONString(permissionCodes));
+        log.debug("permissionCodes:[]", JSONArray.toJSONString(permissionCodes));
         return resourcePermissionService.permissionInfoByCodes(permissionCodes);
     }
 
