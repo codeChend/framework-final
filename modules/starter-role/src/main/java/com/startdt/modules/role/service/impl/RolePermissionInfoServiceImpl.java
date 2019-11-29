@@ -204,7 +204,7 @@ public class RolePermissionInfoServiceImpl implements IRolePermissionInfoService
             criteria.andPlatformCodeEqualTo(platformCode);
         }
 
-        List<RolePermissionInfo> rolePermissionInfos = rolePermissionInfoMapper.selectByExample(example);
+        List<RolePermissionInfo> rolePermissionInfos = rolePermissionInfoMapper.selectByExampleWithBLOBs(example);
         log.info("rolePermissionInfos:{}", JSONArray.toJSONString(rolePermissionInfos));
         List<RolePermissionDTO> data = new ArrayList<>();
         rolePermissionInfos.forEach(rolePermissionInfo -> {
