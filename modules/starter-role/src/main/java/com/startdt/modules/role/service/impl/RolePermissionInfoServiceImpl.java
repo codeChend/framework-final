@@ -189,6 +189,34 @@ public class RolePermissionInfoServiceImpl implements IRolePermissionInfoService
         return resultList;
     }
 
+    /**
+     * 获取角色列表
+     *
+     * @param platformCode 平台code
+     * @return
+     */
+    @Override
+    public List<RolePermissionDTO> listRolesByCode(String platformCode) {
+        RolePermissionInfoExample example = new RolePermissionInfoExample();
+        RolePermissionInfoExample.Criteria criteria = example.or();
+        criteria.andStatusEqualTo((byte)1);
+        if(StringUtils.isNotBlank(platformCode)){
+            criteria.andPlatformCodeEqualTo(platformCode);
+        }
+
+        List<RolePermissionInfo> rolePermissionInfos = rolePermissionInfoMapper.selectByExample(example);
+
+        List<RolePermissionDTO> data = new ArrayList<>();
+        rolePermissionInfos.forEach(rolePermissionInfo -> {
+            RolePermissionDTO rolePermissionDTO = BeanConverter.convert(rolePermissionInfo, RolePermissionDTO.class);
+            List<PermissionCodeDTO> permissionCodeDTO = JSON.parseArray(rolePermissionInfo.getPermission(),PermissionCodeDTO.class);
+            rolePermissionDTO.setGmtCreate(rolePermissionInfo.getGmtCreate());
+            data.add(rolePermissionDTO);
+        });
+
+        return data;
+    }
+
     @Override
     public int modifyRolePermission(RolePermissionDTO permissionDTO) {
 

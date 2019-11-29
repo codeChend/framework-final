@@ -80,6 +80,14 @@ public interface IRolePermissionInfoService{
     List<RolePermissionDTO> listRole(List<String> roleIds);
 
     /**
+     * 获取角色列表
+     *
+     * @param platformCode  平台code
+     * @return
+     */
+    List<RolePermissionDTO> listRolesByCode(String platformCode);
+
+    /**
      * 角色添加授权
      * @param permissionDTO
      * @return
