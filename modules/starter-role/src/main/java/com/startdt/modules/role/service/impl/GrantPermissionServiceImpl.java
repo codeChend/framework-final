@@ -204,7 +204,9 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
         }
         GrantPermissionExample example = new GrantPermissionExample();
         GrantPermissionExample.Criteria criteria = example.or();
-        criteria.andPrincipalPartEqualTo(String.valueOf(userId)).andPrincipalPartTypeEqualTo(PrincipalTypeEnum.USER.getCode().byteValue());
+        criteria.andPrincipalPartEqualTo(String.valueOf(userId))
+                .andPrincipalPartTypeEqualTo(PrincipalTypeEnum.USER.getCode().byteValue())
+                .andStatusEqualTo((byte)1);
 
         if(!CollectionUtils.isEmpty(spaceCode)){
             criteria.andSpaceCodeIn(spaceCode);
@@ -261,11 +263,11 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
 
         List<RolePermissionDTO> roleInfoDTOS = listByUserId(userId,spaceCode);
 
-        // log.debug("listByUserId roleInfoDTOS:{}", JSONArray.toJSONString(roleInfoDTOS));
+        log.debug("listByUserId roleInfoDTOS:{}", JSONArray.toJSONString(roleInfoDTOS));
 
         List<ResourcePermissionInfo> permissionNodeDTOS = getPermissionByRoleIds(roleInfoDTOS);
 
-        // log.debug("getPermissionByRoleIds permissionNodeDTOS:{}", JSONArray.toJSONString(permissionNodeDTOS));
+        log.debug("getPermissionByRoleIds permissionNodeDTOS:{}", JSONArray.toJSONString(permissionNodeDTOS));
 
         //过滤菜单级父节点的权限集
         List<ResourcePermissionInfo> parentPermission = permissionNodeDTOS
@@ -295,13 +297,19 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
 
         for (int i = 0; i < rolePermissionNodeDTOList.size(); i++) {
             RolePermissionNodeDTO rolePermissionNodeDTO = rolePermissionNodeDTOList.get(i);
+            boolean isOk = false;
             for (int j = 0; j < roleInfoDTOS.size(); j++) {
+                if (isOk) {
+                    break;
+                }
                 List<PermissionCodeDTO> permissionCodeDTOS = roleInfoDTOS.get(j).getPermissions();
                 for (int k = 0; k < permissionCodeDTOS.size(); k++) {
                     if (rolePermissionNodeDTO.getCode().equals(permissionCodeDTOS.get(k).getCode())) {
                         rolePermissionNodeDTOList.get(i).setRoleId(roleInfoDTOS.get(j).getId());
                         rolePermissionNodeDTOList.get(i).setRoleName(roleInfoDTOS.get(j).getRoleName());
                         rolePermissionNodeDTOList.get(i).setNote(roleInfoDTOS.get(j).getNote());
+
+                        isOk = true;
                         break;
                     }
                 }
@@ -610,6 +618,8 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
                 systemPermission.addAll(permissionCodeDTOs);
             }
         });
+        log.info("systemPermission:[]", JSONArray.toJSONString(systemPermission));
+
         //去重
         Set h = new HashSet(systemPermission);
         systemPermission.clear();
