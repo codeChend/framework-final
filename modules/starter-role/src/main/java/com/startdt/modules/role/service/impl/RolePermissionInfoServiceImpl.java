@@ -211,6 +211,7 @@ public class RolePermissionInfoServiceImpl implements IRolePermissionInfoService
             RolePermissionDTO rolePermissionDTO = BeanConverter.convert(rolePermissionInfo, RolePermissionDTO.class);
             List<PermissionCodeDTO> permissionCodeDTO = JSON.parseArray(rolePermissionInfo.getPermission(),PermissionCodeDTO.class);
             rolePermissionDTO.setGmtCreate(rolePermissionInfo.getGmtCreate());
+            rolePermissionDTO.setPermissions(permissionCodeDTO);
             data.add(rolePermissionDTO);
         });
 
