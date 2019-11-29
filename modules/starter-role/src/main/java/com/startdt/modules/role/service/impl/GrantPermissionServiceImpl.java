@@ -601,7 +601,7 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
         roleInfoDTOS.forEach(rolePermissionDTO -> {
             if(!CollectionUtils.isEmpty(rolePermissionDTO.getPermissions())){
                 List<PermissionCodeDTO> permissionCodeDTOs = rolePermissionDTO.getPermissions()
-                        .stream().filter(permissionCode -> RolePermissionEnum.SYSTEM_PERMISSION.getCode() == permissionCode.getType())
+                        .parallelStream().filter(permissionCode -> RolePermissionEnum.SYSTEM_PERMISSION.getCode() == permissionCode.getType())
                         .collect(Collectors.toList());
 
                 systemPermission.addAll(permissionCodeDTOs);
