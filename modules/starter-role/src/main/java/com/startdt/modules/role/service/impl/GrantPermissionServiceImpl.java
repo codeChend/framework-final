@@ -261,11 +261,11 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
 
         List<RolePermissionDTO> roleInfoDTOS = listByUserId(userId,spaceCode);
 
-        log.info("listByUserId roleInfoDTOS:{}", JSONArray.toJSONString(roleInfoDTOS));
+        // log.debug("listByUserId roleInfoDTOS:{}", JSONArray.toJSONString(roleInfoDTOS));
 
         List<ResourcePermissionInfo> permissionNodeDTOS = getPermissionByRoleIds(roleInfoDTOS);
 
-        log.info("getPermissionByRoleIds permissionNodeDTOS:{}", JSONArray.toJSONString(permissionNodeDTOS));
+        // log.debug("getPermissionByRoleIds permissionNodeDTOS:{}", JSONArray.toJSONString(permissionNodeDTOS));
 
         //过滤菜单级父节点的权限集
         List<ResourcePermissionInfo> parentPermission = permissionNodeDTOS
@@ -306,6 +306,7 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
             }
         }
 
+        // 以RoleId排序返回，用于首页模块
         List<RolePermissionNodeDTO> rolePermissionNodeDTOS = rolePermissionNodeDTOList.parallelStream().sorted(Comparator.comparing(RolePermissionNodeDTO::getRoleId)).collect(Collectors.toList());
 
         return rolePermissionNodeDTOS;
