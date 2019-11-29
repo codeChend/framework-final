@@ -301,7 +301,7 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
             RolePermissionNodeDTO rolePermissionNodeDTO = rolePermissionNodeDTOList.get(i);
             for (int j = 0; j < roleInfoDTOS.size(); j++) {
                 if (rolePermissionNodeDTO.getCode().equals(roleInfoDTOS.get(j))) {
-                    rolePermissionNodeDTO.setRoleId(roleInfoDTOS.get(j).getId());
+                    rolePermissionNodeDTOList.get(i).setRoleId(roleInfoDTOS.get(j).getId());
                     break;
                 }
             }
