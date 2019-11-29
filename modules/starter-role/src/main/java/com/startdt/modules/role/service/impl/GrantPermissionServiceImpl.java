@@ -212,7 +212,7 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
 
         List<GrantPermission> grantPermissions = grantPermissionMapper.selectByExample(example);
 
-        List<String> roleIds = grantPermissions.stream().map(GrantPermission::getResources).collect(Collectors.toList());
+        List<String> roleIds = grantPermissions.parallelStream().map(GrantPermission::getResources).collect(Collectors.toList());
 
         return rolePermissionInfoService.listRole(roleIds);
     }
@@ -230,15 +230,11 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
 
         List<RolePermissionDTO> roleInfoDTOS = listByUserId(userId,spaceCode);
 
-        log.info("listByUserId roleInfoDTOS:{}", JSONArray.toJSONString(roleInfoDTOS));
-
         List<ResourcePermissionInfo> permissionNodeDTOS = getPermissionByRoleIds(roleInfoDTOS);
-
-        log.info("getPermissionByRoleIds permissionNodeDTOS:{}", JSONArray.toJSONString(permissionNodeDTOS));
 
         //过滤菜单级父节点的权限集
         List<ResourcePermissionInfo> parentPermission = permissionNodeDTOS
-                .stream().filter(permission -> StringUtils.isEmpty(permission.getParentCode()))
+                .parallelStream().filter(permission -> StringUtils.isEmpty(permission.getParentCode()))
                 .filter(permissionInfo -> permissionInfo.getType()== PermissionTypeEnum.MENU_PERMISSION.getCode().byteValue())
                 .collect(Collectors.toList());
 
@@ -252,7 +248,7 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
             resultList.add(permissionNodeDTO);
         });
 
-        List<String> permissionCodes = permissionNodeDTOS.stream().map(ResourcePermissionInfo::getCode).collect(Collectors.toList());
+        List<String> permissionCodes = permissionNodeDTOS.parallelStream().map(ResourcePermissionInfo::getCode).collect(Collectors.toList());
 
         //递归所有有权限的点
         recursionNode(resultList,permissionCodes);
@@ -614,7 +610,7 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
         systemPermission.clear();
         systemPermission.addAll(h);
         //根据权限code获取权限信息
-        List<String> permissionCodes = systemPermission.stream().map(PermissionCodeDTO::getCode).collect(Collectors.toList());
+        List<String> permissionCodes = systemPermission.parallelStream().map(PermissionCodeDTO::getCode).collect(Collectors.toList());
         log.info("permissionCodes:[]", JSONArray.toJSONString(permissionCodes));
         return resourcePermissionService.permissionInfoByCodes(permissionCodes);
     }
