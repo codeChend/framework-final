@@ -306,7 +306,9 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
             }
         }
 
-        return rolePermissionNodeDTOList;
+        List<RolePermissionNodeDTO> rolePermissionNodeDTOS = rolePermissionNodeDTOList.parallelStream().sorted(Comparator.comparing(RolePermissionNodeDTO::getRoleId).reversed()).collect(Collectors.toList());
+
+        return rolePermissionNodeDTOS;
     }
 
     @Override
