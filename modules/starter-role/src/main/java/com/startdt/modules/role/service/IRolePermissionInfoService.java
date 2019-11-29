@@ -49,6 +49,13 @@ public interface IRolePermissionInfoService{
      */
     PageResult<RoleInfoDTO> pageRole(String platformCode, int currentPage, int pageSize);
 
+    /**
+     * 获取角色列表
+     *
+     * @param platformCode  平台code
+     * @return
+     */
+    List<RoleInfoDTO> listRoles(String platformCode);
 
     /**
      * 通过角色名称获取角色信息
