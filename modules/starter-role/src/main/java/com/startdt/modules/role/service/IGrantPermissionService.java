@@ -61,8 +61,9 @@ public interface IGrantPermissionService {
 
     /**
      * 批量禁用某个空间的用户角色
-     * @param userId        用户id
-     * @param spaceCode     空间id
+     *
+     * @param userId    用户id
+     * @param spaceCode 空间id
      * @return int
      * @author weilong
      * @since 2019/10/25 下午4:59
@@ -95,7 +96,7 @@ public interface IGrantPermissionService {
      * @param spaceCode
      * @return
      */
-    List<RolePermissionDTO> listByUserId(String userId,String spaceCode);
+    List<RolePermissionDTO> listByUserId(String userId, String spaceCode);
 
     /**
      * 通过用户id + spaceCode获取角色权限
@@ -122,6 +123,15 @@ public interface IGrantPermissionService {
      * @return
      */
     List<PermissionNodeDTO> getMenuPermission(String userId, List<String> spaceCode);
+
+    /**
+     * 通过userId获取所有菜单权限和角色信息
+     *
+     * @param userId
+     * @param spaceCode
+     * @return
+     */
+    public List<RolePermissionNodeDTO> getMenuPermissionWithRole(String userId, List<String> spaceCode);
 
     /**
      * 通过userId获取功能权限值集合

@@ -261,6 +261,56 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
     }
 
     @Override
+    public List<RolePermissionNodeDTO> getMenuPermissionWithRole(String userId,List<String> spaceCode) {
+
+        List<RolePermissionDTO> roleInfoDTOS = listByUserId(userId,spaceCode);
+
+        log.info("listByUserId roleInfoDTOS:{}", JSONArray.toJSONString(roleInfoDTOS));
+
+        List<ResourcePermissionInfo> permissionNodeDTOS = getPermissionByRoleIds(roleInfoDTOS);
+
+        log.info("getPermissionByRoleIds permissionNodeDTOS:{}", JSONArray.toJSONString(permissionNodeDTOS));
+
+        //过滤菜单级父节点的权限集
+        List<ResourcePermissionInfo> parentPermission = permissionNodeDTOS
+                .stream().filter(permission -> StringUtils.isEmpty(permission.getParentCode()))
+                .filter(permissionInfo -> permissionInfo.getType()== PermissionTypeEnum.MENU_PERMISSION.getCode().byteValue())
+                .collect(Collectors.toList());
+
+
+        List<PermissionNodeDTO> resultList = new ArrayList<>();
+        parentPermission.forEach(resourcePermission -> {
+            PermissionNodeDTO permissionNodeDTO = BeanConverter.convert(resourcePermission,RolePermissionNodeDTO.class);
+            if(StringUtils.isNotBlank(resourcePermission.getResUrl())){
+                permissionNodeDTO.setUrlMethod(JSON.parseObject(resourcePermission.getResUrl(),UrlMethodDTO.class));
+            }
+
+            resultList.add(permissionNodeDTO);
+        });
+
+        List<String> permissionCodes = permissionNodeDTOS.stream().map(ResourcePermissionInfo::getCode).collect(Collectors.toList());
+
+        //递归所有有权限的点
+        recursionNode(resultList,permissionCodes);
+
+        List<RolePermissionNodeDTO> rolePermissionNodeDTOList = new ArrayList<>();
+
+        rolePermissionNodeDTOList = BeanConverter.mapList(resultList, RolePermissionNodeDTO.class);
+
+        for (int i = 0; i < rolePermissionNodeDTOList.size(); i++) {
+            RolePermissionNodeDTO rolePermissionNodeDTO = rolePermissionNodeDTOList.get(i);
+            for (int j = 0; j < roleInfoDTOS.size(); j++) {
+                if (rolePermissionNodeDTO.getCode().equals(roleInfoDTOS.get(j))) {
+                    rolePermissionNodeDTO.setRoleId(roleInfoDTOS.get(j).getId());
+                    break;
+                }
+            }
+        }
+
+        return rolePermissionNodeDTOList;
+    }
+
+    @Override
     public List<String> getFunctionPermission(String userId,String spaceCode) {
         List<ResourcePermissionInfo> permissionNodeDTOS = permissionAllByUserId(userId,spaceCode);
 
