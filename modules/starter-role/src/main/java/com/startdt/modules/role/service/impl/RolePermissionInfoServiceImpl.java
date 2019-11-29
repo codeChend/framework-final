@@ -205,13 +205,13 @@ public class RolePermissionInfoServiceImpl implements IRolePermissionInfoService
         }
 
         List<RolePermissionInfo> rolePermissionInfos = rolePermissionInfoMapper.selectByExample(example);
-
+        log.info("rolePermissionInfos:{}", JSONArray.toJSONString(rolePermissionInfos));
         List<RolePermissionDTO> data = new ArrayList<>();
         rolePermissionInfos.forEach(rolePermissionInfo -> {
             RolePermissionDTO rolePermissionDTO = BeanConverter.convert(rolePermissionInfo, RolePermissionDTO.class);
-            List<PermissionCodeDTO> permissionCodeDTO = JSON.parseArray(rolePermissionInfo.getPermission(),PermissionCodeDTO.class);
+            List<PermissionCodeDTO> permissionCodeDTOS = JSON.parseArray(rolePermissionInfo.getPermission(),PermissionCodeDTO.class);
             rolePermissionDTO.setGmtCreate(rolePermissionInfo.getGmtCreate());
-            rolePermissionDTO.setPermissions(permissionCodeDTO);
+            rolePermissionDTO.setPermissions(permissionCodeDTOS);
             data.add(rolePermissionDTO);
         });
 
