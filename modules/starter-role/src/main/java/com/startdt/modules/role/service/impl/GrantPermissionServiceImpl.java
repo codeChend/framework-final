@@ -183,6 +183,39 @@ public class GrantPermissionServiceImpl implements IGrantPermissionService {
         return PageUtil.convertPage(pageInfo,returnList);
     }
 
+    /**
+     * 获取用户spaceCode下所有角色列表
+     *
+     * @param userId
+     * @param spaceCode
+     * @return
+     */
+    @Override
+    public List<RoleInfoDTO> listRoleByUserId(String userId, String spaceCode) {
+        GrantPermissionExample example = new GrantPermissionExample();
+        GrantPermissionExample.Criteria criteria = example.or();
+        criteria.andPrincipalPartEqualTo(userId).andPrincipalPartTypeEqualTo(PrincipalTypeEnum.USER.getCode().byteValue())
+                .andResourcesTypeEqualTo(ResourceTypeEnum.ROLE.getCode().byteValue()).andStatusEqualTo((byte)1);
+
+        if(StringUtils.isNotBlank(spaceCode)){
+            criteria.andSpaceCodeEqualTo(spaceCode);
+        }
+
+        List<GrantPermission> dataList = grantPermissionMapper.selectByExample(example);
+        log.info("入参：userId:[{}], spaceCode:[{}], 返回值:[{}]", userId, spaceCode, JSONArray.toJSON(dataList));
+
+        List<RoleInfoDTO> returnList = new ArrayList<>();
+
+        dataList.forEach(grantPermission -> {
+            RolePermissionDTO rolePermissionDTO = rolePermissionInfoService.getRoleById(Integer.valueOf(grantPermission.getResources()));
+            RoleInfoDTO roleInfoDTO = BeanConverter.convert(rolePermissionDTO,RoleInfoDTO.class);
+
+            returnList.add(roleInfoDTO);
+        });
+
+        return returnList;
+    }
+
     @Override
     public List<RolePermissionDTO> listByUserId(String userId) {
         return listByUserId(userId,"");

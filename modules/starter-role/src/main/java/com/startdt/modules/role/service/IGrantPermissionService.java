@@ -82,6 +82,15 @@ public interface IGrantPermissionService {
     PageResult<RoleInfoDTO> pageRoleByUserId(String userId, String spaceCode, int currentPage, int pageSize);
 
     /**
+     * 获取用户spaceCode下所有角色列表
+     *
+     * @param userId
+     * @param spaceCode
+     * @return
+     */
+    List<RoleInfoDTO> listRoleByUserId(String userId, String spaceCode);
+
+    /**
      * 通过用户id获取角色权限
      *
      * @param userId
